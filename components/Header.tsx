@@ -1,13 +1,3 @@
-import {
-  NavigationMenu,
-  NavigationMenuList,
-  NavigationMenuItem,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  NavigationMenuLink,
-} from "@radix-ui/react-navigation-menu";
-import Link from "next/link";
-import { navigationMenuTriggerStyle } from "./ui/navigation-menu";
 import ExampleNavigationMenu from "./ui/navigationmenu";
 import Image from "next/image";
 import logo from "../public/logo.png"

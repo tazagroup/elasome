@@ -1,4 +1,3 @@
-import MiniDrawer from "@/components/ui/dashboardlayout";
 import { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Admin Dashboard",
@@ -6,6 +5,8 @@ export const metadata: Metadata = {
 
 export default function AdminPage() {
   return (
-    <MiniDrawer />
+    <div>
+      <h1>Admin Dashboard</h1>
+    </div>
   );
 }
