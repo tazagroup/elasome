@@ -1,0 +1,23 @@
+import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
+
+@Component({
+  selector: 'app-products',
+  imports: [
+    CommonModule
+  ],
+  templateUrl: './products.component.html',
+  styleUrl: './products.component.scss'
+})
+export class ProductsComponent {
+  @Input() Heading:any
+  @Input() Products:any[]=[
+    {id:1,Title:'M1 ELASOME GLOSSY MTS SERUM',Mota:'Với 80mg HA/4ml giúp cấp ẩm sâu đa tầng, phục hồi da nám, mụn, lão hóa hiệu quả và duy trì lâu dài. Kết hợp Amino acid & Peptide, serum không chỉ trẻ hóa mà còn kéo dài hiệu quả vượt trội so với sản phẩm thông thường.',Image:'products/product.png',Slug:'',Ordering:1},
+    {id:1,Title:'M2 ELASOME REJU FOCUS MTS SERUM',Mota:'Với 80mg HA/4ml giúp cấp ẩm sâu đa tầng, phục hồi da nám, mụn, lão hóa hiệu quả và duy trì lâu dài. Kết hợp Amino acid & Peptide, serum không chỉ trẻ hóa mà còn kéo dài hiệu quả vượt trội so với sản phẩm thông thường.',Image:'products/product.png',Slug:'',Ordering:1},
+    {id:1,Title:'M3 ELASOME MELAX MTS SERUM',Mota:'Với 80mg HA/4ml giúp cấp ẩm sâu đa tầng, phục hồi da nám, mụn, lão hóa hiệu quả và duy trì lâu dài. Kết hợp Amino acid & Peptide, serum không chỉ trẻ hóa mà còn kéo dài hiệu quả vượt trội so với sản phẩm thông thường.',Image:'products/product.png',Slug:'',Ordering:1},
+    {id:1,Title:'M4 ELASOME EXO POWDER',Mota:'Với 80mg HA/4ml giúp cấp ẩm sâu đa tầng, phục hồi da nám, mụn, lão hóa hiệu quả và duy trì lâu dài. Kết hợp Amino acid & Peptide, serum không chỉ trẻ hóa mà còn kéo dài hiệu quả vượt trội so với sản phẩm thông thường.',Image:'products/product.png',Slug:'',Ordering:1},
+    {id:1,Title:'M5 ELASOME AQUA FOCUS MTS SERUM',Mota:'Với 80mg HA/4ml giúp cấp ẩm sâu đa tầng, phục hồi da nám, mụn, lão hóa hiệu quả và duy trì lâu dài. Kết hợp Amino acid & Peptide, serum không chỉ trẻ hóa mà còn kéo dài hiệu quả vượt trội so với sản phẩm thông thường.',Image:'products/product.png',Slug:'',Ordering:1},
+
+    
+  ]
+}

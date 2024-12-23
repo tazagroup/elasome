@@ -1,0 +1,12 @@
+<div class="w-full flex flex-col space-y-2">
+<h2>Sản Phẩm Nổi bật</h2>
+<div class="grid grid-cols-5 gap-4">
+    @for (item of Products; track item; let idx = $index, e = $even, first = $first, last = $last) {
+        <div class="p-2 rounded-lg flex flex-col space-y-2 border">
+            <img src="/products/product.png" alt="" srcset="">
+            <div>{{item.Title}}</div>
+            <div>{{item.Mota}}</div>
+        </div>
+    }
+</div>
+</div>
