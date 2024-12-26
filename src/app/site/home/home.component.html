@@ -1,8 +1,13 @@
-<app-swiper [Heading]="''" />
+<app-swiper [Heading]="''" class="bg-[#5D0711]/50" />
 <app-keyfigures [Heading]="''" class="container mx-auto" />
-<app-gioithieu [Heading]="''" class="container mx-auto" />
+<div class="bg-[#F3E5AB] w-full">
+    <app-gioithieu [Heading]="''" class="container mx-auto" />
+</div>
 <app-products [Heading]="''" class="container mx-auto" />
-<app-swiper [Heading]="''" [Config]="ChuyenGiaConfig" class="container mx-auto py-4"/>
+<div class="w-full bg-[#5D0711]/50">
+    <app-swiper [Heading]="''" [Config]="ChuyenGiaConfig" class="flex container mx-auto py-4"/>
+</div>
+
 <app-bannercta [Heading]="''" class="container mx-auto py-4"/>
 <app-baiviet [Heading]="''" class="container mx-auto py-4"/>
 <app-contactform [Heading]="''" class="container mx-auto py-4"/>

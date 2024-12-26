@@ -1,10 +1,14 @@
-<div class="swiper h-96" #swiperRef>
+<div class="swiper h-[500px]" #swiperRef>
     <div class="swiper-wrapper">
       @if(slides.length>0)
       {
         @for (item of slides; track item; let idx = $index) {
-          <div class="swiper-slide">
-              <img [src]="item.image" class="object-cover" [alt]="item.title">
+          <div class="swiper-slide grid grid-cols-2 gap-4 items-center justify-center text-center">
+              <span>ádhsajkhdsadsjkahdjk</span>
+
+              <span>123123213</span>
+
+              <!-- <img [src]="item.image" class="object-cover" [alt]="item.title"> -->
               <!-- <div class="slide-content">
                 <h3>{{ item.title }}</h3>
                 <p>{{ item.description }}</p>
