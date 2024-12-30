@@ -1,3 +1,84 @@
+import { capitalize } from "@angular-devkit/core/src/utils/strings";
+import { Rule, SchematicContext, Tree } from "@angular-devkit/schematics";
+
+// You don't have to export the function as default. You can also have more than one rule factory
+// per file.
+export function kataDashboardSchematic(_options: any): Rule {
+  return (tree: Tree, _context: SchematicContext) => {
+    const currentPath = _options.path || '/src/app'; 
+    const fileName = _options.name || "dashboard";
+
+//component.ts
+tree.create( 
+    `${currentPath}/${fileName}/${fileName}.component.ts`,
+`import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { RouterOutlet } from '@angular/router';
+import { Config, TREE_DATA, User } from './adminmain';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeModule, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatListModule} from '@angular/material/list';
+import { CommonModule } from '@angular/common';
+@Component({
+  selector: 'app-${fileName}',
+  imports: [
+    MatTreeModule,
+    MatSidenavModule,
+    MatButtonModule,
+    MatIconModule,
+    RouterOutlet,
+    MatMenuModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatListModule,
+    CommonModule
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  templateUrl: './${fileName}.component.html',
+  styleUrl: './${fileName}.component.scss'
+})
+export class ${capitalize(fileName)}Component {
+  showFiller = false;
+  Config:any =Config
+  User:any =User
+  folders: any[] =  folders
+  notes: any[] = notes
+  private _transformer = (node: any, level: number) => {
+    return {
+      expandable: !!node.children && node.children.length > 0,
+      name: node.name,
+      level: level,
+    };
+  };
+
+  treeControl = new FlatTreeControl<any>(
+    node => node.level,
+    node => node.expandable,
+  );
+
+  treeFlattener = new MatTreeFlattener(
+    this._transformer,
+    node => node.level,
+    node => node.expandable,
+    node => node.children,
+  );
+
+  dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+  constructor() {
+    this.dataSource.data = TREE_DATA;
+  }
+
+  hasChild = (_: number, node: any) => node.expandable;
+}
+`);
+    tree.create(
+      `${currentPath}/${fileName}/${fileName}.html`,
+      `
 <mat-drawer-container class="!w-screen !h-screen" autosize>
     <mat-drawer #drawer class="" mode="side" opened="true" position="start">
         <div class="relative h-full flex flex-col space-y-2">
@@ -124,4 +205,70 @@
       <router-outlet></router-outlet>   
     </div>
   </mat-drawer-container>
-  
+      `
+    );
+
+    tree.create(
+      `${currentPath}/${fileName}/${fileName}.ts`,
+      `
+export const Config:any={
+    Logoimage:"logo/logo.png"
+}
+export const User:any={
+    Avatar:"logo/logo.png",
+    Hoten:"Phạm Chí Kiệt",
+    Vitri:"Leader IT"
+}
+export const TREE_DATA: any[] = [
+    {
+      name: 'Fruit',
+      children: [{name: 'Apple'}, {name: 'Banana'}, {name: 'Fruit loops'}],
+    },
+    {
+      name: 'Vegetables',
+      children: [
+        {
+          name: 'Green',
+          children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
+        },
+        {
+          name: 'Orange',
+          children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
+        },
+      ],
+    },
+  ];
+  export const folders: any[] = [
+    {
+      name: 'Photos',
+      updated: new Date('1/1/16'),
+    },
+    {
+      name: 'Recipes',
+      updated: new Date('1/17/16'),
+    },
+    {
+      name: 'Work',
+      updated: new Date('1/28/16'),
+    },
+  ];
+  export const notes: any[] = [
+    {
+      name: 'Vacation Itinerary',
+      updated: new Date('2/20/16'),
+    },
+    {
+      name: 'Kitchen Remodel',
+      updated: new Date('1/18/16'),
+    },
+  ];
+      `
+    );
+
+    tree.create(
+      `${currentPath}/${fileName}/${fileName}.component.scss`,
+      ``
+    );
+    return tree;
+  };
+}
