@@ -15,6 +15,11 @@
       "description": "A blank schematic.",
       "factory": "./kata-dashboard-schematic/index#kataDashboardSchematic",
       "schema": "./kata-dashboard-schematic/schema.json"
+    },
+    "kata-fullcom-schematic": {
+      "description": "A blank schematic.",
+      "factory": "./kata-fullcom-schematic/index#kataFullcomSchematic",
+      "schema": "./kata-fullcom-schematic/schema.json"
     }
   }
 }

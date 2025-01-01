@@ -2,7 +2,7 @@ git add .
 git commit -m "update"
 git push
 
-npx ng g c changeteamplate --skip-tests --standalone
+npx ng g c listuser --skip-tests --standalone
 npx ng g c footerteamplate2 --skip-tests --standalone
 npx ng g c footerteamplate3 --skip-tests --standalone
 npx ng g s users --skip-tests
@@ -27,6 +27,7 @@ npm link
 npm link kata-schematic
 
 npx ng generate kata-schematic:kata-dashboard-schematic --name=test1 --path=src/app/pages
+npx ng generate kata-schematic:kata-fullcome-schematic --name=test1 --path=src/app/pages
 
 cd path/to/angular-project
 npm link first-schematic

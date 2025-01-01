@@ -16,6 +16,18 @@ export const routes: Routes = [
       path: 'admin',
       canActivate: [AuthGuard],
       loadComponent: () => import('./admin/adminmain/adminmain.component').then((c) => c.AdminmainComponent),
+      children: [
+        {
+          path: 'users',
+          loadComponent: () => import('./admin/adminmain/listuser/listuser.component').then((c) => c.ListuserComponent),
+          children: [
+            {
+              path: ':id',
+              loadComponent: () => import('./admin/adminmain/listuser/detailuser/detailuser.component').then((c) => c.DetailUserComponent),
+            },
+          ],
+        },
+      ],
     },
     {
       path: 'login',
