@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Config, folders, notes, TREE_DATA, User } from './adminmain';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeModule, MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
@@ -23,7 +23,9 @@ import { CommonModule } from '@angular/common';
     MatTabsModule,
     MatDividerModule,
     MatListModule,
-    CommonModule
+    CommonModule,
+    RouterLink,
+    RouterLinkActive
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './adminmain.component.html',
@@ -42,6 +44,7 @@ export class AdminmainComponent {
       expandable: !!node.children && node.children.length > 0,
       name: node.name,
       level: level,
+      node:node,
     };
   };
 

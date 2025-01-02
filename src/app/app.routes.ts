@@ -27,6 +27,26 @@ export const routes: Routes = [
             },
           ],
         },
+        {
+          path: 'danhmuc',
+          loadComponent: () => import('./admin/listdanhmuc/listdanhmuc.component').then((c) => c.ListdanhmucComponent),
+          children: [
+            {
+              path: ':id',
+              loadComponent: () => import('./admin/listdanhmuc/detaildanhmuc/detaildanhmuc.component').then((c) => c.DetailDanhmucComponent),
+            },
+          ],
+        },
+        {
+          path: 'baiviet',
+          loadComponent: () => import('./admin/listbaiviet/listbaiviet.component').then((c) => c.ListbaivietComponent),
+          children: [
+            {
+              path: ':id',
+              loadComponent: () => import('./admin/listbaiviet/detailbaiviet/detailbaiviet.component').then((c) => c.DetailBaivietComponent),
+            },
+          ],
+        },
       ],
     },
     {

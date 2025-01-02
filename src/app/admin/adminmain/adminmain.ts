@@ -8,22 +8,30 @@ export const User:any={
 }
 export const TREE_DATA: any[] = [
     {
-      name: 'Fruit',
-      children: [{name: 'Apple'}, {name: 'Banana'}, {name: 'Fruit loops'}],
+      name: 'Danh Mục',
+      Slug:'danhmuc'
     },
     {
-      name: 'Vegetables',
-      children: [
-        {
-          name: 'Green',
-          children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
-        },
-        {
-          name: 'Orange',
-          children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
-        },
-      ],
+      name: 'Bài Viết',
+      Slug:'baiviet'
     },
+    {
+      name: 'User',
+      Slug:'users'
+    },
+    // {
+    //   name: 'Vegetables',
+    //   children: [
+    //     {
+    //       name: 'Green',
+    //       children: [{name: 'Broccoli'}, {name: 'Brussels sprouts'}],
+    //     },
+    //     {
+    //       name: 'Orange',
+    //       children: [{name: 'Pumpkins'}, {name: 'Carrots'}],
+    //     },
+    //   ],
+    // },
   ];
   export const folders: any[] = [
     {

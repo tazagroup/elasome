@@ -16,17 +16,24 @@ export class StorageService {
 
   // Lấy dữ liệu
   getItem(key: string): any {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : null;
+ 
+    if (isPlatformBrowser(this.platformId)) {
+      const value = localStorage.getItem(key);
+      return value ? JSON.parse(value) : null;
+    }
   }
 
   // Xóa dữ liệu
   removeItem(key: string): void {
-    localStorage.removeItem(key);
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(key);
+    }
   }
 
   // Xóa tất cả
   clear(): void {
-    localStorage.clear();
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.clear();
+    }
   }
 }

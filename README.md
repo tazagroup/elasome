@@ -26,8 +26,10 @@ npm link
 
 npm link kata-schematic
 
+npx ng generate kata-schematic:kata-dashboard-schematic --name=danhmuc --path=src/app/admin
 npx ng generate kata-schematic:kata-dashboard-schematic --name=test1 --path=src/app/pages
-npx ng generate kata-schematic:kata-fullcome-schematic --name=test1 --path=src/app/pages
+npx ng generate kata-schematic:kata-fullcom-schematic --name=danhmuc --path=src/app/admin
+npx ng generate kata-schematic:kata-fullcom-schematic --name=baiviet --path=src/app/admin
 
 cd path/to/angular-project
 npm link first-schematic
