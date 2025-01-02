@@ -1,8 +1,8 @@
 import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { environment } from '../../../../environments/environment.development';
-import { StorageService } from '../../../shared/utils/storage.service';
+import { environment } from '../../../environments/environment.development';
+import { StorageService } from '../../shared/utils/storage.service';
 @Injectable({
   providedIn: 'root'
 })

@@ -34,20 +34,18 @@ export class ListdanhmucComponent implements AfterViewInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = [
     'STT',
-    'email', 
-    'Hoten', 
-    'SDT',
-    'CreateAt',
-    'field6',
+    'Title', 
+    'Slug', 
+    'CreatedAt',
   ];
-  ColumnName:any={
-    'STT':'STT',
-    'Hoten':'Họ Tên', 
-    'email':'Email', 
-    'SDT':'SDT',
-    'CreateAt':'Ngày Tạo',
-    'field6':'Hành Động',
-  }
+  
+  ColumnName: any = {
+    'STT': 'STT',
+    'Title': 'Tiêu Đề', 
+    'Slug': 'Đường Dẫn', 
+    'CreatedAt': 'Ngày Tạo',
+  };
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -60,6 +58,9 @@ export class ListdanhmucComponent implements AfterViewInit {
     this.dataSource = new MatTableDataSource(ListDanhmuc); 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    console.log(ListDanhmuc);
+    console.log( this.dataSource);
+    
     this.Detail.id?this.drawer.open():this.drawer.close()
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       if (result.matches) {
@@ -69,7 +70,7 @@ export class ListdanhmucComponent implements AfterViewInit {
         this.drawer.mode = 'side';
       }
     });
-    
+   
   }
   ngAfterViewInit() { 
     this.dataSource.paginator = this.paginator;
@@ -93,11 +94,11 @@ export class ListdanhmucComponent implements AfterViewInit {
   Create()
   {
     this.drawer.open();
-    this._router.navigate(['admin/danhmucs', 0])
+    this._router.navigate(['admin/danhmuc', 0])
   }
   goToDetail(item:any)
   {
     this.drawer.open();
     this.Detail=item
-    this._router.navigate(['admin/danhmucs', item.id])  }
+    this._router.navigate(['admin/danhmuc', item.id])  }
 }

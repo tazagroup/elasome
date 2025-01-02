@@ -9,6 +9,7 @@ import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
+import { Config } from './login';
 
 @Component({
   selector: 'app-login',
@@ -26,6 +27,7 @@ import {MatIconModule} from '@angular/material/icon';
 export class LoginComponent implements OnInit {
   token: any;
   _UsersService: UsersService = inject(UsersService);
+  Config:any=Config
   // _spinner: NgxSpinnerService = inject(NgxSpinnerService);
   // _NotifierService: NotifierService = inject(NotifierService);
   User:any={}

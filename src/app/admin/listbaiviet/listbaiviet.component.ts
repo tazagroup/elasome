@@ -34,20 +34,22 @@ export class ListbaivietComponent implements AfterViewInit {
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = [
     'STT',
-    'email', 
-    'Hoten', 
-    'SDT',
-    'CreateAt',
-    'field6',
+    'Title', 
+    'author', 
+    'category',
+    'createdAt',
+    'status',
   ];
-  ColumnName:any={
-    'STT':'STT',
-    'Hoten':'Họ Tên', 
-    'email':'Email', 
-    'SDT':'SDT',
-    'CreateAt':'Ngày Tạo',
-    'field6':'Hành Động',
-  }
+  
+  ColumnName: any = {
+    'STT': 'STT',
+    'Title': 'Tiêu Đề', 
+    'author': 'Tác Giả', 
+    'category': 'Danh Mục',
+    'createdAt': 'Ngày Tạo',
+    'status': 'Trạng Thái',
+  };
+  
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -93,11 +95,11 @@ export class ListbaivietComponent implements AfterViewInit {
   Create()
   {
     this.drawer.open();
-    this._router.navigate(['admin/baiviets', 0])
+    this._router.navigate(['admin/baiviet', 0])
   }
   goToDetail(item:any)
   {
     this.drawer.open();
     this.Detail=item
-    this._router.navigate(['admin/baiviets', item.id])  }
+    this._router.navigate(['admin/baiviet', item.id])  }
 }

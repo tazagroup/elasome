@@ -29,7 +29,7 @@ export function createHtmlFiles(tree: Tree, currentPath: string, fileName: strin
                     <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>{{ ColumnName[column] }}
                     </th>
                     <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
-                        {{ row[column] }}
+                         {{ column === 'STT' ? idx + 1 : row[column] }}
                     </td>
                  </ng-container>
                 }

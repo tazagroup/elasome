@@ -20,12 +20,13 @@
         </div>
         <div class="w-full">
             <table class="!border w-full cursor-pointer" mat-table [dataSource]="dataSource" matSort>
+
                 @for (column of displayedColumns; track column) {
                   <ng-container [matColumnDef]="column">
                     <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>{{ ColumnName[column] }}
                     </th>
                     <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
-                        {{ row[column] }}
+                       {{ column === 'STT' ? idx + 1 : row[column] }}
                     </td>
                  </ng-container>
                 }
