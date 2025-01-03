@@ -1,6 +1,6 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Config, folders, notes, TREE_DATA, User } from './adminmain';
 import { FlatTreeControl } from '@angular/cdk/tree';
@@ -11,6 +11,8 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import { CommonModule } from '@angular/common';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { UsersService } from './listuser/listuser.services';
 @Component({
   selector: 'app-adminmain',
   imports: [
@@ -32,6 +34,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './adminmain.component.scss'
 })
 export class AdminmainComponent {
+
   showFiller = false;
   Config:any =Config
   User:any =User
@@ -61,9 +64,33 @@ export class AdminmainComponent {
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-  constructor() {
+  constructor(
+    private _breakpointObserver:BreakpointObserver,
+    private _UsersService:UsersService,
+  ) {
     this.dataSource.data = TREE_DATA;
   }
 
   hasChild = (_: number, node: any) => node.expandable;
+  @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+  async ngOnInit() {
+    this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      if (result.matches) {
+        this.drawer.mode = 'over';
+        this.drawer.close();
+      } else {
+        this.drawer.mode = 'side';
+        this.drawer.open();
+      }
+    });
+  }
+  logout() {    
+    this._UsersService.Dangxuat().subscribe((res: any) => {
+      if (res) {
+        setTimeout(() => {
+          location.reload();
+        }, 0);
+      }
+    });
+  }
 }

@@ -4,12 +4,13 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import * as Auth from 'firebase/auth';
 import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { UsersService } from '../users.service';
 import {MatInputModule} from '@angular/material/input';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatButtonModule} from '@angular/material/button';
 import {MatIconModule} from '@angular/material/icon';
 import { Config } from './login';
+import { RouterLink } from '@angular/router';
+import { UsersService } from '../../../admin/adminmain/listuser/listuser.services';
 
 @Component({
   selector: 'app-login',
@@ -19,15 +20,21 @@ import { Config } from './login';
     MatCheckboxModule,
     MatButtonModule,
     FormsModule,
-    MatIconModule
+    MatIconModule,
+    RouterLink
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
   token: any;
+  gotonew:any="translate-x-0"
   _UsersService: UsersService = inject(UsersService);
   Config:any=Config
+  order1:any='order-1'
+  order2:any='order-2'
+  rightpanel:any='transform-x-0'
+  leftpanel:any='transform-x-0'
   // _spinner: NgxSpinnerService = inject(NgxSpinnerService);
   // _NotifierService: NotifierService = inject(NotifierService);
   User:any={}
@@ -42,9 +49,26 @@ export class LoginComponent implements OnInit {
   @HostListener('window:message', ['$event'])
   onMessage(event: MessageEvent): void {
     if (event.origin !== 'http://localhost:4300') return;
-    console.log('Got this message from parent: ' + JSON.stringify(event.data));
+    // console.log('Got this message from parent: ' + JSON.stringify(event.data));
   }
+  SlidingForm()
+  {
 
+    if(this.order1=='order-1'){
+    this.rightpanel='opacity-0'
+    this.leftpanel='opacity-0'
+    }else{
+      this.rightpanel='opacity-100'
+      this.leftpanel='opacity-100'
+    }
+    setTimeout(() => {
+    this.order1=='order-1'?this.order1='order-2':this.order1='order-1',
+    this.order2=='order-1'?this.order2='order-2':this.order2='order-1'
+    this.rightpanel='opacity-100'
+    this.leftpanel='opacity-100'
+    }, 200);
+
+  }
   ngOnInit(): void {
     // this._UsersService.getProfile().then((data) => {
     //  // console.log(data);
@@ -52,7 +76,6 @@ export class LoginComponent implements OnInit {
   }
   async Dangnhap() {
     //console.log(this.User);
-    
     if ((this.User.SDT && this.User.SDT !== "") && (this.User.password && this.User.password !== ""))
     {
       this.User.email = this.User.SDT
@@ -94,19 +117,19 @@ export class LoginComponent implements OnInit {
       const result = await this.auth.signInWithPopup(GoogleAuthProvider);
       console.log('Logged in:', result.user);
       console.log('Logged in:', result.user?.providerData[0]);
-      // this._UsersService.LoginByGoogle(result.user?.providerData[0]).then((data:any) => {
-      //   if (data[0]) {
-      //   //  console.log(data);
-      //     //this.postMessage(data[1]);
-      //     if (isPlatformBrowser(this.platformId)) {
-      //      // this.postMessage(data[1]);
-      //       setTimeout(() => {
-      //         window.location.reload();
-      //       }, 100);
+      this._UsersService.LoginByGoogle(result.user?.providerData[0]).then((data:any) => {
+        if (data[0]) {
+        //  console.log(data);
+          //this.postMessage(data[1]);
+          if (isPlatformBrowser(this.platformId)) {
+           // this.postMessage(data[1]);
+            setTimeout(() => {
+              window.location.reload();
+            }, 0);
             
-      //     }
-      //   }
-      // });
+          }
+        }
+      });
     } catch (error) {
       // Handle errors (e.g., display an error message)
       console.error('Login error:', error);

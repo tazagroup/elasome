@@ -2,6 +2,21 @@
 @use 'swiper/css/navigation';
 @use 'swiper/css/pagination';
 @use 'swiper/css/autoplay'; // Nếu sử dụng autoplay
+@use '@angular/material' as mat;
+:root {
+  @include mat.button-overrides((
+    // filled-container-color: white,   // Background color of the button
+    // filled-label-text-color: red,     // Text color of the button
+  ));
+
+}
+.primary {
+  @include mat.icon-button-overrides((
+    icon-color: white,   // Background color of the button
+    state-layer-color:white
+  ));
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
-import { AuthGuard } from './shared/users/auth.guard';
+import { GuestGuard } from './shared/users/guards/guest.guard';
+import { AuthGuard } from './shared/users/guards/auth.guard';
 export const routes: Routes = [
     // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
@@ -47,10 +48,37 @@ export const routes: Routes = [
             },
           ],
         },
+        {
+          path: 'profile',
+          loadComponent: () => import('./shared/users/profile/profile.component').then((c) => c.ProfileComponent),
+          children:[
+            {
+              path: 'socialpage',
+              loadComponent: () => import('./shared/users/profile/social/social.component').then((c) => c.SocialComponent),
+            },
+          ]
+        },
+        {
+          path: 'account',
+          redirectTo: 'account/password', // Chuyển hướng đến 'account/password'
+          pathMatch: 'full', // Xác định khớp chính xác
+        },
+        {
+          path: 'account',
+          loadComponent: () => import('./shared/users/account/account.component').then((c) => c.AccountComponent),
+          children:[
+            {
+              path: 'password',
+              loadComponent: () => import('./shared/users/account/password/password.component').then((c) => c.PasswordComponent),
+            }
+          ]
+        },
       ],
     },
     {
       path: 'login',
+      canActivate: [GuestGuard],
+      canActivateChild: [GuestGuard],
       loadComponent: () => import('./shared/users/login/login.component').then((c) => c.LoginComponent),
     },
     {
