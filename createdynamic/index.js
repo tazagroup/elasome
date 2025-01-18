@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import inquirer from 'inquirer';
 import { generateNestFiles } from './nestjs.js';
+import { generateAngularFiles } from './angular.js';
 // Prompt user for details
 async function promptUser() {
   const questions = [
