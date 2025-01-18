@@ -60,3 +60,8 @@ Nền: #E6AABF - Chữ: #5D0711
 Nền: #D98296 - Chữ: #FFFFFF
 Nền: #B33A52 - Chữ: #FFFFFF
 Nền: #5D0711 - Chữ: #FFFFFF
+
+
+
+npm link
+generate-component
