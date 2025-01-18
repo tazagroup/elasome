@@ -49,6 +49,16 @@ export const routes: Routes = [
           ],
         },
         {
+          path: 'sanpham',
+          loadComponent: () => import('./admin/listsanpham/listsanpham.component').then((c) => c.ListsanphamComponent),
+          children: [
+            {
+              path: ':id',
+              loadComponent: () => import('./admin/listsanpham/detailsanpham/detailsanpham.component').then((c) => c.DetailSanphamComponent),
+            },
+          ],
+        },
+        {
           path: 'profile',
           loadComponent: () => import('./shared/users/profile/profile.component').then((c) => c.ProfileComponent),
           children:[
@@ -60,7 +70,7 @@ export const routes: Routes = [
         },
         {
           path: 'account',
-          redirectTo: 'account/password', // Chuyển hướng đến 'account/password'
+          redirectTo: 'account/general', // Chuyển hướng đến 'account/password'
           pathMatch: 'full', // Xác định khớp chính xác
         },
         {
@@ -70,6 +80,10 @@ export const routes: Routes = [
             {
               path: 'password',
               loadComponent: () => import('./shared/users/account/password/password.component').then((c) => c.PasswordComponent),
+            },
+            {
+              path:'general',
+              loadComponent: () => import('./shared/users/account/general/general.component').then((c) => c.GeneralComponent),
             }
           ]
         },

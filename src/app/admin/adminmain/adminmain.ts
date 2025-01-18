@@ -16,6 +16,10 @@ export const TREE_DATA: any[] = [
       Slug:'baiviet'
     },
     {
+      name: 'Sản Phẩm',
+      Slug:'sanpham'
+    },
+    {
       name: 'User',
       Slug:'users'
     },

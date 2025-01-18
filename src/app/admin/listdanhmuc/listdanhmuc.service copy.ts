@@ -31,6 +31,8 @@ export class DanhmucsService {
       const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${DriveInfo.IdSheet}/values/${DriveInfo.SheetName}?key=${DriveInfo.ApiKey}`,options);
     const data = await response.json();
     console.log(data);
+    
+          //this._ketoans.next(data)
     return data;
       } catch (error) {
           return console.error(error);

@@ -39,6 +39,8 @@ export class AccountComponent implements OnInit {
   async ngOnInit() {
    await this._UsersService.getProfile()
    this.profile = this._UsersService.profile
+   console.log( this.profile);
+   
   }
   Update()
   {

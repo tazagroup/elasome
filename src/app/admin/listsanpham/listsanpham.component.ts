@@ -4,23 +4,18 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { ListDanhmuc } from './listdanhmuc';
+import { ListSanpham } from './listsanpham';
 import { MatMenuModule } from '@angular/material/menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { DetailDanhmucComponent } from './detaildanhmuc/detaildanhmuc.component';
-import { DanhmucsService } from './listdanhmuc.service';
-import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { environment } from '../../../environments/environment.development';
-import { ConvertDriveColumnName, ConvertDriveData } from '../../shared/utils/shared.utils';
+import { DetailSanphamComponent } from './detailsanpham/detailsanpham.component';
 @Component({
-  selector: 'app-listdanhmuc',
-  templateUrl: './listdanhmuc.component.html',
-  styleUrl: './listdanhmuc.component.scss',
+  selector: 'app-listsanpham',
+  templateUrl: './listsanpham.component.html',
+  styleUrl: './listsanpham.component.scss',
   imports: [
     MatFormFieldModule, 
     MatInputModule, 
@@ -32,49 +27,39 @@ import { ConvertDriveColumnName, ConvertDriveData } from '../../shared/utils/sha
     RouterOutlet,
     MatIconModule,
     MatButtonModule,
-    FormsModule,
-    CommonModule
   ],
 })
-export class ListdanhmucComponent implements AfterViewInit {
+export class ListsanphamComponent implements AfterViewInit {
   Detail:any={}
   dataSource!: MatTableDataSource<any>;
   displayedColumns: string[] = [
     'STT',
-    'Title', 
-    'Slug', 
-    'CreatedAt',
+    'email', 
+    'Hoten', 
+    'SDT',
+    'CreateAt',
+    'field6',
   ];
-  
-  ColumnName: any = {
-    'STT': 'STT',
-    'Title': 'Tiêu Đề', 
-    'Slug': 'Đường Dẫn', 
-    'CreatedAt': 'Ngày Tạo',
-  };
-  
+  ColumnName:any={
+    'STT':'STT',
+    'Hoten':'Họ Tên', 
+    'email':'Email', 
+    'SDT':'SDT',
+    'CreateAt':'Ngày Tạo',
+    'field6':'Hành Động',
+  }
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  DriveInfo:any={
-    ApiKey:environment.GSApiKey||'',
-    IdSheet:'12Mjlh55kVxdX_12bgITi-zHDsa8EO9Puc6bSOkleIjg',
-    SheetName:'Danhmuc'
-  }
-  _DanhmucsService:DanhmucsService = inject(DanhmucsService)
-  isDownloadDrive:boolean=false
   constructor(
     private _breakpointObserver: BreakpointObserver,
     private _router: Router,
   ) {}
 
-  async ngOnInit(): Promise<void> {
-    this.dataSource = new MatTableDataSource(ListDanhmuc); 
+  ngOnInit(): void {
+    this.dataSource = new MatTableDataSource(ListSanpham); 
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
-    // console.log(ListDanhmuc);
-    // console.log( this.dataSource);
-    
     this.Detail.id?this.drawer.open():this.drawer.close()
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       if (result.matches) {
@@ -84,20 +69,6 @@ export class ListdanhmucComponent implements AfterViewInit {
         this.drawer.mode = 'side';
       }
     });
-   
-  }
-  async GetDrive()
-  {
-    const result = await this._DanhmucsService.getDanhmucDrive(this.DriveInfo);    
-    if(result.values.length>0)
-    {
-      this.displayedColumns = result.values[0].map((item:any)=>item)
-      this.ColumnName = ConvertDriveColumnName(result.values)      
-      this.dataSource = new MatTableDataSource(ConvertDriveData(result.values)); 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.isDownloadDrive=true
-    }
     
   }
   ngAfterViewInit() { 
@@ -122,11 +93,11 @@ export class ListdanhmucComponent implements AfterViewInit {
   Create()
   {
     this.drawer.open();
-    this._router.navigate(['admin/danhmuc', 0])
+    this._router.navigate(['admin/sanphams', 0])
   }
   goToDetail(item:any)
   {
     this.drawer.open();
     this.Detail=item
-    this._router.navigate(['admin/danhmuc', item.id])  }
+    this._router.navigate(['admin/sanphams', item.id])  }
 }

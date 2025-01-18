@@ -16,5 +16,6 @@ export const environment = {
         storageBucket: "speedy-atom-351508.appspot.com",
         messagingSenderId: "896025447185",
         appId: "1:896025447185:web:90cc6db9e3ead1f83c5ab0"
-      }
+      },
+  GSApiKey: 'AIzaSyD33kgZJKdFpv1JrKHacjCQccL_O0a2Eao',  
 };

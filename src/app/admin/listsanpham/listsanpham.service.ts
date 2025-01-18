@@ -1,12 +1,12 @@
 import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment.development';
-import { StorageService } from '../../shared/utils/storage.service';
+import { environment } from '../../../../environments/environment.development';
+import { StorageService } from '../../../shared/utils/storage.service';
 @Injectable({
   providedIn: 'root'
 })
-export class DanhmucsService {
+export class SanphamsService {
   private _authenticated: boolean = false;
   private APIURL: string = environment.APIURL;
   private isBrowser: boolean;
@@ -17,26 +17,9 @@ export class DanhmucsService {
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
-  ListDanhmuc = signal<any[]>([]);
-  Danhmuc = signal<any>({});
-
-  async getDanhmucDrive(DriveInfo:any) {
-    try {
-      const options = {
-        method:'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
-      const response = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${DriveInfo.IdSheet}/values/${DriveInfo.SheetName}?key=${DriveInfo.ApiKey}`,options);
-    const data = await response.json();
-    console.log(data);
-    return data;
-      } catch (error) {
-          return console.error(error);
-      }
-  }
-  async getAllDanhmuc() {
+  ListSanpham = signal<any[]>([]);
+  Sanpham = signal<any>({});
+  async getAllSanpham() {
     try {
       const options = {
         method: 'GET',
@@ -45,7 +28,7 @@ export class DanhmucsService {
           'Authorization': 'Bearer '+this._StorageService.getItem('token')
         },
       };
-      const response = await fetch(`${environment.APIURL}/danhmucs`, options);
+      const response = await fetch(`${environment.APIURL}/sanphams`, options);
       if (!response.ok) {
         if (response.status === 401) {
           const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
@@ -64,13 +47,13 @@ export class DanhmucsService {
         }
       }
       const data = await response.json();     
-      this.ListDanhmuc.set(data)
+      this.ListSanpham.set(data)
       return data;
     } catch (error) {
       return console.error(error);
     }
   }
-  async SearchDanhmuc(SearchParams:any) {
+  async SearchSanpham(SearchParams:any) {
     try {
       const options = {
         method:'POST',
@@ -99,13 +82,13 @@ export class DanhmucsService {
             }
           }
           const data = await response.json();
-          this.Danhmuc.set(data.items)
+          this.Sanpham.set(data.items)
           return data;
       } catch (error) {
           return console.error(error);
       }
   }
-  async getDanhmucByid(id: any) {
+  async getSanphamByid(id: any) {
     try {
       const options = {
         method: 'GET',
@@ -113,7 +96,7 @@ export class DanhmucsService {
           'Content-Type': 'application/json',
         },
       };
-      const response = await fetch(`${environment.APIURL}/danhmucs/${id}`, options);
+      const response = await fetch(`${environment.APIURL}/sanphams/${id}`, options);
       if (!response.ok) {
         if (response.status === 401) {
           const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
@@ -133,12 +116,12 @@ export class DanhmucsService {
         }
       }
       const data = await response.json();
-      this.Danhmuc.set(data)
+      this.Sanpham.set(data)
     } catch (error) {
       return console.error(error);
     }
   }
-  async updateOneDanhmuc(dulieu: any) {
+  async updateOneSanpham(dulieu: any) {
     try {
       const options = {
           method:'PATCH',
@@ -147,7 +130,7 @@ export class DanhmucsService {
           },
           body: JSON.stringify(dulieu),
         };
-        const response = await fetch(`${environment.APIURL}/danhmucs/${dulieu.id}`, options);
+        const response = await fetch(`${environment.APIURL}/sanphams/${dulieu.id}`, options);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -170,13 +153,13 @@ export class DanhmucsService {
             this.router.navigate(['/errorserver'], { queryParams: {data:result}});
           }
         }
-        this.getAllDanhmuc()
+        this.getAllSanpham()
         return data;
     } catch (error) {
         return console.error(error);
     }
   }
-  async DeleteDanhmuc(item:any) {    
+  async DeleteSanpham(item:any) {    
     try {
         const options = {
             method:'DELETE',
@@ -184,7 +167,7 @@ export class DanhmucsService {
               'Content-Type': 'application/json',
             },
           };
-          const response = await fetch(`${environment.APIURL}/danhmucs/${item.id}`, options);
+          const response = await fetch(`${environment.APIURL}/sanphams/${item.id}`, options);
           if (!response.ok) {
             if (response.status === 401) {
               const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
@@ -200,7 +183,7 @@ export class DanhmucsService {
               this.router.navigate(['/errorserver'], { queryParams: {data:result}});
             }
           }
-          this.getAllDanhmuc()
+          this.getAllSanpham()
           return await response.json();
       } catch (error) {
           return console.error(error);

@@ -13,6 +13,7 @@ import {MatListModule} from '@angular/material/list';
 import { CommonModule } from '@angular/common';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { UsersService } from './listuser/listuser.services';
+import { ConversationComponent } from '../../shared/common/conversation/conversation.component';
 @Component({
   selector: 'app-adminmain',
   imports: [
@@ -27,14 +28,15 @@ import { UsersService } from './listuser/listuser.services';
     MatListModule,
     CommonModule,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    // ConversationComponent
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './adminmain.component.html',
   styleUrl: './adminmain.component.scss'
 })
 export class AdminmainComponent {
-
+  isFullscreen:boolean=false
   showFiller = false;
   Config:any =Config
   User:any =User
@@ -73,6 +75,7 @@ export class AdminmainComponent {
 
   hasChild = (_: number, node: any) => node.expandable;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+  @ViewChild('drawer1', { static: true }) drawer1!: MatDrawer;
   async ngOnInit() {
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       if (result.matches) {

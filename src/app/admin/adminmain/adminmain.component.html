@@ -140,9 +140,9 @@
   </div>
 
 
-  <mat-drawer #drawer1 class="!w-1/3" mode="over" position="end">
+  <mat-drawer #drawer1 class="{{isFullscreen?'!w-screen':'!w-1/3'}}" mode="over" position="end">
     <div class="relative h-full flex flex-col space-y-2">
-      
+      <!-- <app-conversation></app-conversation> -->
     </div>
   </mat-drawer>
 </mat-drawer-container>
