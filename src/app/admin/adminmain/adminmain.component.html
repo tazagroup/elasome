@@ -69,14 +69,15 @@
         <button mat-icon-button (click)="drawer.toggle()">
           <mat-icon>menu</mat-icon>
         </button>
-
-        <div class="relative max-w-xl flex flex-row items-center">
+        <button mat-icon-button><mat-icon>search</mat-icon></button>
+        <!-- <div class="relative max-w-xl flex flex-row items-center">
           <input type="text" placeholder="Tìm Kiếm..."
             class="block w-full pl-10 pr-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40">
           <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
             <span class="material-symbols-outlined text-gray-500">search</span>
           </div>
-        </div>
+        </div> -->
+
       </div>
       <div class="flex flex-row space-x-2 items-center">
         <button mat-icon-button (click)="drawer1.toggle()">
@@ -92,46 +93,17 @@
           <mat-icon>account_circle</mat-icon>
         </button>
         <mat-menu #menu1="matMenu">
-          <div class="flex">
-            <mat-tab-group fitInkBarToContent animationDuration="0ms" (click)="$event.stopPropagation()">
-              <mat-tab label="Profile">
-                <mat-list>
-                  <div mat-subheader>Folders</div>
-                  @for (folder of folders; track folder) {
-                  <mat-list-item>
-                    <mat-icon matListItemIcon>folder</mat-icon>
-                    <div matListItemTitle>{{folder.name}}</div>
-                    <div matListItemLine>{{folder.updated | date}}</div>
-                  </mat-list-item>
-                  }
-                  <mat-divider></mat-divider>
-                  <div mat-subheader>Notes</div>
-                  @for (note of notes; track note) {
-                  <mat-list-item>
-                    <mat-icon matListItemIcon>note</mat-icon>
-                    <div matListItemTitle>{{note.name}}</div>
-                    <div matListItemLine>{{note.updated | date}}</div>
-                  </mat-list-item>
-                  }
-                </mat-list>
-  
-              </mat-tab>
-  
-              <mat-tab label="Settings">
-                <mat-list>
-                  <div mat-subheader>Notes</div>
-                  @for (note of notes; track note) {
-                  <mat-list-item>
-                    <mat-icon matListItemIcon>note</mat-icon>
-                    <div matListItemTitle>{{note.name}}</div>
-                    <div matListItemLine>{{note.updated | date}}</div>
-                  </mat-list-item>
-                  }
-                </mat-list>
-              </mat-tab>
-  
-            </mat-tab-group>
+          <div class="flex flex-row space-x-2 items-center p-4">
+            <img [src]="User.Avatar" alt="Avatar" class="max-w-14 max-h-14 object-cover rounded-full">
+            <div class="flex flex-col">
+              <div class="font-bold">{{User.Hoten}}</div>
+              <div class="italic text-xs">{{User.Vitri}}</div>
+              <div class="italic text-xs">{{User.email}}</div>
+            </div>
           </div>
+          <a [href]="'/admin/profile'" mat-menu-item>Thông Tin</a>
+          <button mat-menu-item>Cài Đặt</button>
+          <button mat-menu-item>Đăng Xuất</button>
         </mat-menu>
 
       </div>

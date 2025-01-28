@@ -1,26 +1,61 @@
-<div class="swiper h-[500px]" #swiperRef>
+<div class="swiper" #swiperRef>
     <div class="swiper-wrapper">
       @if(slides.length>0)
       {
-        @for (item of slides; track item; let idx = $index) {
-          <div class="swiper-slide grid grid-cols-2 gap-4 items-center justify-center text-center">
-              <span>ádhsajkhdsadsjkahdjk</span>
+        @switch (Type) {
+            @case ('sanpham') {
+              @for (item of slides; track item; let idx = $index) {
+                <a [href]="item.Slug+'-'+item.View" class="swiper-slide cursor-pointer border flex flex-col space-y-2 rounded-lg overflow-hidden w-full">
+                    <div class="h-60 w-full overflow-hidden">
+                        <img src="https://pos.nvncdn.com/772b84-151467/ps/20230523_SPbSTsvn6w.jpeg" class="w-full object-cover hover:scale-125 transition-transform duration-300" alt="" srcset="">
+                    </div>
+                    <div class="slide-content px-4 py-2 flex flex-col space-y-2">
+                        <h3 class="!m-0 line-clamp-2 h-12 text-lg font-bold hover:text-[#5D0711] hover:font-extrabold">{{item.Title}}</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold text-red-500">{{item.Gia||'Liên Hệ'}}</span>
+                            <button color="primary" mat-icon-button><mat-icon>shopping_cart</mat-icon></button>
+                        </div>
+                    </div>
+                </a>
 
-              <span>123123213</span>
-
-              <!-- <img [src]="item.image" class="object-cover" [alt]="item.title"> -->
-              <!-- <div class="slide-content">
-                <h3>{{ item.title }}</h3>
-                <p>{{ item.description }}</p>
-              </div> -->
-            </div>
+              }
+            }
+            @case ('slide') {
+              C        @for (item of slides; track item; let idx = $index) {
+                <div class="swiper-slide">
+                 <img [src]="item.image" class="object-cover" [alt]="item.title">
+                 <div class="slide-content">
+                      <h3>{{ item.title }}</h3>
+                      <p>{{ item.description }}</p>
+                    </div>
+                  </div>
+              }
+            }
+            @case ('Baiviet') {
+              @for (item of slides; track item; let idx = $index) {
+                <div class="swiper-slide">
+                 <img [src]="item.Image" class="object-cover" [alt]="item.Title">
+                 <div class="slide-content">
+                      <h3 class="!m-0 line-clamp-2">{{ item.Title }}</h3>
+                      <p class="text-xs italic line-clamp-2" [innerHTML]="item.Mota"></p>
+                    </div>
+                  </div>
+              }
+            }
+            @default {
+              @for (item of slides; track item; let idx = $index) {
+                <div class="swiper-slide">
+                 <img [src]="item.Image" class="object-cover" [alt]="item.Title">
+                 <!-- <div class="slide-content">
+                      <h3>{{ item.title }}</h3>
+                      <p>{{ item.description }}</p>
+                    </div> -->
+                    
+                  </div>
+              }
+            }
+          }
       }
-      @empty {
-        <span class="p-2 text-center">There are no items.</span>
-        }
-      }
-
-
     </div>
     <div class="swiper-pagination"></div>
     <div class="swiper-button-prev"></div>

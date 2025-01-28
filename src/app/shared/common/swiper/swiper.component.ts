@@ -1,26 +1,31 @@
+import { CommonModule } from '@angular/common';
 import { Component, AfterViewInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
 import Swiper from 'swiper';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 Swiper.use([Navigation, Pagination, Autoplay]); // Khai báo các module đã import
 @Component({
   selector: 'app-swiper',
-  imports: [],
+  imports: [
+    MatIconModule,
+    CommonModule
+  ],
   templateUrl: './swiper.component.html',
   styleUrl: './swiper.component.scss'
 })
 export class SwiperComponent implements AfterViewInit {
   @ViewChild('swiperRef', { static: false }) swiperRef!: ElementRef;
   @Input() Config:any
-  @Input() Heading:any
-  swiper?: Swiper;
-  slides = [
-    { image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 1 Title', description: 'Slide 1 Description' },
-    { image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 2 Title', description: 'Slide 2 Description' },
-    { image: 'https://fantasea.vn/wp-content/uploads/2019/01/%C4%91%E1%BA%A1i-di%E1%BB%87n-4.jpg', title: 'Slide 3 Title', description: 'Slide 3 Description' },
-    { image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 1 Title', description: 'Slide 1 Description' },
-    { image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 2 Title', description: 'Slide 2 Description' },
-    { image: 'https://fantasea.vn/wp-content/uploads/2019/01/%C4%91%E1%BA%A1i-di%E1%BB%87n-4.jpg', title: 'Slide 3 Title', description: 'Slide 3 Description' },
+  @Input() Type:any
+  @Input() slides:any[] = [
+    { Image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 1 Title', description: 'Slide 1 Description' },
+    { Image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 2 Title', description: 'Slide 2 Description' },
+    { Image: 'https://fantasea.vn/wp-content/uploads/2019/01/%C4%91%E1%BA%A1i-di%E1%BB%87n-4.jpg', title: 'Slide 3 Title', description: 'Slide 3 Description' },
+    { Image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 1 Title', description: 'Slide 1 Description' },
+    { Image: 'https://vcdn1-dulich.vnecdn.net/2018/12/07/ve-dep-cua-doi-che-o-phu-tho-duoc-giai-anh-quoc-te-gioi-thieu-1544156909.png?w=1200&h=0&q=100&dpr=1&fit=crop&s=8yyOVKR-BPYcs0rNnBKxRg', title: 'Slide 2 Title', description: 'Slide 2 Description' },
+    { Image: 'https://fantasea.vn/wp-content/uploads/2019/01/%C4%91%E1%BA%A1i-di%E1%BB%87n-4.jpg', title: 'Slide 3 Title', description: 'Slide 3 Description' },
   ];
+  swiper?: Swiper;
   ngAfterViewInit(): void {
     if(!this.Config)
     {

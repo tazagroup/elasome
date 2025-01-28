@@ -4,6 +4,7 @@ export const Config:any={
 export const User:any={
     Avatar:"logo/logo.png",
     Hoten:"Phạm Chí Kiệt",
+    email:"it@tazagroup.vn",
     Vitri:"Leader IT"
 }
 export const TREE_DATA: any[] = [

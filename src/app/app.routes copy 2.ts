@@ -1,9 +1,37 @@
-import { Routes,Router } from '@angular/router';
+import { Routes } from '@angular/router';
 import { GuestGuard } from './shared/users/guards/guest.guard';
 import { AuthGuard } from './shared/users/guards/auth.guard';
-import { DynamicComponentResolver } from './dynamic-component.resolver';
 export const routes: Routes = [
     // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    {
+      path: '',
+      loadComponent: () =>import('./site/sitemain/sitemain.component').then((c) => c.SitemainComponent),
+      children: [
+        {
+          path: '',
+          loadComponent: () =>import('./site/home/home.component').then((c) => c.HomeComponent),
+        },
+        {
+          path: 'danh-muc/:slug',
+          data: { breadcrumb: 'Danh Sách Sản Phẩm' },
+          loadComponent: () =>import('./site/danhmuc/danhmuc.component').then((c) => c.DanhmucComponent),
+        },
+        {
+          path: 'san-pham/:slug',
+          loadComponent: () =>import('./site/sanpham/sanpham.component').then((c) => c.SanphamComponent),
+        },
+        {
+          path: 'tin-tuc/:slug',
+          loadComponent: () =>import('./site/danhmucbaiviet/danhmucbaiviet.component').then((c) => c.DanhmucbaivietComponent),
+          data: { Type: 'baiviet'},
+        },
+        {
+          path: 'tin-tuc/:slug',
+          loadComponent: () =>import('./site/baiviet/baiviet.component').then((c) => c.BaivietComponent),
+          data: { Type: 'baivietchitiet'},
+        },
+      ],
+    },
     {
       path: 'admin',
       canActivate: [AuthGuard],
@@ -89,51 +117,5 @@ export const routes: Routes = [
     {
       path: 'register',
       loadComponent: () => import('./shared/users/register/register.component').then((c) => c.RegisterComponent),
-    },
-    {
-      path: '',
-      loadComponent: () =>import('./site/sitemain/sitemain.component').then((c) => c.SitemainComponent),
-      children: [
-        {
-          path: '',
-          loadComponent: () =>import('./site/home/home.component').then((c) => c.HomeComponent),
-        },
-        {
-          path: ':slug',
-          resolve: { componentType: DynamicComponentResolver },
-          loadComponent: async () => {
-            const componentType = history?.state?.componentType; 
-            if(componentType)
-            {
-              switch (componentType) {
-                case 'danhmucbaiviet':
-                  const c = await import('./site/danhmucbaiviet/danhmucbaiviet.component');
-                  return c.DanhmucbaivietComponent;
-                case 'baiviet':
-                  const c_1 = await import('./site/baiviet/baiviet.component');
-                  return c_1.BaivietComponent;
-                case 'danhmuc':
-                  const c_2 = await import('./site/danhmuc/danhmuc.component');
-                  return c_2.DanhmucComponent;
-                case 'sanpham':
-                  const c_3 = await import('./site/sanpham/sanpham.component');
-                  return c_3.SanphamComponent;
-                case 'danhmucgioithieu':
-                  const c_5 = await import('./site/danhmucgioithieu/danhmucgioithieu.component');
-                  return c_5.DanhmucgioithieuComponent;
-                case 'gioithieu':
-                  const c_6 = await import('./site/gioithieu/gioithieu.component');
-                  return c_6.GioithieuComponent;
-                default:
-                  const c_4 = await import('./site/notfound/notfound.component');
-                  return c_4.NotfoundComponent; // Component mặc định
-              }
-            }
-            else {
-             return import('./site/home/home.component').then((c) => c.HomeComponent)
-            }
-          },
-        },
-      ],
     },
   ];

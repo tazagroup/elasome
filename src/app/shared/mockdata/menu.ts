@@ -2,15 +2,17 @@ export const ListMenus= [
     {
       "id": 1,
       "Title": "Trang chủ",
-      "Slug": "trang-chu",
+      "Slug": "/",
       "Level": 1,
       "pid": null
     },
     {
       "id": 2,
-      "Title": "Sản phẩm theo tình trạng da",
+      "Title": "Tình trạng da",
       "Slug": "san-pham-theo-tinh-trang-da",
       "Level": 1,
+      "Type":"sanpham",
+      "View":"v2",
       "pid": null
     },
     {
@@ -18,6 +20,8 @@ export const ListMenus= [
       "Title": "Nâng cơ - Lão hóa (M1)",
       "Slug": "nang-co-lao-hoa-m1",
       "Level": 2,
+      "Type":"sanpham",
+      "View":"v2",
       "pid": 2
     },
     {
@@ -25,6 +29,8 @@ export const ListMenus= [
       "Title": "Nám và trắng da (M3, M4)",
       "Slug": "nam-va-trang-da-m3-m4",
       "Level": 2,
+      "Type":"sanpham",
+      "View":"v2",
       "pid": 2
     },
     {
@@ -32,6 +38,8 @@ export const ListMenus= [
       "Title": "Phục hồi tái tạo (M1,M2,M3,M4,M5)",
       "Slug": "phuc-hoi-tai-tao-m1-m2-m3-m4-m5",
       "Level": 2,
+      "Type":"sanpham",
+      "View":"v1",
       "pid": 2
     },
     {
@@ -39,6 +47,8 @@ export const ListMenus= [
       "Title": "Cấp ẩm căng bóng (M1, M2,M3,M4,M5)",
       "Slug": "cap-am-cang-bong-m1-m2-m3-m4-m5",
       "Level": 2,
+      "Type":"sanpham",
+      "View":"v1",
       "pid": 2
     },
     {
@@ -46,6 +56,8 @@ export const ListMenus= [
       "Title": "Exosome đông khô (M4)",
       "Slug": "exosome-dong-kho-m4",
       "Level": 2,
+      "Type":"sanpham",
+      "View":"v1",
       "pid": 2
     },
     {
@@ -53,12 +65,16 @@ export const ListMenus= [
       "Title": "Giảm mỡ",
       "Slug": "giam-mo",
       "Level": 2,
+      "Type":"sanpham",
+      "View":"v1",
       "pid": 2
     },
     {
       "id": 9,
       "Title": "Tin tức sự kiện",
       "Slug": "tin-tuc-su-kien",
+      "Type":"baiviet",
+      "View":"v4",
       "Level": 1,
       "pid": null
     },
@@ -66,6 +82,8 @@ export const ListMenus= [
       "id": 10,
       "Title": "Báo cáo chuyên đề",
       "Slug": "bao-cao-chuyen-de",
+      "Type":"baiviet",
+      "View":"v4",
       "Level": 2,
       "pid": 9
     },
@@ -73,6 +91,8 @@ export const ListMenus= [
       "id": 11,
       "Title": "Hội thảo",
       "Slug": "hoi-thao",
+      "Type":"baiviet",
+      "View":"v4",
       "Level": 2,
       "pid": 9
     },
@@ -80,6 +100,8 @@ export const ListMenus= [
       "id": 12,
       "Title": "Ký kết hợp tác",
       "Slug": "ky-ket-hop-tac",
+      "Type":"baiviet",
+      "View":"v4",
       "Level": 2,
       "pid": 9
     },
@@ -87,6 +109,8 @@ export const ListMenus= [
       "id": 13,
       "Title": "Chứng nhận giải thưởng",
       "Slug": "chung-nhan-giai-thuong",
+      "Type":"baiviet",
+      "View":"v4",
       "Level": 2,
       "pid": 9
     },
@@ -94,6 +118,8 @@ export const ListMenus= [
       "id": 14,
       "Title": "Về Elasome",
       "Slug": "ve-elasome",
+      "Type":"gioithieu",
+      "View":"v5",
       "Level": 1,
       "pid": null
     },
@@ -101,6 +127,8 @@ export const ListMenus= [
       "id": 15,
       "Title": "Giới thiệu",
       "Slug": "gioi-thieu",
+      "Type":"gioithieu",
+      "View":"v5",
       "Level": 2,
       "pid": 14
     },
@@ -108,6 +136,8 @@ export const ListMenus= [
       "id": 16,
       "Title": "Bảng cấp chứng nhận",
       "Slug": "bang-cap-chung-nhan",
+      "Type":"gioithieu",
+      "View":"v5",
       "Level": 2,
       "pid": 14
     },
@@ -115,6 +145,8 @@ export const ListMenus= [
       "id": 17,
       "Title": "Khoa học dành cho đại lý",
       "Slug": "khoa-hoc-danh-cho-dai-ly",
+      "Type":"gioithieu",
+      "View":"v5",
       "Level": 2,
       "pid": 14
     },
@@ -122,6 +154,8 @@ export const ListMenus= [
       "id": 18,
       "Title": "Đăng ký demo",
       "Slug": "dang-ky-demo",
+      "Type":"gioithieu",
+      "View":"v5",
       "Level": 2,
       "pid": 14
     },
@@ -129,6 +163,8 @@ export const ListMenus= [
       "id": 19,
       "Title": "Danh sách đại lý chính thức",
       "Slug": "danh-sach-dai-ly-chinh-thuc",
+      "Type":"gioithieu",
+      "View":"v5",
       "Level": 2,
       "pid": 14
     },

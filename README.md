@@ -2,7 +2,7 @@ git add .
 git commit -m "update"
 git push
 
-npx ng g c general --skip-tests --standalone
+npx ng g c notfound  --skip-tests --standalone
 npx ng g c footerteamplate2 --skip-tests --standalone
 npx ng g c footerteamplate3 --skip-tests --standalone
 npx ng g s users --skip-tests

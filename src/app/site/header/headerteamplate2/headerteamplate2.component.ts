@@ -3,15 +3,16 @@ import { Component } from '@angular/core';
 import { MatMenuModule } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
 import { ChangeteamplateComponent } from '../../../shared/common/changeteamplate/changeteamplate.component';
-import { ListMenus } from '../menu';
+import { ListMenus } from '../../../shared/mockdata/menu';
+import { MenuComponent } from '../../../shared/common/menu/menu.component';
 
 @Component({
   selector: 'app-headerteamplate2',
   imports: [    
     CommonModule,
     MatMenuModule,
-    RouterLink,
-    ChangeteamplateComponent
+    ChangeteamplateComponent,
+    MenuComponent
   ],
   templateUrl: './headerteamplate2.component.html',
   styleUrl: './headerteamplate2.component.scss'
@@ -27,9 +28,7 @@ export class Headerteamplate2Component {
 
   ngOnInit(): void {
     this.Menus = this.nestData(this.data)
-    console.log(this.nestData(this.data));
-    
-    console.log(this.Menus);
-    
+    // console.log(this.nestData(this.data));
+    console.log(this.Menus);   
   }
 }
