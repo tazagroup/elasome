@@ -1,8 +1,4 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
-import { BaivietsService } from './admin/listbaiviet/listbaiviet.service';
-import { inject } from '@angular/core';
-import { UsersService } from './admin/adminmain/listuser/listuser.services';
-
 export const serverRoutes: ServerRoute[] = [
   {
     path: 'admin/users/:id',

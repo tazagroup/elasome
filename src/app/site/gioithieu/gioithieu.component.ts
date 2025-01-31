@@ -102,8 +102,12 @@ export class GioithieuComponent {
   ngOnInit(): void {
     const slugSP = this.route.snapshot.paramMap.get('slug');
     const result = slugSP?.split("-v6")[0];
-    console.log(result);
     this.Gioithieu = this.ListGioithieu.find(v=>v.Slug==result);
+    if(!this.Gioithieu)
+    {
+      location.href="/404";
+      return;
+    }
     console.log(this.Gioithieu);
     this.Breadcrumbs=[
       {name: 'Trang chủ', link: '/'},

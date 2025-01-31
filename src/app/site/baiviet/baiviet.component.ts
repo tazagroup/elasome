@@ -60,6 +60,11 @@ export class BaivietComponent {
     console.log(result);
     this.Baiviet = this.ListBaiviet.find(v=>v.Slug==result);
     console.log(this.Baiviet);
+    if(!this.Baiviet)
+    {
+      location.href="/404";
+      return;
+    }
     this.Breadcrumbs=[
       {name: 'Trang chủ', link: '/'},
       {name: 'Danh sách sản phẩm', link: '/danh-muc'},

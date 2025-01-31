@@ -18,7 +18,7 @@ export const ListMenus= [
     {
       "id": 3,
       "Title": "Nâng cơ - Lão hóa (M1)",
-      "Slug": "nang-co-lao-hoa-m1",
+      "Slug": "nang-co-lao-hoa",
       "Level": 2,
       "Type":"sanpham",
       "View":"v2",
@@ -27,7 +27,7 @@ export const ListMenus= [
     {
       "id": 4,
       "Title": "Nám và trắng da (M3, M4)",
-      "Slug": "nam-va-trang-da-m3-m4",
+      "Slug": "nam-va-trang-da",
       "Level": 2,
       "Type":"sanpham",
       "View":"v2",
@@ -36,7 +36,7 @@ export const ListMenus= [
     {
       "id": 5,
       "Title": "Phục hồi tái tạo (M1,M2,M3,M4,M5)",
-      "Slug": "phuc-hoi-tai-tao-m1-m2-m3-m4-m5",
+      "Slug": "phuc-hoi-tai-tao",
       "Level": 2,
       "Type":"sanpham",
       "View":"v1",
@@ -45,7 +45,7 @@ export const ListMenus= [
     {
       "id": 6,
       "Title": "Cấp ẩm căng bóng (M1, M2,M3,M4,M5)",
-      "Slug": "cap-am-cang-bong-m1-m2-m3-m4-m5",
+      "Slug": "cap-am-cang-bong",
       "Level": 2,
       "Type":"sanpham",
       "View":"v1",
@@ -54,7 +54,7 @@ export const ListMenus= [
     {
       "id": 7,
       "Title": "Exosome đông khô (M4)",
-      "Slug": "exosome-dong-kho-m4",
+      "Slug": "exosome-dong-kho",
       "Level": 2,
       "Type":"sanpham",
       "View":"v1",

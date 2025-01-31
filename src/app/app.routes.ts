@@ -5,6 +5,10 @@ import { DynamicComponentResolver } from './dynamic-component.resolver';
 export const routes: Routes = [
     // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
+      path: '404',
+      loadComponent: () => import('./site/notfound/notfound.component').then((c) => c.NotfoundComponent),
+    },
+    {
       path: 'admin',
       canActivate: [AuthGuard],
       loadComponent: () => import('./admin/adminmain/adminmain.component').then((c) => c.AdminmainComponent),

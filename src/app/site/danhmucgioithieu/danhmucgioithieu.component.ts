@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Danhmucs } from '../../shared/mockdata/danhmuc';
-import { RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { BreadscrumbComponent } from '../../shared/common/breadscrumb/breadscrumb.component';
 import { Sanphams } from '../../shared/mockdata/sanpham';
 import { CommonModule } from '@angular/common';
@@ -73,12 +73,23 @@ export class DanhmucgioithieuComponent {
     },
   }
   constructor(
+    private route: ActivatedRoute,
   ) {}
   ngOnInit(): void {
     this.Breadcrumbs=[
       {name: 'Trang chủ', link: '/'},
       {name: 'Danh sách sản phẩm', link: '/listsanpham'},
     ]
+    const slugDM = this.route.snapshot.paramMap.get('slug');
+    const result = slugDM?.split("-v5")[0];
+    console.log(result); 
+    const Danhmuc = this.Danhmucs.find(v=>v.Slug==result);
+    console.log(Danhmuc);
+    if(!Danhmuc)
+    {
+      location.href="/404";
+      return
+    }
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

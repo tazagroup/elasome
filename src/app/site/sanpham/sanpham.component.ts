@@ -75,9 +75,13 @@ export class SanphamComponent {
     const slugSP = this.route.snapshot.paramMap.get('slug');
     const result = slugSP?.split("-v1")[0];
     console.log(result);
-    
     this.Sanpham = this.ListSanpham.find(v=>v.Slug==result);
     console.log(this.Sanpham);
+    if(!this.Sanpham)
+    {
+      location.href="/404";
+      return
+    }
     this.Breadcrumbs=[
       {name: 'Trang chủ', link: '/'},
       {name: 'Danh sách sản phẩm', link: '/danh-muc'},

@@ -19,8 +19,6 @@ export class DynamicComponentResolver implements Resolve<string> {
   private determineComponentType(slug: any): any {
     switch (slug) {
       case 'v1':
-        console.log(slug);
-        
         return 'sanpham';
       case 'v2':
         return 'danhmuc';
