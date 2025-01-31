@@ -25,7 +25,7 @@ export class TreemenuComponent{
   @Output() DeleteEmit = new EventEmitter<any>();
   private _transformer = (node: any, level: number) => {
     return {
-      expandable: !!node.children && node.children.length > 0,
+      expandable: !!node?.children && node?.children.length > 0,
       Title: node.Title,
       Slug: node.Slug,
       Item: node,
@@ -42,7 +42,7 @@ export class TreemenuComponent{
     this._transformer,
     node => node.level,
     node => node.expandable,
-    node => node.children,
+    node => node?.children,
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);

@@ -46,7 +46,7 @@ export class AdminmainComponent {
 
   private _transformer = (node: any, level: number) => {
     return {
-      expandable: !!node.children && node.children.length > 0,
+      expandable: !!node?.children && node?.children.length > 0,
       name: node.name,
       level: level,
       node:node,
@@ -62,7 +62,7 @@ export class AdminmainComponent {
     this._transformer,
     node => node.level,
     node => node.expandable,
-    node => node.children,
+    node => node?.children,
   );
 
   dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);

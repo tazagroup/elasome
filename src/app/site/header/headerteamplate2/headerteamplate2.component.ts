@@ -22,7 +22,7 @@ export class Headerteamplate2Component {
   Menus:any[]=[]
   nestData = (data:any) => {
     const m:any = new Map(data.map((o:any) => [o.id, {...o, children: []}]));
-    data.forEach((o:any) => o.pid && m.get(o.pid).children.push(m.get(o.id)));
+    data.forEach((o:any) => o.pid && m.get(o.pid)?.children.push(m.get(o.id)));
     return data.filter((o:any) => !o.pid).map((o:any) => m.get(o.id));
   };
 

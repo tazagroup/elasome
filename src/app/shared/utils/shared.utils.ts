@@ -304,7 +304,7 @@ export function groupByfield(data: any[]):any[] {
       };
     }
     const { idSP, ...transitem } = item;
-    convertedData[nhomId].children.push(transitem);
+    convertedData[nhomId]?.children.push(transitem);
   });
   return Object.values(convertedData);
 };
@@ -319,7 +319,7 @@ export function groupByCustomfield(data: any[],field:any):any[] {
       };
     }
     const { idSP, ...transitem } = item;
-    convertedData[nhomId].children.push(transitem);
+    convertedData[nhomId]?.children.push(transitem);
   });
   return Object.values(convertedData);
 };
@@ -328,8 +328,8 @@ export function flattenData(data:any) {
     const flattenedData:any[] = [];
     data.forEach((item:any) => {
       flattenedData.push(item);
-      if (item.children) {
-        flattenedData.push(...flattenData(item.children));
+      if (item?.children) {
+        flattenedData.push(...flattenData(item?.children));
       }
     });
     return flattenedData;
