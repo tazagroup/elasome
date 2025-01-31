@@ -17,13 +17,12 @@ import moment from 'moment';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 @Component({
-  selector: 'app-gioithieu',
+  selector: 'app-lienhe',
   imports: [
     CommonModule,
     BreadscrumbComponent,
     MatTabsModule,
     MatExpansionModule,
-    SwiperComponent,
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
@@ -32,10 +31,10 @@ import { MatButtonModule } from '@angular/material/button';
     MatButtonModule
   ],
   providers: [provideNativeDateAdapter()],
-  templateUrl: './gioithieu.component.html',
-  styleUrl: './gioithieu.component.scss'
+  templateUrl: './lienhe.component.html',
+  styleUrl: './lienhe.component.scss'
 })
-export class GioithieuComponent {
+export class LienheComponent {
   SearchParams: any = {
     Batdau:moment().startOf('week').toDate(),
     Ketthuc: moment().endOf('week').toDate(),

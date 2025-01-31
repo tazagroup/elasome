@@ -155,7 +155,7 @@ export const ListMenus= [
       "Title": "Đăng ký demo",
       "Slug": "dang-ky-demo",
       "Type":"gioithieu",
-      "View":"v5",
+      "View":"v6",
       "Level": 2,
       "pid": 14
     },

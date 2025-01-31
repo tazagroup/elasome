@@ -99,6 +99,10 @@ export const routes: Routes = [
           loadComponent: () =>import('./site/home/home.component').then((c) => c.HomeComponent),
         },
         {
+          path: 'lien-he',
+          loadComponent: () =>import('./site/lienhe/lienhe.component').then((c) => c.LienheComponent),
+        },
+        {
           path: ':slug',
           resolve: { componentType: DynamicComponentResolver },
           loadComponent: async () => {

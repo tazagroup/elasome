@@ -21,7 +21,7 @@
               }
             }
             @case ('slide') {
-              C        @for (item of slides; track item; let idx = $index) {
+              @for (item of slides; track item; let idx = $index) {
                 <div class="swiper-slide">
                  <img [src]="item.image" class="object-cover" [alt]="item.title">
                  <div class="slide-content">
@@ -44,8 +44,11 @@
             }
             @default {
               @for (item of slides; track item; let idx = $index) {
-                <div class="swiper-slide">
+                <div class="swiper-slide relative">
                  <img [src]="item.Image" class="object-cover" [alt]="item.Title">
+                 <div class="p-2 rounded-lg bg-slate-500 text-white absolute top-5 left-5">
+                  1920x820
+                 </div>
                  <!-- <div class="slide-content">
                       <h3>{{ item.title }}</h3>
                       <p>{{ item.description }}</p>
