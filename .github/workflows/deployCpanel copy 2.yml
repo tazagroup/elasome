@@ -1,11 +1,11 @@
+name: Deploy Frontend V2 with ISR
 on:
     push:
       branches:
         - main # Trigger deployment on push to the main branch
     schedule:
       - cron: '*/10 * * * *' # Run every 10 minutes for ISR
-  name: Deploy Frontend V2 with ISR
-  jobs:
+jobs:
     web-deploy:
       name: Deploy with ISR
       runs-on: ubuntu-latest
