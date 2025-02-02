@@ -22,10 +22,15 @@
             <table class="!border w-full cursor-pointer" mat-table [dataSource]="dataSource" matSort>
                 @for (column of displayedColumns; track column) {
                   <ng-container [matColumnDef]="column">
-                    <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>{{ ColumnName[column] }}
+                    <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span class="max-w-40 line-clamp-4">
+                            {{ ColumnName[column] }}
+                        </span>
                     </th>
-                    <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
-                        {{ column === 'STT' ? idx + 1 : row[column] }}
+                    <td class="" mat-cell *matCellDef="let row;let idx = index">
+                        <span class="max-w-40 line-clamp-4">
+                            {{ column === 'STT' ? idx + 1 : row[column] }}
+                        </span>
                     </td>
                  </ng-container>
                 }

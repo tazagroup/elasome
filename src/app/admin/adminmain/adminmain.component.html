@@ -4,21 +4,21 @@
       <div class="relative flex flex-col space-y-2 p-2">
         <img [src]="Config.Logoimage" class="max-h-10 object-cover" alt="Logo">
       </div>
-      <div class="relative h-full flex flex-col space-y-2 overflow-auto p-2">
-        <mat-tree class="cursor-pointer" [dataSource]="dataSource" [treeControl]="treeControl">
+      <div class="relative h-full overflow-auto p-2">
+        <mat-tree class="cursor-pointer flex flex-col space-y-2" [dataSource]="dataSource" [treeControl]="treeControl">
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding>
             <a [routerLink]="[node.node.Slug]"
-              class="w-full flex flex-row space-x-2 items-center rounded-lg hover:bg-slate-50"
+              class="w-full flex flex-row space-x-2 items-center rounded-lg hover:bg-slate-300"
               routerLinkActive="bg-slate-300">
               <button mat-icon-button disabled></button>
               <span>{{node.node.name}}</span>
             </a>
           </mat-tree-node>
-          <mat-tree-node class="flex flex-row space-x-2 items-center rounded-lg hover:bg-slate-50"
+          <mat-tree-node class="flex flex-row space-x-2 items-center rounded-lg hover:bg-slate-300"
             routerLinkActive="bg-slate-300" *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding
             matTreeNodeToggle [cdkTreeNodeTypeaheadLabel]="node.name">
             <a [routerLink]="[node.node.Slug]"
-              class="w-full flex flex-row space-x-2 items-center rounded-lg hover:bg-slate-50"
+              class="w-full flex flex-row space-x-2 items-center rounded-lg hover:bg-slate-300"
               routerLinkActive="bg-slate-300">
               <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
                 <mat-icon class="mat-icon-rtl-mirror">

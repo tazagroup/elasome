@@ -24,6 +24,10 @@ export const TREE_DATA: any[] = [
       name: 'User',
       Slug:'users'
     },
+    {
+      name: 'Google Sheets',
+      Slug:'goooglesheets'
+    },
     // {
     //   name: 'Vegetables',
     //   children: [

@@ -17,6 +17,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment.development';
 import { ConvertDriveColumnName, ConvertDriveData } from '../../shared/utils/shared.utils';
+import { GoogleSheetService } from '../../shared/googlesheets/googlesheets.service';
 @Component({
   selector: 'app-listdanhmuc',
   templateUrl: './listdanhmuc.component.html',
@@ -52,15 +53,11 @@ export class ListdanhmucComponent implements AfterViewInit {
     'Slug': 'Đường Dẫn', 
     'CreatedAt': 'Ngày Tạo',
   };
-  
+   ListDanhmuc:any[] =[]
+    _GoogleSheetService:GoogleSheetService=inject(GoogleSheetService)
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-  DriveInfo:any={
-    ApiKey:environment.GSApiKey||'',
-    IdSheet:'12Mjlh55kVxdX_12bgITi-zHDsa8EO9Puc6bSOkleIjg',
-    SheetName:'Danhmuc'
-  }
   _DanhmucsService:DanhmucsService = inject(DanhmucsService)
   isDownloadDrive:boolean=false
   constructor(
@@ -69,9 +66,29 @@ export class ListdanhmucComponent implements AfterViewInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.dataSource = new MatTableDataSource(ListDanhmuc); 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    const ListSheets = JSON.parse(localStorage.getItem('ListSheets') || '[]');
+    console.log(ListSheets);
+    if (ListSheets.length > 0) {
+      const CheckSheet = ListSheets.find((v:any) => v.SheetName === 'Danhmuc');
+      if (CheckSheet) {
+        this._GoogleSheetService.getDrive(CheckSheet).then(result => {
+          if(result.values.length>0)
+          {
+            this.displayedColumns = result.values[0].map((item:any)=>item)
+            this.ColumnName = ConvertDriveColumnName(result.values)      
+            this.dataSource = new MatTableDataSource(ConvertDriveData(result.values));
+            this.ListDanhmuc = ConvertDriveData(result.values);
+            console.log(this.ListDanhmuc);
+            this.dataSource.paginator = this.paginator;
+            this.dataSource.sort = this.sort;
+          }
+        });
+      }
+    }
+
+    // this.dataSource = new MatTableDataSource(ListDanhmuc); 
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
     // console.log(ListDanhmuc);
     // console.log( this.dataSource);
     
@@ -88,16 +105,16 @@ export class ListdanhmucComponent implements AfterViewInit {
   }
   async GetDrive()
   {
-    const result = await this._DanhmucsService.getDanhmucDrive(this.DriveInfo);    
-    if(result.values.length>0)
-    {
-      this.displayedColumns = result.values[0].map((item:any)=>item)
-      this.ColumnName = ConvertDriveColumnName(result.values)      
-      this.dataSource = new MatTableDataSource(ConvertDriveData(result.values)); 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.isDownloadDrive=true
-    }
+    // const result = await this._DanhmucsService.getDanhmucDrive(this.DriveInfo);    
+    // if(result.values.length>0)
+    // {
+    //   this.displayedColumns = result.values[0].map((item:any)=>item)
+    //   this.ColumnName = ConvertDriveColumnName(result.values)      
+    //   this.dataSource = new MatTableDataSource(ConvertDriveData(result.values)); 
+    //   this.dataSource.paginator = this.paginator;
+    //   this.dataSource.sort = this.sort;
+    //   this.isDownloadDrive=true
+    // }
     
   }
   ngAfterViewInit() { 

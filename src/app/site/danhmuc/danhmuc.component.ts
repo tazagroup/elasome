@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Danhmucs } from '../../shared/mockdata/danhmuc';
 import { ActivatedRoute, RouterOutlet } from '@angular/router';
 import { BreadscrumbComponent } from '../../shared/common/breadscrumb/breadscrumb.component';
@@ -9,6 +9,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { ConvertDriveData } from '../../shared/utils/shared.utils';
+import { GoogleSheetService } from '../../shared/googlesheets/googlesheets.service';
 
 @Component({
   selector: 'app-danhmuc',
@@ -26,7 +28,8 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class DanhmucComponent {
   Sanpham: any={};
-  Danhmucs: any[]=Danhmucs.filter((v)=>v.Type=="sanpham");
+  Danhmucs: any[]=[];
+  // Danhmucs: any[]=Danhmucs.filter((v)=>v.Type=="sanpham");
   Sanphams: any[]=Sanphams;
   FilterDanhmuc:any=0;
   FilterSanphams: any[]=Sanphams;
@@ -37,14 +40,31 @@ export class DanhmucComponent {
     {id:4,Title:'Giảm Giá',Value:'discount'},
   ];
   Breadcrumbs: any[] = [];
+  _GoogleSheetService:GoogleSheetService = inject(GoogleSheetService)
   constructor(
    private route: ActivatedRoute,
-  ) {}
+  ) {
+    
+  }
   ngOnInit(): void {
     this.Breadcrumbs=[
       {name: 'Trang chủ', link: '/'},
       {name: 'Danh sách sản phẩm', link: '/listsanpham'},
     ]
+    
+    const ListSheets = JSON.parse(localStorage.getItem('ListSheets') || '[]');
+    if (ListSheets.length > 0) {
+      const CheckSheet = ListSheets.find((v:any) => v.SheetName === 'Danhmuc');
+      if (CheckSheet) {
+        this._GoogleSheetService.getDrive(CheckSheet).then(result => {
+          if(result.values.length>0)
+          {
+            this.Danhmucs = ConvertDriveData(result.values).filter((v:any)=>v.Type=="sanpham");;
+          }
+        });
+      }
+    }
+
     const slugDM = this.route.snapshot.paramMap.get('slug');
     const result = slugDM?.split("-v2")[0];
     console.log(result); 

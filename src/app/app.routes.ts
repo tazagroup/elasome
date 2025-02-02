@@ -44,6 +44,10 @@ export const routes: Routes = [
           ],
         },
         {
+          path: 'goooglesheets',
+          loadComponent: () => import('./shared/googlesheets/googlesheets.component').then((c) => c.GooglesheetsComponent),
+        },
+        {
           path: 'sanpham',
           loadComponent: () => import('./admin/listsanpham/listsanpham.component').then((c) => c.ListsanphamComponent),
           children: [

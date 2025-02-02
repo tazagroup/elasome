@@ -4,14 +4,14 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
-import { ListUser } from './listuser';
 import { MatMenuModule } from '@angular/material/menu';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { DetailUserComponent } from './detailuser/detailuser.component';
+import { GoogleSheetService } from '../../../shared/googlesheets/googlesheets.service';
+import { ConvertDriveData } from '../../../shared/utils/shared.utils';
 @Component({
   selector: 'app-listuser',
   templateUrl: './listuser.component.html',
@@ -48,6 +48,8 @@ export class ListuserComponent implements AfterViewInit {
     'CreateAt':'Ngày Tạo',
     'field6':'Hành Động',
   }
+  ListUser:any[] =[]
+  _GoogleSheetService:GoogleSheetService=inject(GoogleSheetService)
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -57,9 +59,22 @@ export class ListuserComponent implements AfterViewInit {
   ) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(ListUser); 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    const ListSheets = JSON.parse(localStorage.getItem('ListSheets') || '[]');
+    console.log(ListSheets);
+    
+    if (ListSheets.length > 0) {
+      const UserSheet = ListSheets.find((v:any) => v.SheetName === 'Users');
+      if (UserSheet) {
+        this._GoogleSheetService.getDrive(UserSheet).then(result => {
+          this.ListUser = ConvertDriveData(result.values);
+          console.log(this.ListUser);
+          this.dataSource = new MatTableDataSource(this.ListUser);
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+        });
+      }
+    }
+
     this.Detail.id?this.drawer.open():this.drawer.close()
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       if (result.matches) {

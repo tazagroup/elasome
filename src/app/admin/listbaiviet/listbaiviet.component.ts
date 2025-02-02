@@ -12,6 +12,8 @@ import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { DetailBaivietComponent } from './detailbaiviet/detailbaiviet.component';
+import { ConvertDriveColumnName, ConvertDriveData } from '../../shared/utils/shared.utils';
+import { GoogleSheetService } from '../../shared/googlesheets/googlesheets.service';
 @Component({
   selector: 'app-listbaiviet',
   templateUrl: './listbaiviet.component.html',
@@ -53,15 +55,36 @@ export class ListbaivietComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+  _GoogleSheetService:GoogleSheetService=inject(GoogleSheetService)
+  ListBaiviet:any[] =[]
   constructor(
     private _breakpointObserver: BreakpointObserver,
     private _router: Router,
   ) {}
 
   ngOnInit(): void {
-    this.dataSource = new MatTableDataSource(ListBaiviet); 
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+        const ListSheets = JSON.parse(localStorage.getItem('ListSheets') || '[]');
+        console.log(ListSheets);
+        if (ListSheets.length > 0) {
+          const CheckSheet = ListSheets.find((v:any) => v.SheetName === 'Baiviet');
+          if (CheckSheet) {
+            this._GoogleSheetService.getDrive(CheckSheet).then(result => {
+              if(result.values.length>0)
+              {
+                this.displayedColumns = result.values[0].map((item:any)=>item)
+                this.ColumnName = ConvertDriveColumnName(result.values)      
+                this.dataSource = new MatTableDataSource(ConvertDriveData(result.values));
+                this.ListBaiviet = ConvertDriveData(result.values);
+                console.log(this.ListBaiviet);
+                this.dataSource.paginator = this.paginator;
+                this.dataSource.sort = this.sort;
+              }
+            });
+          }
+        }
+    // this.dataSource = new MatTableDataSource(ListBaiviet); 
+    // this.dataSource.paginator = this.paginator;
+    // this.dataSource.sort = this.sort;
     this.Detail.id?this.drawer.open():this.drawer.close()
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       if (result.matches) {
