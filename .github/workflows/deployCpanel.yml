@@ -1,0 +1,22 @@
+on: push
+name:  Deploy Backend Elasome V2
+jobs:
+  web-deploy:
+    name:  Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4 
+      - name:  Build Project
+        run: |
+          npm install --force
+          npm run build
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: tazagroup.vn
+          username: tazaspac@tazagroup.vn
+          password: '@Taza#Group*2020'
+          local-dir: ./dist/ # <-- Specify the local "build" folder
+          server-dir: elasome/sandboxapi/  # Destination on server

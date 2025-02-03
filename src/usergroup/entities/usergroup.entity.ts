@@ -1,0 +1,41 @@
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  DeleteDateColumn,
+  JoinTable,
+  ManyToMany,
+} from 'typeorm';
+@Entity('usergroup', {orderBy: { CreateAt: 'DESC' } })
+export class UsergroupEntity {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
+  @Column({ type: 'text'})
+  idDM: string;
+  @Column({ type: 'text'})
+  Title: string;
+  @Column({ type: 'text'})
+  Mota: string;
+  @Column({ default: '' })
+  Slug: string;
+  @Column({type:"simple-json",default: () => "('{}')" })
+  Image: string;
+  @Column({type:"simple-json",default: () => "('[]')" })
+  ListMenu: string;
+  @Column({ default: '' })
+  Type: string;
+  @Column({ default: 1 })
+  Ordering: number;
+  @Column({ default: 0 })
+  Status: number;
+  @CreateDateColumn()
+  CreateAt: Date;
+  @UpdateDateColumn()
+  UpdateAt: Date;
+  @DeleteDateColumn()
+  DeleteAt: Date;
+  @Column({ nullable: true })
+  idCreate: string;
+}
