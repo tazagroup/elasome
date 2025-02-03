@@ -1,30 +1,61 @@
 import { Component } from '@angular/core';
-import { FingerprintAIO } from '@ionic-native/fingerprint-aio/ngx';
 @Component({
   selector: 'app-vantay',
   imports: [],
-  providers: [FingerprintAIO],
   templateUrl: './vantay.component.html',
   styleUrl: './vantay.component.scss'
 })
 export class VantayComponent {
-  constructor(private faio: FingerprintAIO) {}
   
-  authenticate() {
-    this.faio.show({
-      title: 'Xác thực bằng vân tay',
-      subtitle: 'Đăng nhập an toàn',
-      description: 'Đặt ngón tay lên cảm biến',
-      fallbackButtonTitle: 'Dùng mật khẩu'
-    })
-    .then((result: any) => {
-      console.log('Xác thực thành công', result);
-      alert('Xác thực thành công!');
-    })
-    .catch((error: any) => {
-      console.error('Xác thực thất bại', error);
-      alert('Xác thực thất bại!');
-    });
+  async registerFingerprint() {
+    try {
+      const challenge = new Uint8Array(32); // Challenge giả lập (thực tế lấy từ backend)
+      window.crypto.getRandomValues(challenge);
+
+      const publicKey: PublicKeyCredentialCreationOptions = {
+        challenge,
+        rp: { name: "Angular WebAuthn App" },
+        user: {
+          id: new Uint8Array(16),
+          name: "user@example.com",
+          displayName: "User Example"
+        },
+        pubKeyCredParams: [{ type: "public-key", alg: -7 }],
+        authenticatorSelection: {
+          authenticatorAttachment: "platform",
+          userVerification: "required"
+        },
+        timeout: 60000
+      };
+
+      const credential = await navigator.credentials.create({ publicKey }) as PublicKeyCredential;
+      console.log("Đăng ký thành công!", credential);
+      alert("Đăng ký vân tay thành công!");
+    } catch (error) {
+      console.error("Đăng ký thất bại!", error);
+      alert("Đăng ký thất bại!");
+    }
+  }
+
+  async authenticateFingerprint() {
+    try {
+      const challenge = new Uint8Array(32);
+      window.crypto.getRandomValues(challenge);
+
+      const publicKey: PublicKeyCredentialRequestOptions = {
+        challenge,
+        allowCredentials: [],
+        userVerification: "required",
+        timeout: 60000
+      };
+
+      const credential = await navigator.credentials.get({ publicKey }) as PublicKeyCredential;
+      console.log("Xác thực thành công!", credential);
+      alert("Xác thực vân tay thành công!");
+    } catch (error) {
+      console.error("Xác thực thất bại!", error);
+      alert("Xác thực thất bại!");
+    }
   }
   
 }
