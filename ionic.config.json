@@ -1,0 +1,7 @@
+{
+  "name": "mobielasome",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}
