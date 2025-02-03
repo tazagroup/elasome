@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Capacitor } from '@capacitor/core';
 @Component({
   selector: 'app-vantay',
   imports: [],
@@ -6,7 +7,19 @@ import { Component } from '@angular/core';
   styleUrl: './vantay.component.scss'
 })
 export class VantayComponent {
-  
+  Log:any="loading..."
+  ngOnInit(): void {
+    const isNativePlatform = Capacitor.isNativePlatform(); // true nếu chạy trên Android/iOS, false nếu chạy trên web
+    console.log(isNativePlatform);
+    
+    if (isNativePlatform) {
+      this.Log="Native Platform"
+      console.log("Plugin FingerprintAIO đã sẵn sàng!");
+    } else {
+      this.Log="Web Platform"
+      console.error("Plugin FingerprintAIO không khả dụng!");
+    }
+  }
   async registerFingerprint() {
     try {
       const challenge = new Uint8Array(32); // Challenge giả lập (thực tế lấy từ backend)
