@@ -30,7 +30,7 @@ export class VantayComponent {
 
       const credential = await navigator.credentials.create({ publicKey }) as PublicKeyCredential;
       console.log("Đăng ký thành công!", credential);
-      alert("Đăng ký vân tay thành công!");
+      alert(`Đăng ký vân tay thành công! ${credential}`);
     } catch (error) {
       console.error("Đăng ký thất bại!", error);
       alert("Đăng ký thất bại!");
