@@ -4,6 +4,8 @@ import { CreateUploadDto } from './dto/create-upload.dto';
 import { UpdateUploadDto } from './dto/update-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GoogledriveService } from 'src/shared/googledrive/googledrive.service';
+import { diskStorage } from 'multer';
+import * as path from 'path';
 
 @Controller('upload')
 export class UploadController {
@@ -13,11 +15,25 @@ export class UploadController {
   ) {}
 
   // Endpoint to create a new upload entry
+  // @Post()
+  // create(@Body() createUploadDto: CreateUploadDto) {
+  //   return this.uploadService.create(createUploadDto);
+  // }
   @Post()
-  create(@Body() createUploadDto: CreateUploadDto) {
-    return this.uploadService.create(createUploadDto);
+  @UseInterceptors(FileInterceptor('file', {
+    storage: diskStorage({
+      destination: '../site/images', // Lưu vào site/images
+      filename: (req, file, cb) => {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+        const ext = path.extname(file.originalname);
+        cb(null, `${uniqueSuffix}${ext}`); // Đặt tên file ngẫu nhiên
+      },
+    }),
+  }))
+  uploadFileLocal(@UploadedFile() file: Express.Multer.File) {
+    return { url: `/images/${file.filename}` }; // Trả về đường dẫn ảnh
   }
-
+  
   // Endpoint to upload a file to Google Drive
   @Post('googledrive')
   @UseInterceptors(FileInterceptor('file'))
