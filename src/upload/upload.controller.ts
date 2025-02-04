@@ -1,12 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UploadedFile, UseInterceptors, HttpException, HttpStatus, Res, BadRequestException } from '@nestjs/common';
 import { UploadService } from './upload.service';
-import { CreateUploadDto } from './dto/create-upload.dto';
-import { UpdateUploadDto } from './dto/update-upload.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { GoogledriveService } from 'src/shared/googledrive/googledrive.service';
 import { diskStorage } from 'multer';
 import * as path from 'path';
-
+import * as fs from 'fs';
 @Controller('upload')
 export class UploadController {
   constructor(
@@ -19,19 +17,33 @@ export class UploadController {
   // create(@Body() createUploadDto: CreateUploadDto) {
   //   return this.uploadService.create(createUploadDto);
   // }
-  @Post()
+  @Post(':folder*') // Support dynamic folder paths
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
-      destination: '../sandbox/images', // Lưu vào site/images
+      destination: (req, file, cb) => {
+        const folderPath = path.join(__dirname, '../../site/images', req.params.folder || '');
+        
+        // Ensure the directory exists
+        if (!fs.existsSync(folderPath)) {
+          fs.mkdirSync(folderPath, { recursive: true });
+        }
+        
+        cb(null, folderPath);
+      },
       filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
         const ext = path.extname(file.originalname);
-        cb(null, `${uniqueSuffix}${ext}`); // Đặt tên file ngẫu nhiên
+        cb(null, `${uniqueSuffix}${ext}`); // Generate a unique filename
       },
     }),
   }))
-  uploadFileLocal(@UploadedFile() file: Express.Multer.File) {
-    return { url: `/images/${file.filename}`,file:file }; // Trả về đường dẫn ảnh
+  uploadFileLocal(@UploadedFile() file: Express.Multer.File, @Param('folder') folder: string) {
+    if (!file) {
+      throw new BadRequestException('No file uploaded');
+    }
+
+    const filePath = folder ? `/${folder}/${file.filename}` : `/${file.filename}`;
+    return { url: `/images${filePath}` }; // Return relative image path
   }
   
   // Endpoint to upload a file to Google Drive
@@ -69,5 +81,22 @@ export class UploadController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.uploadService.remove(id);
+  }
+  @Delete(':folder*/:filename')
+  async deleteFile(@Param('folder') folder: string, @Param('filename') filename: string, @Res() res: Response) {
+    const filePath = path.join(__dirname, '../../site/images', folder, filename);
+
+    // Check if file exists
+    if (!fs.existsSync(filePath)) {
+      throw new HttpException('File not found', HttpStatus.NOT_FOUND);
+    }
+
+    // Delete the file
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        throw new HttpException('Error deleting file', HttpStatus.INTERNAL_SERVER_ERROR);
+      }
+      return res.json();
+    });
   }
 }

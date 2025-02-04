@@ -4274,7 +4274,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c, _d, _e, _f;
+var _a, _b, _c, _d, _e, _f, _g;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UploadController = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
@@ -4283,13 +4283,18 @@ const platform_express_1 = __webpack_require__(/*! @nestjs/platform-express */ "
 const googledrive_service_1 = __webpack_require__(/*! src/shared/googledrive/googledrive.service */ "./src/shared/googledrive/googledrive.service.ts");
 const multer_1 = __webpack_require__(/*! multer */ "multer");
 const path = __webpack_require__(/*! path */ "path");
+const fs = __webpack_require__(/*! fs */ "fs");
 let UploadController = class UploadController {
     constructor(uploadService, googledriveService) {
         this.uploadService = uploadService;
         this.googledriveService = googledriveService;
     }
-    uploadFileLocal(file) {
-        return { url: `/images/${file.filename}`, file: file };
+    uploadFileLocal(file, folder) {
+        if (!file) {
+            throw new common_1.BadRequestException('No file uploaded');
+        }
+        const filePath = folder ? `/${folder}/${file.filename}` : `/${file.filename}`;
+        return { url: `/images${filePath}` };
     }
     async uploadFile(file, folderId) {
         const result = await this.googledriveService.uploadFileFromBuffer(file, folderId);
@@ -4312,13 +4317,31 @@ let UploadController = class UploadController {
     remove(id) {
         return this.uploadService.remove(id);
     }
+    async deleteFile(folder, filename, res) {
+        const filePath = path.join(__dirname, '../../site/images', folder, filename);
+        if (!fs.existsSync(filePath)) {
+            throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
+        }
+        fs.unlink(filePath, (err) => {
+            if (err) {
+                throw new common_1.HttpException('Error deleting file', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+            return res.json();
+        });
+    }
 };
 exports.UploadController = UploadController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)(':folder*'),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
-            destination: '../sandbox/images',
+            destination: (req, file, cb) => {
+                const folderPath = path.join(__dirname, '../../site/images', req.params.folder || '');
+                if (!fs.existsSync(folderPath)) {
+                    fs.mkdirSync(folderPath, { recursive: true });
+                }
+                cb(null, folderPath);
+            },
             filename: (req, file, cb) => {
                 const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
                 const ext = path.extname(file.originalname);
@@ -4327,8 +4350,9 @@ __decorate([
         }),
     })),
     __param(0, (0, common_1.UploadedFile)()),
+    __param(1, (0, common_1.Param)('folder')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [typeof (_d = typeof Express !== "undefined" && (_c = Express.Multer) !== void 0 && _c.File) === "function" ? _d : Object]),
+    __metadata("design:paramtypes", [typeof (_d = typeof Express !== "undefined" && (_c = Express.Multer) !== void 0 && _c.File) === "function" ? _d : Object, String]),
     __metadata("design:returntype", void 0)
 ], UploadController.prototype, "uploadFileLocal", null);
 __decorate([
@@ -4361,6 +4385,15 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], UploadController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Delete)(':folder*/:filename'),
+    __param(0, (0, common_1.Param)('folder')),
+    __param(1, (0, common_1.Param)('filename')),
+    __param(2, (0, common_1.Res)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, String, typeof (_g = typeof Response !== "undefined" && Response) === "function" ? _g : Object]),
+    __metadata("design:returntype", Promise)
+], UploadController.prototype, "deleteFile", null);
 exports.UploadController = UploadController = __decorate([
     (0, common_1.Controller)('upload'),
     __metadata("design:paramtypes", [typeof (_a = typeof upload_service_1.UploadService !== "undefined" && upload_service_1.UploadService) === "function" ? _a : Object, typeof (_b = typeof googledrive_service_1.GoogledriveService !== "undefined" && googledrive_service_1.GoogledriveService) === "function" ? _b : Object])
@@ -5910,6 +5943,16 @@ module.exports = require("socket.io");
 /***/ ((module) => {
 
 module.exports = require("typeorm");
+
+/***/ }),
+
+/***/ "fs":
+/*!*********************!*\
+  !*** external "fs" ***!
+  \*********************/
+/***/ ((module) => {
+
+module.exports = require("fs");
 
 /***/ }),
 
