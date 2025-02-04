@@ -38,11 +38,13 @@ export class UploadService {
     }
   }
   async findSHD(data: any) {
-    return await this.UploadRepository.findOne({
-      where: {
-        fileid: data.fileId,
-      },
-    });
+    const result = await this.UploadRepository
+    .createQueryBuilder('upload')
+    .where("JSON_UNQUOTE(JSON_EXTRACT(upload.Metadata, '$.size')) = :size", { size: data.Metadata.size })
+    .andWhere("JSON_UNQUOTE(JSON_EXTRACT(upload.Metadata, '$.mimetype')) = :mimetype", { mimetype: data.Metadata.mimetype })
+    .andWhere("JSON_UNQUOTE(JSON_EXTRACT(upload.Metadata, '$.originalname')) = :originalname", { originalname: data.Metadata.originalname })
+    .getOne();  // hoặc getMany() nếu bạn mong muốn nhiều kết quả
+    return result
   }
   async findslug(Title: any) {
     return await this.UploadRepository.findOne({

@@ -4204,11 +4204,31 @@ __decorate([
 __decorate([
     (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
     __metadata("design:type", String)
+], UploadEntity.prototype, "filepath", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    __metadata("design:type", String)
+], UploadEntity.prototype, "Lienket", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    __metadata("design:type", String)
+], UploadEntity.prototype, "Alt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'text', collation: 'utf8_general_ci' }),
+    __metadata("design:type", String)
 ], UploadEntity.prototype, "Mota", void 0);
 __decorate([
     (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
     __metadata("design:type", String)
 ], UploadEntity.prototype, "Metadata", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], UploadEntity.prototype, "SEO", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], UploadEntity.prototype, "Schema", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: '' }),
     __metadata("design:type", String)
@@ -4289,12 +4309,25 @@ let UploadController = class UploadController {
         this.uploadService = uploadService;
         this.googledriveService = googledriveService;
     }
-    uploadFileLocal(file, folder) {
+    async uploadFileLocal(file, folder) {
         if (!file) {
             throw new common_1.BadRequestException('No file uploaded');
         }
         const filePath = folder ? `/${folder}/${file.filename}` : `/${file.filename}`;
-        return { url: `/images${filePath}` };
+        const Image = {
+            Title: file.originalname,
+            Metadata: {
+                size: file.size,
+                mimetype: file.mimetype,
+                originalname: file.originalname,
+                filename: file.filename,
+            },
+            filepath: filePath,
+            Lienket: `/images${filePath}`,
+            Type: 'local',
+        };
+        const reponse = await this.uploadService.create(Image);
+        return reponse;
     }
     async uploadFile(file, folderId) {
         const result = await this.googledriveService.uploadFileFromBuffer(file, folderId);
@@ -4318,7 +4351,7 @@ let UploadController = class UploadController {
         return this.uploadService.remove(id);
     }
     async deleteFile(folder, filename, res) {
-        const filePath = path.join(__dirname, '../../site/images', folder, filename);
+        const filePath = path.join(__dirname, '../../sandbox/images', folder, filename);
         if (!fs.existsSync(filePath)) {
             throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
         }
@@ -4336,7 +4369,7 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
             destination: (req, file, cb) => {
-                const folderPath = path.join(__dirname, '../../site/images', req.params.folder || '');
+                const folderPath = path.join(__dirname, '../../sandbox/images', req.params.folder || '');
                 if (!fs.existsSync(folderPath)) {
                     fs.mkdirSync(folderPath, { recursive: true });
                 }
@@ -4353,7 +4386,7 @@ __decorate([
     __param(1, (0, common_1.Param)('folder')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [typeof (_d = typeof Express !== "undefined" && (_c = Express.Multer) !== void 0 && _c.File) === "function" ? _d : Object, String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], UploadController.prototype, "uploadFileLocal", null);
 __decorate([
     (0, common_1.Post)('googledrive'),
@@ -4491,11 +4524,13 @@ let UploadService = class UploadService {
         }
     }
     async findSHD(data) {
-        return await this.UploadRepository.findOne({
-            where: {
-                fileid: data.fileId,
-            },
-        });
+        const result = await this.UploadRepository
+            .createQueryBuilder('upload')
+            .where("JSON_UNQUOTE(JSON_EXTRACT(upload.Metadata, '$.size')) = :size", { size: data.Metadata.size })
+            .andWhere("JSON_UNQUOTE(JSON_EXTRACT(upload.Metadata, '$.mimetype')) = :mimetype", { mimetype: data.Metadata.mimetype })
+            .andWhere("JSON_UNQUOTE(JSON_EXTRACT(upload.Metadata, '$.originalname')) = :originalname", { originalname: data.Metadata.originalname })
+            .getOne();
+        return result;
     }
     async findslug(Title) {
         return await this.UploadRepository.findOne({

@@ -19,9 +19,19 @@ export class UploadEntity {
   @Column({ type: 'text', collation: 'utf8_general_ci' })
   Title: string;
   @Column({ type: 'text', collation: 'utf8_general_ci' })
+  filepath: string;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  Lienket: string;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
+  Alt: string;
+  @Column({ type: 'text', collation: 'utf8_general_ci' })
   Mota: string;
   @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
   Metadata: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
+  SEO: string;
+  @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
+  Schema: string;
   @Column({ default: '' })
   Type: string;
   @Column({ default: 1 })

@@ -21,7 +21,7 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: (req, file, cb) => {
-        const folderPath = path.join(__dirname, '../../site/images', req.params.folder || '');
+        const folderPath = path.join(__dirname, '../../sandbox/images', req.params.folder || '');
         
         // Ensure the directory exists
         if (!fs.existsSync(folderPath)) {
@@ -37,13 +37,27 @@ export class UploadController {
       },
     }),
   }))
-  uploadFileLocal(@UploadedFile() file: Express.Multer.File, @Param('folder') folder: string) {
+  async uploadFileLocal(@UploadedFile() file: Express.Multer.File, @Param('folder') folder: string) {
     if (!file) {
       throw new BadRequestException('No file uploaded');
     }
 
     const filePath = folder ? `/${folder}/${file.filename}` : `/${file.filename}`;
-    return { url: `/images${filePath}` }; // Return relative image path
+    const Image: any = {
+      Title: file.originalname,
+      Metadata: {
+        size: file.size,
+        mimetype: file.mimetype,
+        originalname: file.originalname,
+        filename: file.filename,
+      },
+      filepath:filePath,
+      Lienket:`/images${filePath}`,
+      Type: 'local', 
+    }
+    const reponse = await this.uploadService.create(Image);
+    return reponse;
+  //  return {Image:Image, file:file,url: `/images${filePath}` }; // Return relative image path
   }
   
   // Endpoint to upload a file to Google Drive
@@ -84,7 +98,7 @@ export class UploadController {
   }
   @Delete(':folder*/:filename')
   async deleteFile(@Param('folder') folder: string, @Param('filename') filename: string, @Res() res: Response) {
-    const filePath = path.join(__dirname, '../../site/images', folder, filename);
+    const filePath = path.join(__dirname, '../../sandbox/images', folder, filename);
 
     // Check if file exists
     if (!fs.existsSync(filePath)) {
