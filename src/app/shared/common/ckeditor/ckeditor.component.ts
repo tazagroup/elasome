@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { Component, EventEmitter, Input, Output, ViewEncapsulation } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { Bold, Essentials, Italic, Mention, Paragraph, Undo, InlineEditor, Image, Table, ImageUpload, LinkImage, MediaEmbed,Clipboard, Underline, SourceEditing, Markdown, ClassicEditor, ImageResize, CodeBlock } from 'ckeditor5';
+import { Bold, Essentials, Italic, Mention, Paragraph, Undo, InlineEditor, Image, Table, ImageUpload, LinkImage, MediaEmbed,Clipboard, Underline, SourceEditing, Markdown, ClassicEditor, ImageResize, CodeBlock, List, FullPage, Heading, BlockQuote, ImageTextAlternative, CKBoxImageEdit, PictureEditing, ImageCaption, Alignment } from 'ckeditor5';
 import { MyUploadAdapter } from "./uploadadapter";
 import { UploadService } from "../../uploadfile/uploadfile.service";
 @Component({
@@ -26,6 +26,7 @@ export class CkeditorComponent {
         // extraAllowedContent: 'iframe[*];',
         toolbar: [
           'heading',
+          'alignment',
           '|',
           'bold',
           'italic',
@@ -35,12 +36,14 @@ export class CkeditorComponent {
           'blockQuote',
           'undo',
           'redo',
-           'insertImage',
-           'Image',
-           'mediaEmbed',
+          'insertImage',
+          'mediaEmbed',
+          'toggleImageCaption',
+          'imageTextAlternative',
           //  'sourceEditing',
             ],
         plugins: [
+          Alignment,List,Heading,BlockQuote,ImageTextAlternative,ImageCaption,
            Bold, Essentials, Italic,Underline, Mention, Paragraph, Undo, Image, 
            Table,MediaEmbed,LinkImage,ImageUpload,Clipboard,
            SourceEditing,ImageResize,CodeBlock

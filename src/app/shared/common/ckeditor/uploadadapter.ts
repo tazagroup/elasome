@@ -33,10 +33,11 @@ export class MyUploadAdapter {
         console.log(response);
         if (response && response.Lienket) {
           resolve({
-            default: GetImage(response.Lienket)
+            default: GetImage(response.Lienket),
+            alt: 'Mô tả hình ảnh',
           });
         } else {
-          reject('No URL returned from server.');
+          reject(response.data);
         }
       },
       (error) => {

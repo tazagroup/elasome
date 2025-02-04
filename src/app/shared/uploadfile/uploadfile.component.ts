@@ -4,10 +4,10 @@ import {
   NgxFileDropEntry,
   NgxFileDropModule,
 } from 'ngx-file-drop';
-import { UploadService } from '../../upload.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
+import { UploadService } from './uploadfile.service';
 @Component({
   selector: 'app-uploadfile',
   standalone: true,
