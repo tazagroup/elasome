@@ -34,6 +34,39 @@ export class UploadService {
     //   })
     // );
   }
+  async uploadlocal(file: any,type:any="local",folder:any="unknown") {
+      try {
+        const formData = new FormData();
+        formData.append('file', file);
+        const currentDate = new Date();
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const year = currentDate.getFullYear();
+        const formattedDate = `${day}_${month}_${year}`;
+        const requestOptions = {
+          method: "POST",
+          body: formData,
+        };    
+        const response = await fetch(environment.APIURL + `/upload/${folder}`,requestOptions) 
+           if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+          const data = await response.json(); 
+          console.log(data);            
+          return data;
+        } catch (error) {
+            return console.error(error);
+        }
+  
+
+    }
+
+
+
+
+
+
+
   async uploadDriver(file: any,type:any="googledrive") {
     try {
       const formData = new FormData();

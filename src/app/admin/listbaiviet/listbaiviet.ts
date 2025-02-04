@@ -85,7 +85,7 @@ export const ListBaiviet:any[]=
         "id": 6,
         "Title": "Nội Dung",
         "value": "content",
-        "Type": "textarea",
+        "Type": "editor",
         "required": true,
         "isShow": false
     },

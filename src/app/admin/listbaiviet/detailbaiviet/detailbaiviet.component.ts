@@ -7,6 +7,7 @@ import { ListbaivietComponent } from '../listbaiviet.component';
 import { MatButtonModule } from '@angular/material/button';
 import { ActivatedRoute } from '@angular/router';
 import { Forms, ListBaiviet } from '../listbaiviet';
+import { CkeditorComponent } from '../../../shared/common/ckeditor/ckeditor.component';
 
 @Component({
   selector: 'app-detailbaiviet',
@@ -16,6 +17,7 @@ import { Forms, ListBaiviet } from '../listbaiviet';
     FormsModule,
     MatIconModule,
     MatButtonModule,
+    CkeditorComponent
   ],
   templateUrl: './detailbaiviet.component.html',
   styleUrl: './detailbaiviet.component.scss'

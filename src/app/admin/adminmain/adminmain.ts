@@ -28,6 +28,10 @@ export const TREE_DATA: any[] = [
       name: 'Google Sheets',
       Slug:'goooglesheets'
     },
+    {
+      name: 'Quản Lý File',
+      Slug:'quanlyfile'
+    },
     // {
     //   name: 'Vegetables',
     //   children: [

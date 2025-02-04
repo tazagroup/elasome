@@ -7,7 +7,7 @@ npx ng add @angular/pwa --force
 
 npm install @angular/service-worker
 
-npx ng g c vantay  --skip-tests --standalone
+npx ng g c mediumeditor  --skip-tests --standalone
 npx ng g c footerteamplate2 --skip-tests --standalone
 npx ng g c footerteamplate3 --skip-tests --standalone
 npx ng g s users --skip-tests
@@ -28,9 +28,7 @@ npm cache clean --force
 
 npm run build
 npm link
-
 npm link kata-schematic
-
 npx ng generate kata-schematic:kata-dashboard-schematic --name=danhmuc --path=src/app/admin
 npx ng generate kata-schematic:kata-dashboard-schematic --name=test1 --path=src/app/pages
 npx ng generate kata-schematic:kata-fullcom-schematic --name=danhmuc --path=src/app/admin
@@ -68,5 +66,5 @@ Nền: #5D0711 - Chữ: #FFFFFF
 
 
 
-npm link
-generate-component
+npm link component-generator
+npx createcomponent

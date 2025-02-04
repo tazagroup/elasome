@@ -1,5 +1,5 @@
 <div class="flex flex-row justify-between items-center space-x-2 p-2">
-  <button mat-icon-button (click)="_ListbaivietComponent.drawer.close()">
+  <button mat-icon-button color="primary" (click)="_ListquanlyfileComponent.drawer.close()">
       <mat-icon>arrow_back</mat-icon>
   </button>
   <div class="font-bold">{{Detail?.Hoten||'Không có dữ liệu'}}</div>
@@ -34,21 +34,10 @@
   }
   @else {
     @for (item of Detail?.Forms; track item.id; let idx = $index) {
-      @switch (item.Type) {
-          @case ('editor') {
-            <div class="flex flex-col w-full space-y-2 overflow-auto p-2">
-              <span class="font-bold">{{item.Title}}</span>
-              <app-ckeditor class="border border-dashed border-blue-500 rounded-lg" [Detail]="Detail?.Data[item.value]"></app-ckeditor>
-            </div>
-          }
-          @default {
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label>{{item.Title}}</mat-label>
-              <input matInput [(ngModel)]="Detail?.Data[item.value]" [disabled]="!isEdit" [ngModelOptions]="{standalone: true}" [placeholder]="item.Title">
-            </mat-form-field>
-          }
-        }
-
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>{{item.Title}}</mat-label>
+        <input matInput [(ngModel)]="Detail?.Data[item.value]" [disabled]="!isEdit" [ngModelOptions]="{standalone: true}" [placeholder]="item.Title">
+      </mat-form-field>
     }
     @empty {
       <span class="p-2 text-center">There are no items.</span>
