@@ -21,7 +21,7 @@ export class UploadController {
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: (req, file, cb) => {
-        const folderPath = path.join(__dirname, '../../sandbox/images', req.params.folder || '');
+        const folderPath = path.join(__dirname, '../sandbox/images', req.params.folder || '');
         
         // Ensure the directory exists
         if (!fs.existsSync(folderPath)) {
@@ -97,8 +97,8 @@ export class UploadController {
     return this.uploadService.remove(id);
   }
   @Delete(':folder*/:filename')
-  async deleteFile(@Param('folder') folder: string, @Param('filename') filename: string, @Res() res: Response) {
-    const filePath = path.join(__dirname, '../../sandbox/images', folder, filename);
+  async deleteFile(@Param('folder') folder: string, @Param('filename') filename: string) {
+    const filePath = path.join(__dirname, '../sandbox/images', folder, filename);
 
     // Check if file exists
     if (!fs.existsSync(filePath)) {
@@ -110,7 +110,7 @@ export class UploadController {
       if (err) {
         throw new HttpException('Error deleting file', HttpStatus.INTERNAL_SERVER_ERROR);
       }
-      return res.json();
+      return { message: 'File deleted successfully' };
     });
   }
 }

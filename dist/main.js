@@ -3555,7 +3555,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a, _b, _c, _d, _e, _f, _g;
+var _a, _b, _c, _d, _e, _f;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.UploadController = void 0;
 const common_1 = __webpack_require__(3);
@@ -3611,8 +3611,8 @@ let UploadController = class UploadController {
     remove(id) {
         return this.uploadService.remove(id);
     }
-    async deleteFile(folder, filename, res) {
-        const filePath = path.join(__dirname, '../../sandbox/images', folder, filename);
+    async deleteFile(folder, filename) {
+        const filePath = path.join(__dirname, '../sandbox/images', folder, filename);
         if (!fs.existsSync(filePath)) {
             throw new common_1.HttpException('File not found', common_1.HttpStatus.NOT_FOUND);
         }
@@ -3620,7 +3620,7 @@ let UploadController = class UploadController {
             if (err) {
                 throw new common_1.HttpException('Error deleting file', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
             }
-            return res.json();
+            return { message: 'File deleted successfully' };
         });
     }
 };
@@ -3630,7 +3630,7 @@ __decorate([
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
             destination: (req, file, cb) => {
-                const folderPath = path.join(__dirname, '../../sandbox/images', req.params.folder || '');
+                const folderPath = path.join(__dirname, '../sandbox/images', req.params.folder || '');
                 if (!fs.existsSync(folderPath)) {
                     fs.mkdirSync(folderPath, { recursive: true });
                 }
@@ -3683,9 +3683,8 @@ __decorate([
     (0, common_1.Delete)(':folder*/:filename'),
     __param(0, (0, common_1.Param)('folder')),
     __param(1, (0, common_1.Param)('filename')),
-    __param(2, (0, common_1.Res)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, typeof (_g = typeof Response !== "undefined" && Response) === "function" ? _g : Object]),
+    __metadata("design:paramtypes", [String, String]),
     __metadata("design:returntype", Promise)
 ], UploadController.prototype, "deleteFile", null);
 exports.UploadController = UploadController = __decorate([
