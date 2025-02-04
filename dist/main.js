@@ -4376,7 +4376,7 @@ __decorate([
                 cb(null, folderPath);
             },
             filename: (req, file, cb) => {
-                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+                const uniqueSuffix = path.parse(file.originalname).name + '-' + Date.now();
                 const ext = path.extname(file.originalname);
                 cb(null, `${uniqueSuffix}${ext}`);
             },
