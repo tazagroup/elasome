@@ -9,13 +9,12 @@ export const environment = {
   secret_key: 'HLBWj23hToA9fuiQvQY4',
   zalo_redirect_uri: 'https://zalo.tazaskinclinic.com/admin/zalotoken',
     firebaseConfig : {
-        apiKey: "AIzaSyAHNsGx3KB-6WXe6MzN9qGwpZoKgFHJvmQ",
-        //authDomain: "hrm.tazagroup.vn",
-        authDomain: "speedy-atom-351508.firebaseapp.com",
-        projectId: "speedy-atom-351508",
-        storageBucket: "speedy-atom-351508.appspot.com",
-        messagingSenderId: "896025447185",
-        appId: "1:896025447185:web:90cc6db9e3ead1f83c5ab0"
-      },
+      apiKey: "AIzaSyCRVfxKiWK4xyZW_aT72DJ1Suvs9oGq1oM",
+      authDomain: "elasome-38d2d.firebaseapp.com",
+      projectId: "elasome-38d2d",
+      storageBucket: "elasome-38d2d.firebasestorage.app",
+      messagingSenderId: "362949286600",
+      appId: "1:362949286600:web:b1f5b55bfed46793fe23fd"
+  },
   GSApiKey: 'AIzaSyD33kgZJKdFpv1JrKHacjCQccL_O0a2Eao',  
 };
