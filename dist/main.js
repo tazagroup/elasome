@@ -4289,7 +4289,7 @@ let UploadController = class UploadController {
         this.googledriveService = googledriveService;
     }
     uploadFileLocal(file) {
-        return { url: `/images/${file.filename}` };
+        return { url: `/images/${file.filename}`, file: file };
     }
     async uploadFile(file, folderId) {
         const result = await this.googledriveService.uploadFileFromBuffer(file, folderId);

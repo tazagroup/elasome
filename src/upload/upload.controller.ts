@@ -31,7 +31,7 @@ export class UploadController {
     }),
   }))
   uploadFileLocal(@UploadedFile() file: Express.Multer.File) {
-    return { url: `/images/${file.filename}` }; // Trả về đường dẫn ảnh
+    return { url: `/images/${file.filename}`,file:file }; // Trả về đường dẫn ảnh
   }
   
   // Endpoint to upload a file to Google Drive
