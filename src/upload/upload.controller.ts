@@ -22,7 +22,7 @@ export class UploadController {
   @Post()
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
-      destination: '../site/images', // Lưu vào site/images
+      destination: '../sandbox/images', // Lưu vào site/images
       filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
         const ext = path.extname(file.originalname);

@@ -7,7 +7,7 @@ declare const module: any;
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-  app.use('/images', express.static(join(__dirname, '../site/images')));
+  app.use('/images', express.static(join(__dirname, '../sandbox/images')));
   await app.listen(3335);
 
   if (module.hot) {

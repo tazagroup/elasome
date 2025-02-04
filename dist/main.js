@@ -4318,7 +4318,7 @@ __decorate([
     (0, common_1.Post)(),
     (0, common_1.UseInterceptors)((0, platform_express_1.FileInterceptor)('file', {
         storage: (0, multer_1.diskStorage)({
-            destination: '../site/images',
+            destination: '../sandbox/images',
             filename: (req, file, cb) => {
                 const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
                 const ext = path.extname(file.originalname);
@@ -5976,7 +5976,7 @@ const path_1 = __webpack_require__(/*! path */ "path");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
-    app.use('/images', express.static((0, path_1.join)(__dirname, '../site/images')));
+    app.use('/images', express.static((0, path_1.join)(__dirname, '../sandbox/images')));
     await app.listen(3335);
     if (false) {}
 }
