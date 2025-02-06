@@ -1,8 +1,8 @@
 import { Inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
-import { environment } from '../../../../environments/environment.development';
-import { StorageService } from '../../../shared/utils/storage.service';
+import { StorageService } from '../../shared/utils/storage.service';
+import { environment } from '../../../environments/environment.development';
 @Injectable({
   providedIn: 'root'
 })
@@ -28,7 +28,7 @@ export class QuanlyfilesService {
           'Authorization': 'Bearer '+this._StorageService.getItem('token')
         },
       };
-      const response = await fetch(`${environment.APIURL}/quanlyfiles`, options);
+      const response = await fetch(`${environment.APIURL}/upload`, options);
       if (!response.ok) {
         if (response.status === 401) {
           const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
@@ -96,7 +96,7 @@ export class QuanlyfilesService {
           'Content-Type': 'application/json',
         },
       };
-      const response = await fetch(`${environment.APIURL}/quanlyfiles/${id}`, options);
+      const response = await fetch(`${environment.APIURL}/upload/${id}`, options);
       if (!response.ok) {
         if (response.status === 401) {
           const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
@@ -130,7 +130,7 @@ export class QuanlyfilesService {
           },
           body: JSON.stringify(dulieu),
         };
-        const response = await fetch(`${environment.APIURL}/quanlyfiles/${dulieu.id}`, options);
+        const response = await fetch(`${environment.APIURL}/upload/${dulieu.id}`, options);
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -167,7 +167,7 @@ export class QuanlyfilesService {
               'Content-Type': 'application/json',
             },
           };
-          const response = await fetch(`${environment.APIURL}/quanlyfiles/${item.id}`, options);
+          const response = await fetch(`${environment.APIURL}/upload/${item.id}`, options);
           if (!response.ok) {
             if (response.status === 401) {
               const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })

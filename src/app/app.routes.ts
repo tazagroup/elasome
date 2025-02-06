@@ -105,6 +105,8 @@ export const routes: Routes = [
     },
     {
       path: 'register',
+      canActivate: [GuestGuard],
+      canActivateChild: [GuestGuard],
       loadComponent: () => import('./shared/users/register/register.component').then((c) => c.RegisterComponent),
     },
     {

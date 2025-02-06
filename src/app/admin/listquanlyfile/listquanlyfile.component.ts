@@ -12,6 +12,8 @@ import {AfterViewInit, Component, inject, viewChild, ViewChild} from '@angular/c
   import { MatIconModule } from '@angular/material/icon';
   import { MatButtonModule } from '@angular/material/button';
   import { DetailQuanlyfileComponent } from './detailquanlyfile/detailquanlyfile.component';
+import { QuanlyfilesService } from './listquanlyfile.service';
+import { CommonModule } from '@angular/common';
   @Component({
     selector: 'app-listquanlyfile',
     templateUrl: './listquanlyfile.component.html',
@@ -27,6 +29,7 @@ import {AfterViewInit, Component, inject, viewChild, ViewChild} from '@angular/c
       RouterOutlet,
       MatIconModule,
       MatButtonModule,
+      CommonModule
     ],
   })
   export class ListquanlyfileComponent implements AfterViewInit {
@@ -34,32 +37,38 @@ import {AfterViewInit, Component, inject, viewChild, ViewChild} from '@angular/c
     dataSource!: MatTableDataSource<any>;
     displayedColumns: string[] = [
       'STT',
-      'email', 
-      'Hoten', 
-      'SDT',
+      'Title', 
+      'Hinhanh', 
+      'Type',
+      'Metadata',
       'CreateAt',
-      'field6',
     ];
     ColumnName:any={
       'STT':'STT',
-      'Hoten':'Họ Tên', 
-      'email':'Email', 
-      'SDT':'SDT',
+      'Title':'Tiêu Đề', 
+      'Hinhanh':'Hình Ảnh', 
+      'Type':'Loại lưu trữ',
+      'Metadata':'Thông Tin',
       'CreateAt':'Ngày Tạo',
-      'field6':'Hành Động',
     }
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     @ViewChild(MatSort) sort!: MatSort;
     @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+    _QuanlyfilesService:QuanlyfilesService = inject(QuanlyfilesService)
+    ListFile:any[]=[]
     constructor(
       private _breakpointObserver: BreakpointObserver,
       private _router: Router,
     ) {}
-  
-    ngOnInit(): void {
-      this.dataSource = new MatTableDataSource(ListQuanlyfile); 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+    async ngOnInit(): Promise<void> {
+     await this._QuanlyfilesService.getAllQuanlyfile().then((data:any)=>{
+        this.ListFile=data
+        this.dataSource = new MatTableDataSource(data); 
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      })
+
+
       this.Detail.id?this.drawer.open():this.drawer.close()
       this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
         if (result.matches) {

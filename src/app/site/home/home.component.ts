@@ -6,6 +6,9 @@ import { ProductsComponent } from '../../shared/common/products/products.compone
 import { BannerctaComponent } from '../../shared/common/bannercta/bannercta.component';
 import { BaivietComponent } from '../../shared/common/baiviet/baiviet.component';
 import { ContactformComponent } from '../../shared/common/contactform/contactform.component';
+import { Sanphams } from '../../shared/mockdata/sanpham';
+import { Reviews } from '../../shared/mockdata/review';
+import { Baiviets } from '../../shared/mockdata/baiviet';
 
 @Component({
   selector: 'app-home',
@@ -13,18 +16,17 @@ import { ContactformComponent } from '../../shared/common/contactform/contactfor
     SwiperComponent,
     KeyfiguresComponent,
     GioithieuComponent,
-    ProductsComponent,
-    BannerctaComponent,
-    BaivietComponent,
-    ContactformComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  ListSanpham: any[]=Sanphams;
+  ListReview: any[]=Reviews;
+  ListBaiviet: any[]=Baiviets;
   ChuyenGiaConfig = {
     // Các tùy chọn của Swiper
-    slidesPerView: 3,
+    slidesPerView: 1,
     spaceBetween: 30,
     loop: true,
     pagination: {
@@ -39,17 +41,83 @@ export class HomeComponent {
     breakpoints: {
       // when window width is >= 320px
       320: {
-        slidesPerView: 2,
+        slidesPerView: 1,
         spaceBetween: 20
       },
       // when window width is >= 480px
       480: {
-        slidesPerView: 3,
+        slidesPerView: 1,
         spaceBetween: 30
       },
       // when window width is >= 640px
       640: {
-        slidesPerView: 4,
+        slidesPerView: 1,
+        spaceBetween: 40
+      }
+    }
+  }
+
+  SanphamNoibatConfig = {
+    // Các tùy chọn của Swiper
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    autoplay: false,
+    breakpoints: {
+      // when window width is >= 320px
+      320: {
+        slidesPerView: 1,
+        spaceBetween: 20
+      },
+      // when window width is >= 480px
+      480: {
+        slidesPerView: 1,
+        spaceBetween: 30
+      },
+      // when window width is >= 640px
+      640: {
+        slidesPerView: 5,
+        spaceBetween: 40
+      }
+    }
+  }
+
+  BaivietConfig = {
+    // Các tùy chọn của Swiper
+    slidesPerView: 1,
+    spaceBetween: 30,
+    loop: true,
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    autoplay: false,
+    breakpoints: {
+      // when window width is >= 320px
+      320: {
+        slidesPerView: 1,
+        spaceBetween: 20
+      },
+      // when window width is >= 480px
+      480: {
+        slidesPerView: 1,
+        spaceBetween: 30
+      },
+      // when window width is >= 640px
+      640: {
+        slidesPerView: 3,
         spaceBetween: 40
       }
     }

@@ -18,15 +18,29 @@
                     class="cursor-pointer material-symbols-outlined p-2 rounded-lg hover:bg-slate-100">add_circle</span>
             </div>
         </div>
-        <div class="w-full">
+        <div class="w-full overflow-auto">
             <table class="!border w-full cursor-pointer" mat-table [dataSource]="dataSource" matSort>
                 @for (column of displayedColumns; track column) {
                   <ng-container [matColumnDef]="column">
                     <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>{{ ColumnName[column] }}
                     </th>
-                    <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
-                         {{ column === 'STT' ? idx + 1 : row[column] }}
-                    </td>
+
+                    @switch(column) {
+                        @case('Metadata') {
+                            <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
+                                {{ row.Metadata.mimetype}}
+                        }
+                        @case('Hinhanh') {
+                            <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
+                                <img [src]="'https://sandbox.elasome.com/'+row.Lienket" class="h-10">
+                            </td>
+                        }
+                        @default {
+                            <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
+                                {{ column === 'STT' ? idx + 1 : row[column] }}
+                            </td>
+                        }
+                    }
                  </ng-container>
                 }
                 <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

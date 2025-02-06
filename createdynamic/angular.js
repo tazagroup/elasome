@@ -20,109 +20,173 @@ async function generateFile(filePath, content) {
   
   const componentListFile = path.join(outputDir, `list${dasherizedName}/list${dasherizedName}.component.ts`);
   const componentListContent = `
-  import {AfterViewInit, Component, inject, viewChild, ViewChild} from '@angular/core';
-  import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
-  import {MatSort, MatSortModule} from '@angular/material/sort';
-  import {MatTableDataSource, MatTableModule} from '@angular/material/table';
-  import {MatInputModule} from '@angular/material/input';
-  import {MatFormFieldModule} from '@angular/material/form-field';
-  import { List${capitalize(dasherizedName)} } from './list${dasherizedName}';
-  import { MatMenuModule } from '@angular/material/menu';
-  import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-  import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
-  import { Router, RouterLink, RouterOutlet } from '@angular/router';
-  import { MatIconModule } from '@angular/material/icon';
-  import { MatButtonModule } from '@angular/material/button';
-  import { Detail${capitalize(dasherizedName)}Component } from './detail${dasherizedName}/detail${dasherizedName}.component';
-  @Component({
-    selector: 'app-list${dasherizedName}',
-    templateUrl: './list${dasherizedName}.component.html',
-    styleUrl: './list${dasherizedName}.component.scss',
-    imports: [
-      MatFormFieldModule, 
-      MatInputModule, 
-      MatTableModule, 
-      MatSortModule, 
-      MatPaginatorModule,
-      MatMenuModule,
-      MatSidenavModule,
-      RouterOutlet,
-      MatIconModule,
-      MatButtonModule,
-    ],
-  })
-  export class List${dasherizedName}Component implements AfterViewInit {
-    Detail:any={}
-    dataSource!: MatTableDataSource<any>;
-    displayedColumns: string[] = [
-      'STT',
-      'email', 
-      'Hoten', 
-      'SDT',
-      'CreateAt',
-      'field6',
-    ];
-    ColumnName:any={
-      'STT':'STT',
-      'Hoten':'Họ Tên', 
-      'email':'Email', 
-      'SDT':'SDT',
-      'CreateAt':'Ngày Tạo',
-      'field6':'Hành Động',
+  import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { Forms, List${capitalize(dasherizedName)} } from './list${dasherizedName}';
+import { MatMenuModule } from '@angular/material/menu';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { MatDrawer, MatSidenavModule } from '@angular/material/sidenav';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { ${capitalize(dasherizedName)}sService } from './list${dasherizedName}.service';
+import { MatSelectModule } from '@angular/material/select';
+import { CommonModule } from '@angular/common';
+import { convertToSlug } from '../../../shared/shared.utils';
+
+@Component({
+  selector: 'app-list${dasherizedName}',
+  templateUrl: './list${dasherizedName}.component.html',
+  styleUrls: ['./list${dasherizedName}.component.scss'],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatMenuModule,
+    MatSidenavModule,
+    RouterOutlet,
+    MatIconModule,
+    MatButtonModule,
+    MatSelectModule,
+    CommonModule
+  ],
+})
+export class List${capitalize(dasherizedName)}Component implements AfterViewInit {
+  Detail: any = {};
+  dataSource!: MatTableDataSource<any>;
+  displayedColumns: string[] = [];
+  ColumnName: any = { 'STT': 'STT' };
+  Forms: any[] = Forms;
+  FilterColumns: any[] = JSON.parse(localStorage.getItem('${dasherizedName}_FilterColumns') || '[]');
+  Columns: any[] = [];
+  List${dasherizedName}: any[] = List${capitalize(dasherizedName)};
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+
+  private _${dasherizedName}sService: ${capitalize(dasherizedName)}sService = inject(${capitalize(dasherizedName)}sService);
+
+  constructor(
+    private _breakpointObserver: BreakpointObserver,
+    private _router: Router,
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    await this._${dasherizedName}sService.getAll${capitalize(dasherizedName)}();
+    this.List${dasherizedName} = this._${dasherizedName}sService.List${dasherizedName}();
+    this.List${dasherizedName}.forEach((v:any) => {
+      v.giagoc = v.Giagoc[0].gia;
+      v.dvt = v.Giagoc[0].dvt;
+    });
+    console.log(this._${dasherizedName}sService.List${dasherizedName}());
+    this.initializeColumns();
+    this.setupDataSource();
+    this.setupDrawer();
+  }
+
+  private initializeColumns(): void {
+    this.Columns = Object.keys(List${capitalize(dasherizedName)}[0]).map(key => ({
+      key,
+      value: List${capitalize(dasherizedName)}[0][key],
+      isShow: true
+    }));
+    if (this.FilterColumns.length === 0) {
+      this.FilterColumns = this.Columns;
+    } else {
+      localStorage.setItem('${dasherizedName}_FilterColumns', JSON.stringify(this.FilterColumns));
     }
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
-    @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-    constructor(
-      private _breakpointObserver: BreakpointObserver,
-      private _router: Router,
-    ) {}
-  
-    ngOnInit(): void {
-      this.dataSource = new MatTableDataSource(List${capitalize(dasherizedName)}); 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.Detail.id?this.drawer.open():this.drawer.close()
-      this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
-        if (result.matches) {
-         this.drawer.mode = 'over';
-         this.paginator.hidePageSize =true
-        } else {
-          this.drawer.mode = 'side';
-        }
-      });
-      
-    }
-    ngAfterViewInit() { 
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      this.paginator._intl.itemsPerPageLabel = 'Số lượng 1 trang';
-      this.paginator._intl.nextPageLabel = 'Tiếp Theo';
-      this.paginator._intl.previousPageLabel = 'Về Trước';
-      this.paginator._intl.firstPageLabel = 'Trang Đầu';
-      this.paginator._intl.lastPageLabel = 'Trang Cuối';
-      this.paginator.pageSize = 30
-    }
-  
-    applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataSource.filter = filterValue.trim().toLowerCase();
-  
-      if (this.dataSource.paginator) {
-        this.dataSource.paginator.firstPage();
+
+    this.displayedColumns = this.FilterColumns.filter(v => v.isShow).map(item => item.key);
+    this.ColumnName = this.FilterColumns.reduce((obj, item) => {
+      if (item.isShow) obj[item.key] = item.value;
+      return obj;
+    }, {} as Record<string, string>);
+  }
+
+  private setupDataSource(): void {
+    this.dataSource = new MatTableDataSource(this.List${dasherizedName}.slice(1).map(v =>
+      this.FilterColumns.filter(item => item.isShow).reduce((obj, item) => {
+        obj[item.key] = v[item.key];
+        return obj;
+      }, {})
+    ));
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  private setupDrawer(): void {
+
+    this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      if (result.matches) {
+        this.drawer.mode = 'over';
+        this.paginator.hidePageSize = true;
+      } else {
+        this.drawer.mode = 'side';
       }
+    });
+  }
+
+  toggleColumn(item: any): void {
+    const column = this.FilterColumns.find(v => v.key === item.key);
+    if (column) {
+      column.isShow = !column.isShow;
+      this.updateDisplayedColumns();
     }
-    Create()
-    {
-      this.drawer.open();
-      this._router.navigate(['admin/${dasherizedName}s', 0])
+  }
+
+  private updateDisplayedColumns(): void {
+    this.displayedColumns = this.FilterColumns.filter(v => v.isShow).map(item => item.key);
+    this.ColumnName = this.FilterColumns.reduce((obj, item) => {
+      if (item.isShow) obj[item.key] = item.value;
+      return obj;
+    }, {} as Record<string, string>);
+    this.setupDataSource();
+    localStorage.setItem('${dasherizedName}_FilterColumns', JSON.stringify(this.FilterColumns));
+  }
+
+  doFilterColumns(event: any): void {
+    const query = event.target.value.toLowerCase();
+    this.FilterColumns = this.Columns.filter(v => v.value.toLowerCase().includes(query));    
+  }
+
+  ngAfterViewInit(): void {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+    this.paginator._intl.itemsPerPageLabel = 'Số lượng 1 trang';
+    this.paginator._intl.nextPageLabel = 'Tiếp Theo';
+    this.paginator._intl.previousPageLabel = 'Về Trước';
+    this.paginator._intl.firstPageLabel = 'Trang Đầu';
+    this.paginator._intl.lastPageLabel = 'Trang Cuối';
+  }
+
+  applyFilter(event: Event): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    console.log(this.dataSource);
+    
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
     }
-    goToDetail(item:any)
-    {
-      this.drawer.open();
-      this.Detail=item
-      this._router.navigate(['admin/${dasherizedName}s', item.id])  }
-  }`;
+  }
+
+  create(): void {
+    this.drawer.open();
+    this._router.navigate(['admin/${dasherizedName}s', 0]);
+  }
+
+  goToDetail(item: any): void {
+    this.drawer.open();
+    this.Detail = item;
+    this._router.navigate(['admin/${dasherizedName}s', item.id]);
+  }
+}`;
 
 
   const componentDetailFile = path.join(outputDir, `list${dasherizedName}/detail${dasherizedName}/detail${dasherizedName}.component.ts`);
@@ -189,47 +253,78 @@ import { Component, inject } from '@angular/core';
   const componentListHTMLFile = path.join(outputDir, `list${dasherizedName}/list${dasherizedName}.component.html`);
   const componentListHTMLContent = `
 <mat-drawer-container class="w-full h-full" autosize>
-  <mat-drawer #drawer class="flex flex-col lg:!w-1/3 !w-full h-full" [position]="'end'">    
-    <router-outlet></router-outlet>
-  </mat-drawer>
-
-<div class="flex flex-col space-y-2 h-screen-12 w-full justify-between p-2">
-    <div class="flex flex-col space-y-2 w-full p-2">
-        <div class="cursor-pointer w-full relative grid lg:grid-cols-2 gap-2 justify-between items-center">
-            <div class="w-full flex flex-row space-x-2 items-center">
+    <mat-drawer #drawer class="flex flex-col lg:!w-1/3 !w-full h-full" [position]="'end'">    
+      <router-outlet></router-outlet>
+    </mat-drawer>
+  <div class="flex flex-col space-y-2 h-screen-12 w-full justify-between p-2">
+      <div class="flex flex-col space-y-2 w-full p-2">
+              <div class="cursor-pointer w-full flex flex-row space-x-2 items-center justify-between bg-white rounded-lg p-2">
+                <div class="flex flex-row space-x-2 items-center">
                 <div class="relative">
-                    <input type="text" placeholder="Tìm Kiếm..." #input (keyup)="applyFilter($event)"
-                        class="block pl-10 pr-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40">
-                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                        <span class="material-symbols-outlined text-gray-500">search</span>
-                    </div>
-                </div>
-                <span (click)="Create()"
-                    class="cursor-pointer material-symbols-outlined p-2 rounded-lg hover:bg-slate-100">add_circle</span>
-            </div>
-        </div>
-        <div class="w-full">
-            <table class="!border w-full cursor-pointer" mat-table [dataSource]="dataSource" matSort>
-                @for (column of displayedColumns; track column) {
-                  <ng-container [matColumnDef]="column">
-                    <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>{{ ColumnName[column] }}
-                    </th>
-                    <td class="whitespace-nowrap" mat-cell *matCellDef="let row;let idx = index">
-                         {{ column === 'STT' ? idx + 1 : row[column] }}
-                    </td>
-                 </ng-container>
-                }
-                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToDetail(row);"></tr>
-                <tr class="mat-row" *matNoDataRow>
-                    <td class="mat-cell" colspan="4">Không tìm thấy "{{input.value}}"</td>
-                </tr>
-            </table>
-            <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
-        </div>
-    </div>    
-</div>
-</mat-drawer-container>`;
+                      <input type="text" placeholder="Tìm Kiếm..." #input (keyup)="applyFilter($event)"
+                          class="block pl-10 pr-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg focus:border-blue-400 focus:ring-blue-400 focus:outline-none focus:ring focus:ring-opacity-40">
+                      <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                          <span class="material-symbols-outlined text-gray-500">search</span>
+                      </div>
+                  </div>
+                  <button mat-flat-button color="primary" (click)="create()">
+                      <span>Thêm</span>
+                      <mat-icon>add_circle</mat-icon>
+                  </button>
+                </div>  
+                  <div class="flex flex-row space-x-2 items-center">
+                    <span class="whitespace-nowrap p-2 rounded-lg bg-slate-200">
+                        {{dataSource?.filteredData?.length}} Sản Phẩm
+                    </span>                
+                      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                          <mat-icon>tune</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <div class="p-4">
+                              <mat-form-field appearance="outline" class="w-full" subscriptSizing="dynamic">
+                                  <input (input)="doFilterColumns($event)" (click)="$event.stopPropagation()" matInput placeholder="Tìm Kiếm" />
+                                  <mat-icon matPrefix>search</mat-icon>
+                               </mat-form-field> 
+                          </div>
+                          <div class="flex flex-col max-h-80 overflow-auto">
+                          @for (item of FilterColumns; track item.key) {
+                              <button mat-menu-item (click)="toggleColumn(item);$event.stopPropagation()">
+                                  <mat-icon>{{item.isShow?'check_box':'check_box_outline_blank'}}</mat-icon>
+                                  <span>{{item.value}}</span>
+                              </button>
+                           }
+                          </div>
+                        </mat-menu> 
+                  </div>                 
+              </div>
+
+          <div class="w-full opverflow-auto">
+              <table class="!border w-full cursor-pointer" mat-table [dataSource]="dataSource" matSort>
+                  @for (column of displayedColumns; track column) {
+                      <ng-container [matColumnDef]="column">
+                          <th class="whitespace-nowrap" mat-header-cell *matHeaderCellDef mat-sort-header>
+                              <span class="max-w-40 line-clamp-4">
+                                  {{ ColumnName[column] }}
+                              </span>
+                          </th>
+                          <td class="" mat-cell *matCellDef="let row;let idx = index">
+                              <span class="max-w-40 line-clamp-4">
+                                  {{ column === 'STT' ? idx + 1 : row[column] }}
+                              </span>
+                          </td>
+                       </ng-container>
+                  }
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="goToDetail(row);"></tr>
+                  <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">Không tìm thấy "{{input.value}}"</td>
+                  </tr>
+              </table>
+              <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+          </div>
+      </div>    
+  </div>
+  </mat-drawer-container>`;
 
 
 
@@ -260,14 +355,16 @@ import { Component, inject } from '@angular/core';
 </div>
 <div class="relative flex flex-col w-full p-4 overflow-auto">
   @if(isDelete==true){
-    <div>Bạn chắc chắn muốn xoá không?</div>
-    <div class="flex flex-row space-x-2 mt-4 items-center justify-center">
-      <button mat-flat-button color="primary" (click)="isDelete=false">
-        Đồng Ý
-      </button>
-      <button mat-flat-button color="warn" (click)="isDelete=false">
-        Huỷ Bỏ
-      </button>
+    <div class="flex flex-col space-y-4 items-center justify-center">
+      <div class="font-bold text-2xl">Bạn chắc chắn muốn xoá không?</div>
+      <div class="flex flex-row space-x-2 items-center justify-center">
+        <button mat-flat-button color="primary" (click)="DeleteData()">
+          Đồng Ý
+        </button>
+        <button mat-flat-button color="warn" (click)="isDelete=false">
+          Huỷ Bỏ
+        </button>
+      </div>
     </div>
   }
   @else {
@@ -312,6 +409,45 @@ export class ${capitalize(dasherizedName)}sService {
   }
   List${capitalize(dasherizedName)} = signal<any[]>([]);
   ${capitalize(dasherizedName)} = signal<any>({});
+  async Create${capitalize(dasherizedName)}(dulieu: any) {
+    try {
+      const options = {
+          method:'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(dulieu),
+        };
+        const response = await fetch(\`\${environment.APIURL}/${dasherizedName}, options);
+        if (!response.ok) {
+          throw new Error(\`HTTP error! status: \${response.status}\`);
+        }
+        const data = await response.json();
+        if (!response.ok) {
+          if (response.status === 401) {
+            const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
+            this.router.navigate(['/errorserver'], { queryParams: {data:result}});
+            // this.Dangxuat()
+          } else if (response.status === 403) {
+            const result  = JSON.stringify({ code:response.status,title:'Bạn không có quyền truy cập' })
+            this.router.navigate(['/errorserver'], { queryParams: {data:result}});
+            // this.Dangxuat()
+          } else if (response.status === 500) {
+            const result  = JSON.stringify({ code:response.status,title:'Lỗi máy chủ, vui lòng thử lại sau' })
+            this.router.navigate(['/errorserver'], { queryParams: {data:result}});
+            // this.Dangxuat()
+          } else {
+            const result  = JSON.stringify({ code:response.status,title:'Lỗi không xác định' })
+            this.router.navigate(['/errorserver'], { queryParams: {data:result}});
+          }
+        }
+        this.getAll${capitalize(dasherizedName)}()
+        return data;
+    } catch (error) {
+        return console.error(error);
+    }
+  }
+
   async getAll${capitalize(dasherizedName)}() {
     try {
       const options = {
