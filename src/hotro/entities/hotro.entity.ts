@@ -15,6 +15,8 @@ import {
     @Column()
     SDT: string;
     @Column({collation: "utf8_general_ci"})
+    Title: string;
+    @Column({collation: "utf8_general_ci"})
     idGroup: string;
     @Column({collation: "utf8_general_ci"})
     Code: string;
