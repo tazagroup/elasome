@@ -435,6 +435,7 @@ const settings_module_1 = __webpack_require__(/*! ./settings/settings.module */ 
 const acl_module_1 = __webpack_require__(/*! ./acl/acl.module */ "./src/acl/acl.module.ts");
 const conversations_module_1 = __webpack_require__(/*! ./conversations/conversations.module */ "./src/conversations/conversations.module.ts");
 const menu_module_1 = __webpack_require__(/*! ./menu/menu.module */ "./src/menu/menu.module.ts");
+const hotro_module_1 = __webpack_require__(/*! ./hotro/hotro.module */ "./src/hotro/hotro.module.ts");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -465,6 +466,7 @@ exports.AppModule = AppModule = __decorate([
             acl_module_1.AclModule,
             conversations_module_1.ConversationModule,
             menu_module_1.MenuModule,
+            hotro_module_1.HotroModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
@@ -2181,6 +2183,396 @@ exports.HoadonchitietService = HoadonchitietService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(hoadonchitiet_entity_1.HoadonchitietEntity)),
     __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
 ], HoadonchitietService);
+
+
+/***/ }),
+
+/***/ "./src/hotro/entities/hotro.entity.ts":
+/*!********************************************!*\
+  !*** ./src/hotro/entities/hotro.entity.ts ***!
+  \********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HotroEntity = void 0;
+const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
+let HotroEntity = class HotroEntity {
+};
+exports.HotroEntity = HotroEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, default: '0' }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "ref_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "SDT", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Title", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "idGroup", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Code", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Hoten", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "text", collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Gioitinh", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Image", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "EditChinhanhs", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Diachi", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Profile", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Phanquyen", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Menu", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-array" }),
+    __metadata("design:type", Array)
+], HotroEntity.prototype, "fcmToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "Type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], HotroEntity.prototype, "Ordering", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], HotroEntity.prototype, "Status", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], HotroEntity.prototype, "CreateAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], HotroEntity.prototype, "UpdateAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], HotroEntity.prototype, "DeleteAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], HotroEntity.prototype, "idCreate", void 0);
+exports.HotroEntity = HotroEntity = __decorate([
+    (0, typeorm_1.Entity)('hotro', { orderBy: { CreateAt: 'DESC' } })
+], HotroEntity);
+
+
+/***/ }),
+
+/***/ "./src/hotro/hotro.controller.ts":
+/*!***************************************!*\
+  !*** ./src/hotro/hotro.controller.ts ***!
+  \***************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HotroController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const hotro_service_1 = __webpack_require__(/*! ./hotro.service */ "./src/hotro/hotro.service.ts");
+let HotroController = class HotroController {
+    constructor(HotroService) {
+        this.HotroService = HotroService;
+    }
+    create(data) {
+        return this.HotroService.create(data);
+    }
+    async findAll() {
+        return await this.HotroService.findAll();
+    }
+    async findOne(id) {
+        return await this.HotroService.findid(id);
+    }
+    async findslug(slug) {
+        return await this.HotroService.findslug(slug);
+    }
+    async findPagination(page, perPage) {
+        return await this.HotroService.findPagination(page, perPage);
+    }
+    async findQuery(SearchParams) {
+        return await this.HotroService.findQuery(SearchParams);
+    }
+    update(id, data) {
+        return this.HotroService.update(id, data);
+    }
+    remove(id) {
+        return this.HotroService.remove(id);
+    }
+};
+exports.HotroController = HotroController;
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], HotroController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], HotroController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('findid/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HotroController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('findslug/:slug'),
+    __param(0, (0, common_1.Param)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HotroController.prototype, "findslug", null);
+__decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('perPage')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], HotroController.prototype, "findPagination", null);
+__decorate([
+    (0, common_1.Post)('search'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], HotroController.prototype, "findQuery", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], HotroController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HotroController.prototype, "remove", null);
+exports.HotroController = HotroController = __decorate([
+    (0, common_1.Controller)('hotro'),
+    __metadata("design:paramtypes", [typeof (_a = typeof hotro_service_1.HotroService !== "undefined" && hotro_service_1.HotroService) === "function" ? _a : Object])
+], HotroController);
+
+
+/***/ }),
+
+/***/ "./src/hotro/hotro.module.ts":
+/*!***********************************!*\
+  !*** ./src/hotro/hotro.module.ts ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HotroModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const hotro_service_1 = __webpack_require__(/*! ./hotro.service */ "./src/hotro/hotro.service.ts");
+const hotro_controller_1 = __webpack_require__(/*! ./hotro.controller */ "./src/hotro/hotro.controller.ts");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const hotro_entity_1 = __webpack_require__(/*! ./entities/hotro.entity */ "./src/hotro/entities/hotro.entity.ts");
+let HotroModule = class HotroModule {
+};
+exports.HotroModule = HotroModule;
+exports.HotroModule = HotroModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([hotro_entity_1.HotroEntity])],
+        controllers: [hotro_controller_1.HotroController],
+        providers: [hotro_service_1.HotroService],
+        exports: [hotro_service_1.HotroService]
+    })
+], HotroModule);
+
+
+/***/ }),
+
+/***/ "./src/hotro/hotro.service.ts":
+/*!************************************!*\
+  !*** ./src/hotro/hotro.service.ts ***!
+  \************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HotroService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
+const hotro_entity_1 = __webpack_require__(/*! ./entities/hotro.entity */ "./src/hotro/entities/hotro.entity.ts");
+let HotroService = class HotroService {
+    constructor(HotroRepository) {
+        this.HotroRepository = HotroRepository;
+    }
+    async create(data) {
+        const check = await this.findSHD(data);
+        if (!check) {
+            this.HotroRepository.create(data);
+            return await this.HotroRepository.save(data);
+        }
+        else {
+            return { error: 1001, data: "Trùng Dữ Liệu" };
+        }
+    }
+    async findAll() {
+        return await this.HotroRepository.find();
+    }
+    async findid(id) {
+        return await this.HotroRepository.findOne({ where: { id: id } });
+    }
+    async findSHD(data) {
+        return await this.HotroRepository.findOne({
+            where: {
+                Title: data.Title,
+                Type: data.Type
+            },
+        });
+    }
+    async findslug(Title) {
+        return await this.HotroRepository.findOne({
+            where: { Title: Title },
+        });
+    }
+    async findPagination(page, perPage) {
+        const skip = (page - 1) * perPage;
+        const totalItems = await this.HotroRepository.count();
+        const Hotros = await this.HotroRepository.find({ skip, take: perPage });
+        return {
+            currentPage: page,
+            perPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / perPage),
+            data: Hotros,
+        };
+    }
+    async findQuery(params) {
+        console.error(params);
+        const queryBuilder = this.HotroRepository.createQueryBuilder('Hotro');
+        if (params.Batdau && params.Ketthuc) {
+            queryBuilder.andWhere('Hotro.CreateAt BETWEEN :startDate AND :endDate', {
+                startDate: params.Batdau,
+                endDate: params.Ketthuc,
+            });
+        }
+        if (params.Title) {
+            queryBuilder.andWhere('Hotro.Title LIKE :Title', { SDT: `%${params.Title}%` });
+        }
+        const [items, totalCount] = await queryBuilder
+            .limit(params.pageSize || 10)
+            .offset(params.pageNumber * params.pageSize || 0)
+            .getManyAndCount();
+        console.log(items, totalCount);
+        return { items, totalCount };
+    }
+    async update(id, UpdateHotroDto) {
+        this.HotroRepository.save(UpdateHotroDto);
+        return await this.HotroRepository.findOne({ where: { id: id } });
+    }
+    async remove(id) {
+        console.error(id);
+        await this.HotroRepository.delete(id);
+        return { deleted: true };
+    }
+};
+exports.HotroService = HotroService;
+exports.HotroService = HotroService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(hotro_entity_1.HotroEntity)),
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+], HotroService);
 
 
 /***/ }),

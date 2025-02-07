@@ -15,6 +15,7 @@ import { SettingModule } from './settings/settings.module';
 import { AclModule } from './acl/acl.module';
 import { ConversationModule } from './conversations/conversations.module';
 import { MenuModule } from './menu/menu.module';
+import { HotroModule } from './hotro/hotro.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -41,6 +42,7 @@ import { MenuModule } from './menu/menu.module';
     AclModule,
     ConversationModule,
     MenuModule,
+    HotroModule
   ],
   controllers: [AppController],
   providers: [AppService],
