@@ -18,6 +18,9 @@ import { MenuModule } from './menu/menu.module';
 import { HotroModule } from './hotro/hotro.module';
 import { GooglesheetsModule } from './googlesheets/googlesheets.module';
 import { HoadonModule } from './hoadon/hoadon.module';
+import { ChatsModule } from './chat/chats.module';
+import { Chat_messagesModule } from './chat_messages/chat_messages.module';
+import { Chat_participantsModule } from './chat_participants/chat_participants.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -47,6 +50,9 @@ import { HoadonModule } from './hoadon/hoadon.module';
     HotroModule,
     GooglesheetsModule,
     HoadonModule,
+    ChatsModule,
+    Chat_messagesModule,
+    Chat_participantsModule
   ],
   controllers: [AppController],
   providers: [AppService],

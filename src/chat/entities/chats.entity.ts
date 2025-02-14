@@ -1,3 +1,4 @@
+import { Chat_messagesEntity } from 'src/chat_messages/entities/chat_messages.entity';
 import {
      Entity,
      Column,
@@ -15,21 +16,8 @@ import {
     id: string;  
     @Column({ nullable: true, length: 100 })
     chat_name: string;
-  
-    @CreateDateColumn()
-    created_at: Date;
-  
-    @OneToMany(() => Message, (message) => message.chat)
-    messages: Message[];
-  
-    @ManyToMany(() => User)
-    @JoinTable({
-      name: 'chat_participants',
-      joinColumn: { name: 'chat_id', referencedColumnName: 'chat_id' },
-      inverseJoinColumn: { name: 'user_id', referencedColumnName: 'user_id' },
-    })
-    participants: User[];
-    
+    @OneToMany(() => Chat_messagesEntity, (message) => message.Hoten)
+    messages: Chat_messagesEntity[];    
     @Column({ type: 'enum', enum: ['group', 'p2p'] })
     Type: string;
     @Column({ default: 1 })

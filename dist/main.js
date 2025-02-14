@@ -438,6 +438,9 @@ const menu_module_1 = __webpack_require__(/*! ./menu/menu.module */ "./src/menu/
 const hotro_module_1 = __webpack_require__(/*! ./hotro/hotro.module */ "./src/hotro/hotro.module.ts");
 const googlesheets_module_1 = __webpack_require__(/*! ./googlesheets/googlesheets.module */ "./src/googlesheets/googlesheets.module.ts");
 const hoadon_module_1 = __webpack_require__(/*! ./hoadon/hoadon.module */ "./src/hoadon/hoadon.module.ts");
+const chats_module_1 = __webpack_require__(/*! ./chat/chats.module */ "./src/chat/chats.module.ts");
+const chat_messages_module_1 = __webpack_require__(/*! ./chat_messages/chat_messages.module */ "./src/chat_messages/chat_messages.module.ts");
+const chat_participants_module_1 = __webpack_require__(/*! ./chat_participants/chat_participants.module */ "./src/chat_participants/chat_participants.module.ts");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -471,6 +474,9 @@ exports.AppModule = AppModule = __decorate([
             hotro_module_1.HotroModule,
             googlesheets_module_1.GooglesheetsModule,
             hoadon_module_1.HoadonModule,
+            chats_module_1.ChatsModule,
+            chat_messages_module_1.Chat_messagesModule,
+            chat_participants_module_1.Chat_participantsModule
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
@@ -876,6 +882,1110 @@ __decorate([
 exports.CategoryEntity = CategoryEntity = __decorate([
     (0, typeorm_1.Entity)('category', { orderBy: { CreateAt: 'DESC' } })
 ], CategoryEntity);
+
+
+/***/ }),
+
+/***/ "./src/chat/chats.controller.ts":
+/*!**************************************!*\
+  !*** ./src/chat/chats.controller.ts ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ChatsController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const chats_service_1 = __webpack_require__(/*! ./chats.service */ "./src/chat/chats.service.ts");
+let ChatsController = class ChatsController {
+    constructor(ChatsService) {
+        this.ChatsService = ChatsService;
+    }
+    create(data) {
+        return this.ChatsService.create(data);
+    }
+    async findAll() {
+        return await this.ChatsService.findAll();
+    }
+    async findOne(id) {
+        return await this.ChatsService.findid(id);
+    }
+    async findslug(slug) {
+        return await this.ChatsService.findslug(slug);
+    }
+    async findPagination(page, perPage) {
+        return await this.ChatsService.findPagination(page, perPage);
+    }
+    async findQuery(SearchParams) {
+        return await this.ChatsService.findQuery(SearchParams);
+    }
+    update(id, data) {
+        return this.ChatsService.update(id, data);
+    }
+    remove(id) {
+        return this.ChatsService.remove(id);
+    }
+};
+exports.ChatsController = ChatsController;
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], ChatsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], ChatsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('findid/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ChatsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('findslug/:slug'),
+    __param(0, (0, common_1.Param)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], ChatsController.prototype, "findslug", null);
+__decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('perPage')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], ChatsController.prototype, "findPagination", null);
+__decorate([
+    (0, common_1.Post)('search'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], ChatsController.prototype, "findQuery", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], ChatsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], ChatsController.prototype, "remove", null);
+exports.ChatsController = ChatsController = __decorate([
+    (0, common_1.Controller)('Chats'),
+    __metadata("design:paramtypes", [typeof (_a = typeof chats_service_1.ChatsService !== "undefined" && chats_service_1.ChatsService) === "function" ? _a : Object])
+], ChatsController);
+
+
+/***/ }),
+
+/***/ "./src/chat/chats.module.ts":
+/*!**********************************!*\
+  !*** ./src/chat/chats.module.ts ***!
+  \**********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ChatsModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const chats_service_1 = __webpack_require__(/*! ./chats.service */ "./src/chat/chats.service.ts");
+const chats_controller_1 = __webpack_require__(/*! ./chats.controller */ "./src/chat/chats.controller.ts");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const chats_entity_1 = __webpack_require__(/*! ./entities/chats.entity */ "./src/chat/entities/chats.entity.ts");
+let ChatsModule = class ChatsModule {
+};
+exports.ChatsModule = ChatsModule;
+exports.ChatsModule = ChatsModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([chats_entity_1.ChatsEntity])],
+        controllers: [chats_controller_1.ChatsController],
+        providers: [chats_service_1.ChatsService],
+        exports: [chats_service_1.ChatsService]
+    })
+], ChatsModule);
+
+
+/***/ }),
+
+/***/ "./src/chat/chats.service.ts":
+/*!***********************************!*\
+  !*** ./src/chat/chats.service.ts ***!
+  \***********************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ChatsService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
+const chats_entity_1 = __webpack_require__(/*! ./entities/chats.entity */ "./src/chat/entities/chats.entity.ts");
+let ChatsService = class ChatsService {
+    constructor(ChatsRepository) {
+        this.ChatsRepository = ChatsRepository;
+    }
+    async create(data) {
+        const check = await this.findSHD(data);
+        if (!check) {
+            this.ChatsRepository.create(data);
+            return await this.ChatsRepository.save(data);
+        }
+        else {
+            return { error: 1001, data: "Trùng Dữ Liệu" };
+        }
+    }
+    async findAll() {
+        return await this.ChatsRepository.find();
+    }
+    async findid(id) {
+        return await this.ChatsRepository.findOne({ where: { id: id } });
+    }
+    async findSHD(data) {
+        return await this.ChatsRepository.findOne({
+            where: {
+                Type: data.Type
+            },
+        });
+    }
+    async findslug(Title) {
+        return await this.ChatsRepository.findOne({});
+    }
+    async findPagination(page, perPage) {
+        const skip = (page - 1) * perPage;
+        const totalItems = await this.ChatsRepository.count();
+        const Chatss = await this.ChatsRepository.find({ skip, take: perPage });
+        return {
+            currentPage: page,
+            perPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / perPage),
+            data: Chatss,
+        };
+    }
+    async findQuery(params) {
+        console.error(params);
+        const queryBuilder = this.ChatsRepository.createQueryBuilder('Chats');
+        if (params.Batdau && params.Ketthuc) {
+            queryBuilder.andWhere('Chats.CreateAt BETWEEN :startDate AND :endDate', {
+                startDate: params.Batdau,
+                endDate: params.Ketthuc,
+            });
+        }
+        if (params.Title) {
+            queryBuilder.andWhere('Chats.Title LIKE :Title', { SDT: `%${params.Title}%` });
+        }
+        const [items, totalCount] = await queryBuilder
+            .limit(params.pageSize || 10)
+            .offset(params.pageNumber * params.pageSize || 0)
+            .getManyAndCount();
+        console.log(items, totalCount);
+        return { items, totalCount };
+    }
+    async update(id, UpdateChatsDto) {
+        this.ChatsRepository.save(UpdateChatsDto);
+        return await this.ChatsRepository.findOne({ where: { id: id } });
+    }
+    async remove(id) {
+        console.error(id);
+        await this.ChatsRepository.delete(id);
+        return { deleted: true };
+    }
+};
+exports.ChatsService = ChatsService;
+exports.ChatsService = ChatsService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(chats_entity_1.ChatsEntity)),
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+], ChatsService);
+
+
+/***/ }),
+
+/***/ "./src/chat/entities/chats.entity.ts":
+/*!*******************************************!*\
+  !*** ./src/chat/entities/chats.entity.ts ***!
+  \*******************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.ChatsEntity = void 0;
+const chat_messages_entity_1 = __webpack_require__(/*! src/chat_messages/entities/chat_messages.entity */ "./src/chat_messages/entities/chat_messages.entity.ts");
+const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
+let ChatsEntity = class ChatsEntity {
+};
+exports.ChatsEntity = ChatsEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], ChatsEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, length: 100 }),
+    __metadata("design:type", String)
+], ChatsEntity.prototype, "chat_name", void 0);
+__decorate([
+    (0, typeorm_1.OneToMany)(() => chat_messages_entity_1.Chat_messagesEntity, (message) => message.Hoten),
+    __metadata("design:type", Array)
+], ChatsEntity.prototype, "messages", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: 'enum', enum: ['group', 'p2p'] }),
+    __metadata("design:type", String)
+], ChatsEntity.prototype, "Type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], ChatsEntity.prototype, "Ordering", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], ChatsEntity.prototype, "Status", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], ChatsEntity.prototype, "CreateAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], ChatsEntity.prototype, "UpdateAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], ChatsEntity.prototype, "DeleteAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], ChatsEntity.prototype, "idCreate", void 0);
+exports.ChatsEntity = ChatsEntity = __decorate([
+    (0, typeorm_1.Entity)('chats', { orderBy: { CreateAt: 'DESC' } })
+], ChatsEntity);
+
+
+/***/ }),
+
+/***/ "./src/chat_messages/chat_messages.controller.ts":
+/*!*******************************************************!*\
+  !*** ./src/chat_messages/chat_messages.controller.ts ***!
+  \*******************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_messagesController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const chat_messages_service_1 = __webpack_require__(/*! ./chat_messages.service */ "./src/chat_messages/chat_messages.service.ts");
+let Chat_messagesController = class Chat_messagesController {
+    constructor(Chat_messagesService) {
+        this.Chat_messagesService = Chat_messagesService;
+    }
+    create(data) {
+        return this.Chat_messagesService.create(data);
+    }
+    async findAll() {
+        return await this.Chat_messagesService.findAll();
+    }
+    async findOne(id) {
+        return await this.Chat_messagesService.findid(id);
+    }
+    async findslug(slug) {
+        return await this.Chat_messagesService.findslug(slug);
+    }
+    async findPagination(page, perPage) {
+        return await this.Chat_messagesService.findPagination(page, perPage);
+    }
+    async findQuery(SearchParams) {
+        return await this.Chat_messagesService.findQuery(SearchParams);
+    }
+    update(id, data) {
+        return this.Chat_messagesService.update(id, data);
+    }
+    remove(id) {
+        return this.Chat_messagesService.remove(id);
+    }
+};
+exports.Chat_messagesController = Chat_messagesController;
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Chat_messagesController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], Chat_messagesController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('findid/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], Chat_messagesController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('findslug/:slug'),
+    __param(0, (0, common_1.Param)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], Chat_messagesController.prototype, "findslug", null);
+__decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('perPage')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], Chat_messagesController.prototype, "findPagination", null);
+__decorate([
+    (0, common_1.Post)('search'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], Chat_messagesController.prototype, "findQuery", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], Chat_messagesController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], Chat_messagesController.prototype, "remove", null);
+exports.Chat_messagesController = Chat_messagesController = __decorate([
+    (0, common_1.Controller)('Chat_messages'),
+    __metadata("design:paramtypes", [typeof (_a = typeof chat_messages_service_1.Chat_messagesService !== "undefined" && chat_messages_service_1.Chat_messagesService) === "function" ? _a : Object])
+], Chat_messagesController);
+
+
+/***/ }),
+
+/***/ "./src/chat_messages/chat_messages.module.ts":
+/*!***************************************************!*\
+  !*** ./src/chat_messages/chat_messages.module.ts ***!
+  \***************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_messagesModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const chat_messages_service_1 = __webpack_require__(/*! ./chat_messages.service */ "./src/chat_messages/chat_messages.service.ts");
+const chat_messages_controller_1 = __webpack_require__(/*! ./chat_messages.controller */ "./src/chat_messages/chat_messages.controller.ts");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const chat_messages_entity_1 = __webpack_require__(/*! ./entities/chat_messages.entity */ "./src/chat_messages/entities/chat_messages.entity.ts");
+let Chat_messagesModule = class Chat_messagesModule {
+};
+exports.Chat_messagesModule = Chat_messagesModule;
+exports.Chat_messagesModule = Chat_messagesModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([chat_messages_entity_1.Chat_messagesEntity])],
+        controllers: [chat_messages_controller_1.Chat_messagesController],
+        providers: [chat_messages_service_1.Chat_messagesService],
+        exports: [chat_messages_service_1.Chat_messagesService]
+    })
+], Chat_messagesModule);
+
+
+/***/ }),
+
+/***/ "./src/chat_messages/chat_messages.service.ts":
+/*!****************************************************!*\
+  !*** ./src/chat_messages/chat_messages.service.ts ***!
+  \****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_messagesService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
+const chat_messages_entity_1 = __webpack_require__(/*! ./entities/chat_messages.entity */ "./src/chat_messages/entities/chat_messages.entity.ts");
+let Chat_messagesService = class Chat_messagesService {
+    constructor(Chat_messagesRepository) {
+        this.Chat_messagesRepository = Chat_messagesRepository;
+    }
+    async create(data) {
+        const check = await this.findSHD(data);
+        if (!check) {
+            this.Chat_messagesRepository.create(data);
+            return await this.Chat_messagesRepository.save(data);
+        }
+        else {
+            return { error: 1001, data: "Trùng Dữ Liệu" };
+        }
+    }
+    async findAll() {
+        return await this.Chat_messagesRepository.find();
+    }
+    async findid(id) {
+        return await this.Chat_messagesRepository.findOne({ where: { id: id } });
+    }
+    async findSHD(data) {
+        return await this.Chat_messagesRepository.findOne({
+            where: {
+                Title: data.Title,
+                Type: data.Type
+            },
+        });
+    }
+    async findslug(Title) {
+        return await this.Chat_messagesRepository.findOne({
+            where: { Title: Title },
+        });
+    }
+    async findPagination(page, perPage) {
+        const skip = (page - 1) * perPage;
+        const totalItems = await this.Chat_messagesRepository.count();
+        const Chat_messagess = await this.Chat_messagesRepository.find({ skip, take: perPage });
+        return {
+            currentPage: page,
+            perPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / perPage),
+            data: Chat_messagess,
+        };
+    }
+    async findQuery(params) {
+        console.error(params);
+        const queryBuilder = this.Chat_messagesRepository.createQueryBuilder('Chat_messages');
+        if (params.Batdau && params.Ketthuc) {
+            queryBuilder.andWhere('Chat_messages.CreateAt BETWEEN :startDate AND :endDate', {
+                startDate: params.Batdau,
+                endDate: params.Ketthuc,
+            });
+        }
+        if (params.Title) {
+            queryBuilder.andWhere('Chat_messages.Title LIKE :Title', { SDT: `%${params.Title}%` });
+        }
+        const [items, totalCount] = await queryBuilder
+            .limit(params.pageSize || 10)
+            .offset(params.pageNumber * params.pageSize || 0)
+            .getManyAndCount();
+        console.log(items, totalCount);
+        return { items, totalCount };
+    }
+    async update(id, UpdateChat_messagesDto) {
+        this.Chat_messagesRepository.save(UpdateChat_messagesDto);
+        return await this.Chat_messagesRepository.findOne({ where: { id: id } });
+    }
+    async remove(id) {
+        console.error(id);
+        await this.Chat_messagesRepository.delete(id);
+        return { deleted: true };
+    }
+};
+exports.Chat_messagesService = Chat_messagesService;
+exports.Chat_messagesService = Chat_messagesService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(chat_messages_entity_1.Chat_messagesEntity)),
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+], Chat_messagesService);
+
+
+/***/ }),
+
+/***/ "./src/chat_messages/entities/chat_messages.entity.ts":
+/*!************************************************************!*\
+  !*** ./src/chat_messages/entities/chat_messages.entity.ts ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_messagesEntity = void 0;
+const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
+let Chat_messagesEntity = class Chat_messagesEntity {
+};
+exports.Chat_messagesEntity = Chat_messagesEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, default: '0' }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "ref_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "SDT", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "idGroup", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Code", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Hoten", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "text", collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Gioitinh", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Image", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "EditChinhanhs", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Diachi", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Profile", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Phanquyen", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Menu", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-array" }),
+    __metadata("design:type", Array)
+], Chat_messagesEntity.prototype, "fcmToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "Type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], Chat_messagesEntity.prototype, "Ordering", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], Chat_messagesEntity.prototype, "Status", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], Chat_messagesEntity.prototype, "CreateAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], Chat_messagesEntity.prototype, "UpdateAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], Chat_messagesEntity.prototype, "DeleteAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Chat_messagesEntity.prototype, "idCreate", void 0);
+exports.Chat_messagesEntity = Chat_messagesEntity = __decorate([
+    (0, typeorm_1.Entity)('chat_messages', { orderBy: { CreateAt: 'DESC' } })
+], Chat_messagesEntity);
+
+
+/***/ }),
+
+/***/ "./src/chat_participants/chat_participants.controller.ts":
+/*!***************************************************************!*\
+  !*** ./src/chat_participants/chat_participants.controller.ts ***!
+  \***************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_participantsController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const chat_participants_service_1 = __webpack_require__(/*! ./chat_participants.service */ "./src/chat_participants/chat_participants.service.ts");
+let Chat_participantsController = class Chat_participantsController {
+    constructor(Chat_participantsService) {
+        this.Chat_participantsService = Chat_participantsService;
+    }
+    create(data) {
+        return this.Chat_participantsService.create(data);
+    }
+    async findAll() {
+        return await this.Chat_participantsService.findAll();
+    }
+    async findOne(id) {
+        return await this.Chat_participantsService.findid(id);
+    }
+    async findslug(slug) {
+        return await this.Chat_participantsService.findslug(slug);
+    }
+    async findPagination(page, perPage) {
+        return await this.Chat_participantsService.findPagination(page, perPage);
+    }
+    async findQuery(SearchParams) {
+        return await this.Chat_participantsService.findQuery(SearchParams);
+    }
+    update(id, data) {
+        return this.Chat_participantsService.update(id, data);
+    }
+    remove(id) {
+        return this.Chat_participantsService.remove(id);
+    }
+};
+exports.Chat_participantsController = Chat_participantsController;
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], Chat_participantsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], Chat_participantsController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('findid/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], Chat_participantsController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('findslug/:slug'),
+    __param(0, (0, common_1.Param)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], Chat_participantsController.prototype, "findslug", null);
+__decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('perPage')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], Chat_participantsController.prototype, "findPagination", null);
+__decorate([
+    (0, common_1.Post)('search'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], Chat_participantsController.prototype, "findQuery", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], Chat_participantsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], Chat_participantsController.prototype, "remove", null);
+exports.Chat_participantsController = Chat_participantsController = __decorate([
+    (0, common_1.Controller)('Chat_participants'),
+    __metadata("design:paramtypes", [typeof (_a = typeof chat_participants_service_1.Chat_participantsService !== "undefined" && chat_participants_service_1.Chat_participantsService) === "function" ? _a : Object])
+], Chat_participantsController);
+
+
+/***/ }),
+
+/***/ "./src/chat_participants/chat_participants.module.ts":
+/*!***********************************************************!*\
+  !*** ./src/chat_participants/chat_participants.module.ts ***!
+  \***********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_participantsModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const chat_participants_service_1 = __webpack_require__(/*! ./chat_participants.service */ "./src/chat_participants/chat_participants.service.ts");
+const chat_participants_controller_1 = __webpack_require__(/*! ./chat_participants.controller */ "./src/chat_participants/chat_participants.controller.ts");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const chat_participants_entity_1 = __webpack_require__(/*! ./entities/chat_participants.entity */ "./src/chat_participants/entities/chat_participants.entity.ts");
+let Chat_participantsModule = class Chat_participantsModule {
+};
+exports.Chat_participantsModule = Chat_participantsModule;
+exports.Chat_participantsModule = Chat_participantsModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([chat_participants_entity_1.Chat_participantsEntity])],
+        controllers: [chat_participants_controller_1.Chat_participantsController],
+        providers: [chat_participants_service_1.Chat_participantsService],
+        exports: [chat_participants_service_1.Chat_participantsService]
+    })
+], Chat_participantsModule);
+
+
+/***/ }),
+
+/***/ "./src/chat_participants/chat_participants.service.ts":
+/*!************************************************************!*\
+  !*** ./src/chat_participants/chat_participants.service.ts ***!
+  \************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_participantsService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
+const chat_participants_entity_1 = __webpack_require__(/*! ./entities/chat_participants.entity */ "./src/chat_participants/entities/chat_participants.entity.ts");
+let Chat_participantsService = class Chat_participantsService {
+    constructor(Chat_participantsRepository) {
+        this.Chat_participantsRepository = Chat_participantsRepository;
+    }
+    async create(data) {
+        const check = await this.findSHD(data);
+        if (!check) {
+            this.Chat_participantsRepository.create(data);
+            return await this.Chat_participantsRepository.save(data);
+        }
+        else {
+            return { error: 1001, data: "Trùng Dữ Liệu" };
+        }
+    }
+    async findAll() {
+        return await this.Chat_participantsRepository.find();
+    }
+    async findid(id) {
+        return await this.Chat_participantsRepository.findOne({ where: { id: id } });
+    }
+    async findSHD(data) {
+        return await this.Chat_participantsRepository.findOne({
+            where: {
+                Title: data.Title,
+                Type: data.Type
+            },
+        });
+    }
+    async findslug(Title) {
+        return await this.Chat_participantsRepository.findOne({
+            where: { Title: Title },
+        });
+    }
+    async findPagination(page, perPage) {
+        const skip = (page - 1) * perPage;
+        const totalItems = await this.Chat_participantsRepository.count();
+        const Chat_participantss = await this.Chat_participantsRepository.find({ skip, take: perPage });
+        return {
+            currentPage: page,
+            perPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / perPage),
+            data: Chat_participantss,
+        };
+    }
+    async findQuery(params) {
+        console.error(params);
+        const queryBuilder = this.Chat_participantsRepository.createQueryBuilder('Chat_participants');
+        if (params.Batdau && params.Ketthuc) {
+            queryBuilder.andWhere('Chat_participants.CreateAt BETWEEN :startDate AND :endDate', {
+                startDate: params.Batdau,
+                endDate: params.Ketthuc,
+            });
+        }
+        if (params.Title) {
+            queryBuilder.andWhere('Chat_participants.Title LIKE :Title', { SDT: `%${params.Title}%` });
+        }
+        const [items, totalCount] = await queryBuilder
+            .limit(params.pageSize || 10)
+            .offset(params.pageNumber * params.pageSize || 0)
+            .getManyAndCount();
+        console.log(items, totalCount);
+        return { items, totalCount };
+    }
+    async update(id, UpdateChat_participantsDto) {
+        this.Chat_participantsRepository.save(UpdateChat_participantsDto);
+        return await this.Chat_participantsRepository.findOne({ where: { id: id } });
+    }
+    async remove(id) {
+        console.error(id);
+        await this.Chat_participantsRepository.delete(id);
+        return { deleted: true };
+    }
+};
+exports.Chat_participantsService = Chat_participantsService;
+exports.Chat_participantsService = Chat_participantsService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(chat_participants_entity_1.Chat_participantsEntity)),
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+], Chat_participantsService);
+
+
+/***/ }),
+
+/***/ "./src/chat_participants/entities/chat_participants.entity.ts":
+/*!********************************************************************!*\
+  !*** ./src/chat_participants/entities/chat_participants.entity.ts ***!
+  \********************************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Chat_participantsEntity = void 0;
+const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
+let Chat_participantsEntity = class Chat_participantsEntity {
+};
+exports.Chat_participantsEntity = Chat_participantsEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, default: '0' }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "ref_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "SDT", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "idGroup", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Code", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Hoten", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "text", collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Gioitinh", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Image", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "EditChinhanhs", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Diachi", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Profile", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Phanquyen", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Menu", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-array" }),
+    __metadata("design:type", Array)
+], Chat_participantsEntity.prototype, "fcmToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "Type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], Chat_participantsEntity.prototype, "Ordering", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], Chat_participantsEntity.prototype, "Status", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], Chat_participantsEntity.prototype, "CreateAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], Chat_participantsEntity.prototype, "UpdateAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], Chat_participantsEntity.prototype, "DeleteAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], Chat_participantsEntity.prototype, "idCreate", void 0);
+exports.Chat_participantsEntity = Chat_participantsEntity = __decorate([
+    (0, typeorm_1.Entity)('chat_participants', { orderBy: { CreateAt: 'DESC' } })
+], Chat_participantsEntity);
 
 
 /***/ }),
