@@ -19,49 +19,66 @@ import { UploadService } from "../../uploadfile/uploadfile.service";
 })
 export class CkeditorComponent {
     @Input() Detail: any = 'Vui lòng nhập nội dung';
+    @Input() toolbar:any[]= [];  
     @Output() contentChange = new EventEmitter<any>();
-    constructor(private _UploadService: UploadService) { }
-    public Editor = ClassicEditor;
-    public config = {  
-        // extraAllowedContent: 'iframe[*];',
-        toolbar: [
-          'heading',
-          'alignment',
-          '|',
-          'bold',
-          'italic',
-          'link',
-          'bulletedList',
-          'numberedList',
-          'blockQuote',
-          'undo',
-          'redo',
-          'insertImage',
-          'mediaEmbed',
-          'toggleImageCaption',
-          'imageTextAlternative',
-          //  'sourceEditing',
-            ],
-        plugins: [
-          Alignment,List,Heading,BlockQuote,ImageTextAlternative,ImageCaption,
-           Bold, Essentials, Italic,Underline, Mention, Paragraph, Undo, Image, 
-           Table,MediaEmbed,LinkImage,ImageUpload,Clipboard,
-           SourceEditing,ImageResize,CodeBlock
-       ],
-        // licenseKey: 'M2IzZUd3ZDJhTGZhZDN4ejJaSnBTa2k5UlpWVURway9KQStTNCtuZSsvQWtMakpzelIzMzBMQVBHMndka3c9PS1NakF5TkRFeE1UTT0=',
-        // mention: {
-        //     Mention configuration
-        // }
+    constructor(private _UploadService: UploadService) { 
+      console.log(this.toolbar);
+      this.config.toolbar = this.toolbar.length > 0 ? this.toolbar : this.config.toolbar;
     }
-    
+    public Editor = ClassicEditor;   
+    public config:any ={  
+      // extraAllowedContent: 'iframe[*];',
+      toolbar: [
+        'heading',
+        'alignment',
+        '|',
+        'bold',
+        'italic',
+        'link',
+        'bulletedList',
+        'numberedList',
+        'blockQuote',
+        'undo',
+        'redo',
+        'insertImage',
+        'mediaEmbed',
+        'toggleImageCaption',
+        'imageTextAlternative',
+          ],
+      plugins: [
+        Alignment,List,Heading,BlockQuote,ImageTextAlternative,ImageCaption,
+         Bold, Essentials, Italic,Underline, Mention, Paragraph, Undo, Image, 
+         Table,MediaEmbed,LinkImage,ImageUpload,Clipboard,
+         SourceEditing,ImageResize,CodeBlock
+     ],
+      // extraPlugins: [CustomButtonPlugin]
+      // licenseKey: 'M2IzZUd3ZDJhTGZhZDN4ejJaSnBTa2k5UlpWVURway9KQStTNCtuZSsvQWtMakpzelIzMzBMQVBHMndka3c9PS1NakF5TkRFeE1UTT0=',
+      // mention: {
+      //     Mention configuration
+      // }
+    }
     onReady(editor: any) {
-       // console.log(editor);
+       console.log(editor);
         editor.plugins.get('FileRepository').createUploadAdapter = (loader: any) => {
           const result =  new MyUploadAdapter(loader,'local', this._UploadService);
           console.log(result);
           return result;
         };
-      }
+
+        editor.editing.view.document.on('keydown', (event: any, data: any) => {
+          console.log(data);
+          
+          if (data.ctrlKey && data.keyCode === 13) {
+            // Ctrl + End -> keyCode 35
+            this.SendFuncion(editor);
+            data.preventDefault(); // Ngăn chặn hành vi mặc định
+          }
+        });
+    }
+    SendFuncion(editor:any) {
+      console.log('Ctrl + End được nhấn!');
+      console.log(editor.getData());
+    }
     onChange(event: any) {
        this.contentChange.emit(event.editor.getData());
         // editor.model.document.on('change:data', () => {

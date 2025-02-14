@@ -32,6 +32,10 @@ export const TREE_DATA: any[] = [
       name: 'Quản Lý File',
       Slug:'quanlyfile'
     },
+    {
+      name: 'Hỗ Trợ',
+      Slug:'hotro'
+    },
     // {
     //   name: 'Vegetables',
     //   children: [

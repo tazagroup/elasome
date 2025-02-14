@@ -7,7 +7,7 @@ npx ng add @angular/pwa --force
 
 npm install @angular/service-worker
 
-npx ng g c mediumeditor  --skip-tests --standalone
+npx ng g c editorjs  --skip-tests --standalone
 npx ng g c footerteamplate2 --skip-tests --standalone
 npx ng g c footerteamplate3 --skip-tests --standalone
 npx ng g s users --skip-tests

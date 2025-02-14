@@ -11,8 +11,6 @@ export class DynamicComponentResolver implements Resolve<string> {
     const lastPart = slug.slice(slug.lastIndexOf('-') + 1); // Lấy phần sau dấu "-" cuối cùng
     const componentType = routeMap[lastPart] || 'notfound';
     console.log(componentType);
-   // const componentType = this.determineComponentType(result); // Logic xác định component
-   // console.log(componentType);
     history.replaceState({ componentType }, ''); // Lưu kết quả vào history.state
     return of(componentType); // Trả về kết quả dưới dạng Observable
   }

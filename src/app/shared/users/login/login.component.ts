@@ -1,6 +1,5 @@
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Component, inject, OnInit, Inject, PLATFORM_ID, HostListener } from '@angular/core';
-import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import * as Auth from 'firebase/auth';
 import { isPlatformBrowser } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -113,8 +112,12 @@ export class LoginComponent implements OnInit {
   }
   async loginWithGoogle() {
     const GoogleAuthProvider = new Auth.GoogleAuthProvider();
+    console.log(GoogleAuthProvider);
+    
     try {
       const result = await this.auth.signInWithPopup(GoogleAuthProvider);
+      console.log('Logged in:', result);
+      
       console.log('Logged in:', result.user);
       console.log('Logged in:', result.user?.providerData[0]);
       this._UsersService.LoginByGoogle(result.user?.providerData[0]).then((data:any) => {

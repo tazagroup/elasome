@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { SwiperComponent } from '../../shared/common/swiper/swiper.component';
 import { KeyfiguresComponent } from './keyfigures/keyfigures.component';
-import { GioithieuComponent } from './gioithieu/gioithieu.component';
-import { ProductsComponent } from '../../shared/common/products/products.component';
-import { BannerctaComponent } from '../../shared/common/bannercta/bannercta.component';
-import { BaivietComponent } from '../../shared/common/baiviet/baiviet.component';
-import { ContactformComponent } from '../../shared/common/contactform/contactform.component';
 import { Sanphams } from '../../shared/mockdata/sanpham';
 import { Reviews } from '../../shared/mockdata/review';
 import { Baiviets } from '../../shared/mockdata/baiviet';
@@ -15,7 +10,6 @@ import { Baiviets } from '../../shared/mockdata/baiviet';
   imports: [
     SwiperComponent,
     KeyfiguresComponent,
-    GioithieuComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

@@ -3,7 +3,7 @@ import { GuestGuard } from './shared/users/guards/guest.guard';
 import { AuthGuard } from './shared/users/guards/auth.guard';
 import { DynamicComponentResolver } from './dynamic-component.resolver';
 export const routes: Routes = [
-    // { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+    { path: '', redirectTo: 'admin/hotro', pathMatch: 'full' },
     {
       path: '404',
       loadComponent: () => import('./site/notfound/notfound.component').then((c) => c.NotfoundComponent),
@@ -13,6 +13,16 @@ export const routes: Routes = [
       canActivate: [AuthGuard],
       loadComponent: () => import('./admin/adminmain/adminmain.component').then((c) => c.AdminmainComponent),
       children: [
+        {
+          path: 'hotro',
+          loadComponent: () => import('./admin/hotro/listhotro/listhotro.component').then((c) => c.ListHotroComponent),
+          children: [
+            {
+              path: ':id',
+              loadComponent: () => import('./admin/hotro/listhotro/detailhotro/detailhotro.component').then((c) => c.DetailHotroComponent),
+            },
+          ],
+        },
         {
           path: 'users',
           loadComponent: () => import('./admin/adminmain/listuser/listuser.component').then((c) => c.ListuserComponent),
@@ -112,6 +122,7 @@ export const routes: Routes = [
     {
       path: '',
       loadComponent: () =>import('./site/sitemain/sitemain.component').then((c) => c.SitemainComponent),
+      // loadComponent: () =>import('./admin/hotro/listhotro/listhotro.component').then((c) => c.ListHotroComponent),
       // loadComponent: () =>import('./admin/vantay/vantay.component').then((c) => c.VantayComponent),
       //loadComponent: () =>import('./admin/facecomparison/facecomparison.component').then((c) => c.FacecomparisonComponent),
       children: [
