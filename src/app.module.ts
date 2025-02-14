@@ -16,6 +16,8 @@ import { AclModule } from './acl/acl.module';
 import { ConversationModule } from './conversations/conversations.module';
 import { MenuModule } from './menu/menu.module';
 import { HotroModule } from './hotro/hotro.module';
+import { GooglesheetsModule } from './googlesheets/googlesheets.module';
+import { HoadonModule } from './hoadon/hoadon.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -42,7 +44,9 @@ import { HotroModule } from './hotro/hotro.module';
     AclModule,
     ConversationModule,
     MenuModule,
-    HotroModule
+    HotroModule,
+    GooglesheetsModule,
+    HoadonModule,
   ],
   controllers: [AppController],
   providers: [AppService],

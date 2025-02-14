@@ -6,14 +6,14 @@ import {
      UpdateDateColumn,
      DeleteDateColumn,
    } from 'typeorm';
-   @Entity('hotro', {orderBy: { CreateAt: 'DESC' } })
-   export class HotroEntity {
+   @Entity('hoadon', {orderBy: { CreateAt: 'DESC' } })
+   export class HoadonEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
     @Column({collation: "utf8_general_ci"})
     Title: string;
     @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })
-    Dexuat: string;
+    Detail: string;
     @Column({ default: '' })
     Type: string;
     @Column({ default: 1 })

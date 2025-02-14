@@ -436,6 +436,8 @@ const acl_module_1 = __webpack_require__(/*! ./acl/acl.module */ "./src/acl/acl.
 const conversations_module_1 = __webpack_require__(/*! ./conversations/conversations.module */ "./src/conversations/conversations.module.ts");
 const menu_module_1 = __webpack_require__(/*! ./menu/menu.module */ "./src/menu/menu.module.ts");
 const hotro_module_1 = __webpack_require__(/*! ./hotro/hotro.module */ "./src/hotro/hotro.module.ts");
+const googlesheets_module_1 = __webpack_require__(/*! ./googlesheets/googlesheets.module */ "./src/googlesheets/googlesheets.module.ts");
+const hoadon_module_1 = __webpack_require__(/*! ./hoadon/hoadon.module */ "./src/hoadon/hoadon.module.ts");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -466,7 +468,9 @@ exports.AppModule = AppModule = __decorate([
             acl_module_1.AclModule,
             conversations_module_1.ConversationModule,
             menu_module_1.MenuModule,
-            hotro_module_1.HotroModule
+            hotro_module_1.HotroModule,
+            googlesheets_module_1.GooglesheetsModule,
+            hoadon_module_1.HoadonModule,
         ],
         controllers: [app_controller_1.AppController],
         providers: [app_service_1.AppService],
@@ -1442,6 +1446,357 @@ exports.DexuatService = DexuatService = __decorate([
 
 /***/ }),
 
+/***/ "./src/googlesheets/entities/googlesheets.entity.ts":
+/*!**********************************************************!*\
+  !*** ./src/googlesheets/entities/googlesheets.entity.ts ***!
+  \**********************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GooglesheetsEntity = void 0;
+const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
+let GooglesheetsEntity = class GooglesheetsEntity {
+};
+exports.GooglesheetsEntity = GooglesheetsEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true, default: '0' }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "ref_id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "SDT", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "idGroup", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Code", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Hoten", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ type: "text", collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Gioitinh", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Image", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "EditChinhanhs", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Diachi", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "password", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Profile", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Phanquyen", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Menu", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-array" }),
+    __metadata("design:type", Array)
+], GooglesheetsEntity.prototype, "fcmToken", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "Type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], GooglesheetsEntity.prototype, "Ordering", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], GooglesheetsEntity.prototype, "Status", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], GooglesheetsEntity.prototype, "CreateAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], GooglesheetsEntity.prototype, "UpdateAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], GooglesheetsEntity.prototype, "DeleteAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], GooglesheetsEntity.prototype, "idCreate", void 0);
+exports.GooglesheetsEntity = GooglesheetsEntity = __decorate([
+    (0, typeorm_1.Entity)('googlesheets', { orderBy: { CreateAt: 'DESC' } })
+], GooglesheetsEntity);
+
+
+/***/ }),
+
+/***/ "./src/googlesheets/googlesheets.controller.ts":
+/*!*****************************************************!*\
+  !*** ./src/googlesheets/googlesheets.controller.ts ***!
+  \*****************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GooglesheetsController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const googlesheets_service_1 = __webpack_require__(/*! ./googlesheets.service */ "./src/googlesheets/googlesheets.service.ts");
+let GooglesheetsController = class GooglesheetsController {
+    constructor(GooglesheetsService) {
+        this.GooglesheetsService = GooglesheetsService;
+    }
+    async getAll() {
+        return await this.GooglesheetsService.findAll();
+    }
+    async create(body) {
+        return await this.GooglesheetsService.create(body);
+    }
+    async update(row, body) {
+        const rowNumber = parseInt(row, 10);
+        return await this.GooglesheetsService.update(rowNumber, body);
+    }
+    async delete(row) {
+        const rowNumber = parseInt(row, 10);
+        return await this.GooglesheetsService.delete(rowNumber);
+    }
+};
+exports.GooglesheetsController = GooglesheetsController;
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], GooglesheetsController.prototype, "getAll", null);
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], GooglesheetsController.prototype, "create", null);
+__decorate([
+    (0, common_1.Put)(':row'),
+    __param(0, (0, common_1.Param)('row')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", Promise)
+], GooglesheetsController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':row'),
+    __param(0, (0, common_1.Param)('row')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], GooglesheetsController.prototype, "delete", null);
+exports.GooglesheetsController = GooglesheetsController = __decorate([
+    (0, common_1.Controller)('googlesheets'),
+    __metadata("design:paramtypes", [typeof (_a = typeof googlesheets_service_1.GooglesheetsService !== "undefined" && googlesheets_service_1.GooglesheetsService) === "function" ? _a : Object])
+], GooglesheetsController);
+
+
+/***/ }),
+
+/***/ "./src/googlesheets/googlesheets.module.ts":
+/*!*************************************************!*\
+  !*** ./src/googlesheets/googlesheets.module.ts ***!
+  \*************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GooglesheetsModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const googlesheets_service_1 = __webpack_require__(/*! ./googlesheets.service */ "./src/googlesheets/googlesheets.service.ts");
+const googlesheets_controller_1 = __webpack_require__(/*! ./googlesheets.controller */ "./src/googlesheets/googlesheets.controller.ts");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const googlesheets_entity_1 = __webpack_require__(/*! ./entities/googlesheets.entity */ "./src/googlesheets/entities/googlesheets.entity.ts");
+let GooglesheetsModule = class GooglesheetsModule {
+};
+exports.GooglesheetsModule = GooglesheetsModule;
+exports.GooglesheetsModule = GooglesheetsModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([googlesheets_entity_1.GooglesheetsEntity])],
+        controllers: [googlesheets_controller_1.GooglesheetsController],
+        providers: [googlesheets_service_1.GooglesheetsService],
+        exports: [googlesheets_service_1.GooglesheetsService]
+    })
+], GooglesheetsModule);
+
+
+/***/ }),
+
+/***/ "./src/googlesheets/googlesheets.service.ts":
+/*!**************************************************!*\
+  !*** ./src/googlesheets/googlesheets.service.ts ***!
+  \**************************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.GooglesheetsService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
+const googlesheets_entity_1 = __webpack_require__(/*! ./entities/googlesheets.entity */ "./src/googlesheets/entities/googlesheets.entity.ts");
+const googleapis_1 = __webpack_require__(/*! googleapis */ "googleapis");
+const path = __webpack_require__(/*! path */ "path");
+let GooglesheetsService = class GooglesheetsService {
+    constructor(GooglesheetsRepository) {
+        this.GooglesheetsRepository = GooglesheetsRepository;
+        this.spreadsheetId = '12Mjlh55kVxdX_12bgITi-zHDsa8EO9Puc6bSOkleIjg';
+        this.sheetName = 'TestAPI';
+        const auth = new googleapis_1.google.auth.GoogleAuth({
+            keyFile: path.join(__dirname, 'credentials.json'),
+            scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+        });
+        this.sheets = googleapis_1.google.sheets({ version: 'v4', auth });
+    }
+    async findAll() {
+        const res = await this.sheets.spreadsheets.values.get({
+            spreadsheetId: this.spreadsheetId,
+            range: `${this.sheetName}!A2:G`,
+        });
+        const rows = res.data.values;
+        if (!rows) {
+            return [];
+        }
+        return rows.map((row) => ({
+            id: row[0],
+            name: row[1],
+            email: row[2],
+            phone: row[3],
+            address: row[4],
+            city: row[5],
+            other: row[6],
+        }));
+    }
+    async create(data) {
+        const values = [[
+                data.id || '',
+                data.name || '',
+                data.email || '',
+                data.phone || '',
+                data.address || '',
+                data.city || '',
+                data.other || '',
+            ]];
+        const res = await this.sheets.spreadsheets.values.append({
+            spreadsheetId: this.spreadsheetId,
+            range: `${this.sheetName}!A:G`,
+            valueInputOption: 'USER_ENTERED',
+            requestBody: { values },
+        });
+        return res.data;
+    }
+    async update(rowNumber, data) {
+        const values = [[
+                data.id || '',
+                data.name || '',
+                data.email || '',
+                data.phone || '',
+                data.address || '',
+                data.city || '',
+                data.other || '',
+            ]];
+        const range = `${this.sheetName}!A${rowNumber}:G${rowNumber}`;
+        const res = await this.sheets.spreadsheets.values.update({
+            spreadsheetId: this.spreadsheetId,
+            range,
+            valueInputOption: 'USER_ENTERED',
+            requestBody: { values },
+        });
+        return res.data;
+    }
+    async delete(rowNumber) {
+        const range = `${this.sheetName}!A${rowNumber}:G${rowNumber}`;
+        const res = await this.sheets.spreadsheets.values.clear({
+            spreadsheetId: this.spreadsheetId,
+            range,
+        });
+        return res.data;
+    }
+};
+exports.GooglesheetsService = GooglesheetsService;
+exports.GooglesheetsService = GooglesheetsService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(googlesheets_entity_1.GooglesheetsEntity)),
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+], GooglesheetsService);
+
+
+/***/ }),
+
 /***/ "./src/highlight/entities/highlight.entity.ts":
 /*!****************************************************!*\
   !*** ./src/highlight/entities/highlight.entity.ts ***!
@@ -1808,6 +2163,340 @@ exports.HighlightService = HighlightService = __decorate([
     __param(0, (0, typeorm_1.InjectRepository)(highlight_entity_1.HighlightEntity)),
     __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
 ], HighlightService);
+
+
+/***/ }),
+
+/***/ "./src/hoadon/entities/hoadon.entity.ts":
+/*!**********************************************!*\
+  !*** ./src/hoadon/entities/hoadon.entity.ts ***!
+  \**********************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HoadonEntity = void 0;
+const typeorm_1 = __webpack_require__(/*! typeorm */ "typeorm");
+let HoadonEntity = class HoadonEntity {
+};
+exports.HoadonEntity = HoadonEntity;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)("uuid"),
+    __metadata("design:type", String)
+], HoadonEntity.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
+    __metadata("design:type", String)
+], HoadonEntity.prototype, "Title", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
+    __metadata("design:type", String)
+], HoadonEntity.prototype, "Detail", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: '' }),
+    __metadata("design:type", String)
+], HoadonEntity.prototype, "Type", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 1 }),
+    __metadata("design:type", Number)
+], HoadonEntity.prototype, "Ordering", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ default: 0 }),
+    __metadata("design:type", Number)
+], HoadonEntity.prototype, "Status", void 0);
+__decorate([
+    (0, typeorm_1.CreateDateColumn)(),
+    __metadata("design:type", typeof (_a = typeof Date !== "undefined" && Date) === "function" ? _a : Object)
+], HoadonEntity.prototype, "CreateAt", void 0);
+__decorate([
+    (0, typeorm_1.UpdateDateColumn)(),
+    __metadata("design:type", typeof (_b = typeof Date !== "undefined" && Date) === "function" ? _b : Object)
+], HoadonEntity.prototype, "UpdateAt", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)(),
+    __metadata("design:type", typeof (_c = typeof Date !== "undefined" && Date) === "function" ? _c : Object)
+], HoadonEntity.prototype, "DeleteAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], HoadonEntity.prototype, "idCreate", void 0);
+exports.HoadonEntity = HoadonEntity = __decorate([
+    (0, typeorm_1.Entity)('hoadon', { orderBy: { CreateAt: 'DESC' } })
+], HoadonEntity);
+
+
+/***/ }),
+
+/***/ "./src/hoadon/hoadon.controller.ts":
+/*!*****************************************!*\
+  !*** ./src/hoadon/hoadon.controller.ts ***!
+  \*****************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HoadonController = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const hoadon_service_1 = __webpack_require__(/*! ./hoadon.service */ "./src/hoadon/hoadon.service.ts");
+let HoadonController = class HoadonController {
+    constructor(HoadonService) {
+        this.HoadonService = HoadonService;
+    }
+    create(data) {
+        return this.HoadonService.create(data);
+    }
+    async findAll() {
+        return await this.HoadonService.findAll();
+    }
+    async findOne(id) {
+        return await this.HoadonService.findid(id);
+    }
+    async findslug(slug) {
+        return await this.HoadonService.findslug(slug);
+    }
+    async findPagination(page, perPage) {
+        return await this.HoadonService.findPagination(page, perPage);
+    }
+    async findQuery(SearchParams) {
+        return await this.HoadonService.findQuery(SearchParams);
+    }
+    update(id, data) {
+        return this.HoadonService.update(id, data);
+    }
+    remove(id) {
+        return this.HoadonService.remove(id);
+    }
+};
+exports.HoadonController = HoadonController;
+__decorate([
+    (0, common_1.Post)(),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", void 0)
+], HoadonController.prototype, "create", null);
+__decorate([
+    (0, common_1.Get)(),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", Promise)
+], HoadonController.prototype, "findAll", null);
+__decorate([
+    (0, common_1.Get)('findid/:id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HoadonController.prototype, "findOne", null);
+__decorate([
+    (0, common_1.Get)('findslug/:slug'),
+    __param(0, (0, common_1.Param)('slug')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], HoadonController.prototype, "findslug", null);
+__decorate([
+    (0, common_1.Get)('pagination'),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('perPage')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], HoadonController.prototype, "findPagination", null);
+__decorate([
+    (0, common_1.Post)('search'),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], HoadonController.prototype, "findQuery", null);
+__decorate([
+    (0, common_1.Patch)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:returntype", void 0)
+], HoadonController.prototype, "update", null);
+__decorate([
+    (0, common_1.Delete)(':id'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", void 0)
+], HoadonController.prototype, "remove", null);
+exports.HoadonController = HoadonController = __decorate([
+    (0, common_1.Controller)('hoadon'),
+    __metadata("design:paramtypes", [typeof (_a = typeof hoadon_service_1.HoadonService !== "undefined" && hoadon_service_1.HoadonService) === "function" ? _a : Object])
+], HoadonController);
+
+
+/***/ }),
+
+/***/ "./src/hoadon/hoadon.module.ts":
+/*!*************************************!*\
+  !*** ./src/hoadon/hoadon.module.ts ***!
+  \*************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HoadonModule = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const hoadon_service_1 = __webpack_require__(/*! ./hoadon.service */ "./src/hoadon/hoadon.service.ts");
+const hoadon_controller_1 = __webpack_require__(/*! ./hoadon.controller */ "./src/hoadon/hoadon.controller.ts");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const hoadon_entity_1 = __webpack_require__(/*! ./entities/hoadon.entity */ "./src/hoadon/entities/hoadon.entity.ts");
+let HoadonModule = class HoadonModule {
+};
+exports.HoadonModule = HoadonModule;
+exports.HoadonModule = HoadonModule = __decorate([
+    (0, common_1.Module)({
+        imports: [typeorm_1.TypeOrmModule.forFeature([hoadon_entity_1.HoadonEntity])],
+        controllers: [hoadon_controller_1.HoadonController],
+        providers: [hoadon_service_1.HoadonService],
+        exports: [hoadon_service_1.HoadonService]
+    })
+], HoadonModule);
+
+
+/***/ }),
+
+/***/ "./src/hoadon/hoadon.service.ts":
+/*!**************************************!*\
+  !*** ./src/hoadon/hoadon.service.ts ***!
+  \**************************************/
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+var _a;
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.HoadonService = void 0;
+const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
+const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
+const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
+const hoadon_entity_1 = __webpack_require__(/*! ./entities/hoadon.entity */ "./src/hoadon/entities/hoadon.entity.ts");
+let HoadonService = class HoadonService {
+    constructor(HoadonRepository) {
+        this.HoadonRepository = HoadonRepository;
+    }
+    async create(data) {
+        const check = await this.findSHD(data);
+        if (!check) {
+            this.HoadonRepository.create(data);
+            return await this.HoadonRepository.save(data);
+        }
+        else {
+            return { error: 1001, data: "Trùng Dữ Liệu" };
+        }
+    }
+    async findAll() {
+        return await this.HoadonRepository.find();
+    }
+    async findid(id) {
+        return await this.HoadonRepository.findOne({ where: { id: id } });
+    }
+    async findSHD(data) {
+        return await this.HoadonRepository.findOne({
+            where: {
+                Title: data.Title,
+                Type: data.Type
+            },
+        });
+    }
+    async findslug(Title) {
+        return await this.HoadonRepository.findOne({
+            where: { Title: Title },
+        });
+    }
+    async findPagination(page, perPage) {
+        const skip = (page - 1) * perPage;
+        const totalItems = await this.HoadonRepository.count();
+        const Hoadons = await this.HoadonRepository.find({ skip, take: perPage });
+        return {
+            currentPage: page,
+            perPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / perPage),
+            data: Hoadons,
+        };
+    }
+    async findQuery(params) {
+        console.error(params);
+        const queryBuilder = this.HoadonRepository.createQueryBuilder('Hoadon');
+        if (params.Batdau && params.Ketthuc) {
+            queryBuilder.andWhere('Hoadon.CreateAt BETWEEN :startDate AND :endDate', {
+                startDate: params.Batdau,
+                endDate: params.Ketthuc,
+            });
+        }
+        if (params.Title) {
+            queryBuilder.andWhere('Hoadon.Title LIKE :Title', { SDT: `%${params.Title}%` });
+        }
+        const [items, totalCount] = await queryBuilder
+            .limit(params.pageSize || 10)
+            .offset(params.pageNumber * params.pageSize || 0)
+            .getManyAndCount();
+        console.log(items, totalCount);
+        return { items, totalCount };
+    }
+    async update(id, UpdateHoadonDto) {
+        this.HoadonRepository.save(UpdateHoadonDto);
+        return await this.HoadonRepository.findOne({ where: { id: id } });
+    }
+    async remove(id) {
+        console.error(id);
+        await this.HoadonRepository.delete(id);
+        return { deleted: true };
+    }
+};
+exports.HoadonService = HoadonService;
+exports.HoadonService = HoadonService = __decorate([
+    (0, common_1.Injectable)(),
+    __param(0, (0, typeorm_1.InjectRepository)(hoadon_entity_1.HoadonEntity)),
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+], HoadonService);
 
 
 /***/ }),
@@ -2215,69 +2904,13 @@ __decorate([
     __metadata("design:type", String)
 ], HotroEntity.prototype, "id", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ nullable: true, default: '0' }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "ref_id", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "SDT", void 0);
-__decorate([
     (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
     __metadata("design:type", String)
 ], HotroEntity.prototype, "Title", void 0);
 __decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "idGroup", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Code", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Hoten", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "email", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ type: "text", collation: "utf8_general_ci" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Gioitinh", void 0);
-__decorate([
     (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('{}')" }),
     __metadata("design:type", String)
-], HotroEntity.prototype, "Image", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "EditChinhanhs", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Diachi", void 0);
-__decorate([
-    (0, typeorm_1.Column)(),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "password", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Profile", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Phanquyen", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-json", default: () => "('[]')" }),
-    __metadata("design:type", String)
-], HotroEntity.prototype, "Menu", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ collation: "utf8_general_ci", type: "simple-array" }),
-    __metadata("design:type", Array)
-], HotroEntity.prototype, "fcmToken", void 0);
+], HotroEntity.prototype, "Dexuat", void 0);
 __decorate([
     (0, typeorm_1.Column)({ default: '' }),
     __metadata("design:type", String)
