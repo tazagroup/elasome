@@ -5,12 +5,8 @@
    CreateDateColumn,
    UpdateDateColumn,
    DeleteDateColumn,
-   ManyToMany,
-   JoinColumn,
-   OneToOne,
  } from 'typeorm';
 import { Role } from '../dto/create-user.dto';
-import { HotroEntity } from 'src/hotro/entities/hotro.entity';
  @Entity('users', {orderBy: { CreateAt: 'DESC' } })
  export class UsersEntity {
   @PrimaryGeneratedColumn("uuid")

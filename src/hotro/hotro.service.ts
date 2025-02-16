@@ -2,13 +2,13 @@ import { Injectable } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
   import { In, Like, Repository } from 'typeorm';
   import { HotroEntity } from './entities/hotro.entity';
-import { UsersEntity } from 'src/users/entities/user.entity';
+import { UsersService } from 'src/users/users.service';
   @Injectable()
   export class HotroService {
     constructor(
       @InjectRepository(HotroEntity)
       private HotroRepository: Repository<HotroEntity>,
-      private UsersRepository: Repository<UsersEntity>
+      private _UsersService: UsersService,
     ) { }
     async create(data: any) {
       const check = await this.findSHD(data)
@@ -30,11 +30,11 @@ import { UsersEntity } from 'src/users/entities/user.entity';
       // Lấy danh sách user id duy nhất từ hotros
       const userIds = [...new Set(hotros.map((h: any) => h.idCreate))];
       // Truy vấn chỉ những user có id trong danh sách userIds
-      const users = await this.UsersRepository.find({ where: { id: In(userIds) } }); 
-      // Tạo map từ user id sang tên người dùng
-      const userMap = new Map(users.map((u: any) => [u.id, u.Hoten]));
-      // Gán tên người dùng cho từng hotro
-      hotros.forEach((h: any) => {
+     const users = await this._UsersService.finduserIds(userIds); 
+      //Tạo map từ user id sang tên người dùng
+     const userMap = new Map(users.map((u: any) => [u.id, u.Hoten]));
+     // Gán tên người dùng cho từng hotro
+     hotros.forEach((h: any) => {
         h.Hoten = userMap.get(h.idCreate) || null;
       });
       return {

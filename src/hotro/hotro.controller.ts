@@ -12,6 +12,8 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
     async findAll(@Query('page') page: number, @Query('perPage') perPage: number) {
       return await this.HotroService.findAll(page, perPage);
     }
+    
+
     @Get('findid/:id')
     async findOne(@Param('id') id: string) {
       return await this.HotroService.findid(id);

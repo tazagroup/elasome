@@ -4086,8 +4086,8 @@ let HotroController = class HotroController {
     create(data) {
         return this.HotroService.create(data);
     }
-    async findAll() {
-        return await this.HotroService.findAll();
+    async findAll(page, perPage) {
+        return await this.HotroService.findAll(page, perPage);
     }
     async findOne(id) {
         return await this.HotroService.findid(id);
@@ -4118,8 +4118,10 @@ __decorate([
 ], HotroController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
+    __param(0, (0, common_1.Query)('page')),
+    __param(1, (0, common_1.Query)('perPage')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
+    __metadata("design:paramtypes", [Number, Number]),
     __metadata("design:returntype", Promise)
 ], HotroController.prototype, "findAll", null);
 __decorate([
@@ -4194,12 +4196,16 @@ const hotro_service_1 = __webpack_require__(/*! ./hotro.service */ "./src/hotro/
 const hotro_controller_1 = __webpack_require__(/*! ./hotro.controller */ "./src/hotro/hotro.controller.ts");
 const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
 const hotro_entity_1 = __webpack_require__(/*! ./entities/hotro.entity */ "./src/hotro/entities/hotro.entity.ts");
+const users_module_1 = __webpack_require__(/*! src/users/users.module */ "./src/users/users.module.ts");
 let HotroModule = class HotroModule {
 };
 exports.HotroModule = HotroModule;
 exports.HotroModule = HotroModule = __decorate([
     (0, common_1.Module)({
-        imports: [typeorm_1.TypeOrmModule.forFeature([hotro_entity_1.HotroEntity])],
+        imports: [
+            typeorm_1.TypeOrmModule.forFeature([hotro_entity_1.HotroEntity]),
+            users_module_1.UsersModule
+        ],
         controllers: [hotro_controller_1.HotroController],
         providers: [hotro_service_1.HotroService],
         exports: [hotro_service_1.HotroService]
@@ -4228,16 +4234,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var _a;
+var _a, _b;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.HotroService = void 0;
 const common_1 = __webpack_require__(/*! @nestjs/common */ "@nestjs/common");
 const typeorm_1 = __webpack_require__(/*! @nestjs/typeorm */ "@nestjs/typeorm");
 const typeorm_2 = __webpack_require__(/*! typeorm */ "typeorm");
 const hotro_entity_1 = __webpack_require__(/*! ./entities/hotro.entity */ "./src/hotro/entities/hotro.entity.ts");
+const users_service_1 = __webpack_require__(/*! src/users/users.service */ "./src/users/users.service.ts");
 let HotroService = class HotroService {
-    constructor(HotroRepository) {
+    constructor(HotroRepository, _UsersService) {
         this.HotroRepository = HotroRepository;
+        this._UsersService = _UsersService;
     }
     async create(data) {
         const check = await this.findSHD(data);
@@ -4249,8 +4257,23 @@ let HotroService = class HotroService {
             return { error: 1001, data: "Trùng Dữ Liệu" };
         }
     }
-    async findAll() {
-        return await this.HotroRepository.find();
+    async findAll(page, perPage) {
+        const skip = (page - 1) * perPage;
+        const totalItems = await this.HotroRepository.count();
+        const hotros = await this.HotroRepository.find({ skip, take: perPage });
+        const userIds = [...new Set(hotros.map((h) => h.idCreate))];
+        const users = await this._UsersService.finduserIds(userIds);
+        const userMap = new Map(users.map((u) => [u.id, u.Hoten]));
+        hotros.forEach((h) => {
+            h.Hoten = userMap.get(h.idCreate) || null;
+        });
+        return {
+            currentPage: page,
+            perPage,
+            totalItems,
+            totalPages: Math.ceil(totalItems / perPage),
+            data: hotros,
+        };
     }
     async findid(id) {
         return await this.HotroRepository.findOne({ where: { id: id } });
@@ -4313,7 +4336,7 @@ exports.HotroService = HotroService;
 exports.HotroService = HotroService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(hotro_entity_1.HotroEntity)),
-    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object])
+    __metadata("design:paramtypes", [typeof (_a = typeof typeorm_2.Repository !== "undefined" && typeorm_2.Repository) === "function" ? _a : Object, typeof (_b = typeof users_service_1.UsersService !== "undefined" && users_service_1.UsersService) === "function" ? _b : Object])
 ], HotroService);
 
 
@@ -7858,6 +7881,9 @@ let UsersService = class UsersService {
     }
     async findid(id) {
         return await this.usersRepository.findOne({ where: { id: id } });
+    }
+    async finduserIds(userIds) {
+        return await this.usersRepository.find({ where: { id: (0, typeorm_2.In)(userIds) } });
     }
     async findSDT(sdt) {
         return await this.usersRepository.findOne({

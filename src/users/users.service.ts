@@ -1,6 +1,6 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { In, Repository } from 'typeorm';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UsersEntity } from './entities/user.entity';
 import { GenId } from 'src/shared/util';
@@ -129,7 +129,9 @@ export class UsersService {
   async findid(id: string) {
     return await this.usersRepository.findOne({ where: { id: id } });
   }
-
+  async finduserIds(userIds: any[]) {
+    return await this.usersRepository.find({ where: { id: In(userIds) } });
+  }
   async findSDT(sdt: any) {
     return await this.usersRepository.findOne({
       where: { SDT: sdt },

@@ -5,7 +5,7 @@ import { UsersController } from './users.controller';
 import { UsersEntity } from './entities/user.entity';
 import { UsergroupModule } from 'src/usergroup/usergroup.module';
 import { PassportModule } from '@nestjs/passport';
-import { JwtModule } from '@nestjs/jwt';
+import { JwtModule, JwtService } from '@nestjs/jwt';
 import { JwtStrategy } from './entities/jwt.strategy';
 import { LocalStrategy } from './entities/local.strategy';
 @Module({
