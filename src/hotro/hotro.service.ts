@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
-  import { Like, Repository } from 'typeorm';
+  import { In, Like, Repository } from 'typeorm';
   import { HotroEntity } from './entities/hotro.entity';
 import { UsersEntity } from 'src/users/entities/user.entity';
   @Injectable()
@@ -25,21 +25,24 @@ import { UsersEntity } from 'src/users/entities/user.entity';
     async findAll(page: number, perPage: number) {
       const skip = (page - 1) * perPage;
       const totalItems = await this.HotroRepository.count();
-      const Hotros = await this.HotroRepository.find({ skip, take: perPage });
-      const Users = await this.UsersRepository.find();
-      Hotros.forEach((v:any) => {
-        Users.forEach((u:any) => {
-          if (v.idCreate == u.id) {
-            v.Hoten = u.Hoten;
-          }
-        });
+      // Lấy danh sách Hotros theo phân trang
+      const hotros = await this.HotroRepository.find({ skip, take: perPage });
+      // Lấy danh sách user id duy nhất từ hotros
+      const userIds = [...new Set(hotros.map((h: any) => h.idCreate))];
+      // Truy vấn chỉ những user có id trong danh sách userIds
+      const users = await this.UsersRepository.find({ where: { id: In(userIds) } }); 
+      // Tạo map từ user id sang tên người dùng
+      const userMap = new Map(users.map((u: any) => [u.id, u.Hoten]));
+      // Gán tên người dùng cho từng hotro
+      hotros.forEach((h: any) => {
+        h.Hoten = userMap.get(h.idCreate) || null;
       });
       return {
-      currentPage: page,
-      perPage,
-      totalItems,
-      totalPages: Math.ceil(totalItems / perPage),
-      data: Hotros,
+        currentPage: page,
+        perPage,
+        totalItems,
+        totalPages: Math.ceil(totalItems / perPage),
+        data: hotros,
       };
     }
     
