@@ -2,11 +2,13 @@ import { Injectable } from '@nestjs/common';
   import { InjectRepository } from '@nestjs/typeorm';
   import { Like, Repository } from 'typeorm';
   import { HotroEntity } from './entities/hotro.entity';
+import { UsersEntity } from 'src/users/entities/user.entity';
   @Injectable()
   export class HotroService {
     constructor(
       @InjectRepository(HotroEntity)
-      private HotroRepository: Repository<HotroEntity>
+      private HotroRepository: Repository<HotroEntity>,
+      private UsersRepository: Repository<UsersEntity>
     ) { }
     async create(data: any) {
       const check = await this.findSHD(data)
@@ -20,9 +22,27 @@ import { Injectable } from '@nestjs/common';
   
     }
   
-    async findAll() {
-      return await this.HotroRepository.find();
+    async findAll(page: number, perPage: number) {
+      const skip = (page - 1) * perPage;
+      const totalItems = await this.HotroRepository.count();
+      const Hotros = await this.HotroRepository.find({ skip, take: perPage });
+      const Users = await this.UsersRepository.find();
+      Hotros.forEach((v:any) => {
+        Users.forEach((u:any) => {
+          if (v.idCreate == u.id) {
+            v.Hoten = u.Hoten;
+          }
+        });
+      });
+      return {
+      currentPage: page,
+      perPage,
+      totalItems,
+      totalPages: Math.ceil(totalItems / perPage),
+      data: Hotros,
+      };
     }
+    
     async findid(id: string) {
       return await this.HotroRepository.findOne({ where: { id: id } });
     }

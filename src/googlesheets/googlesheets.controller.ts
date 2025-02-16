@@ -4,15 +4,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@
   export class GooglesheetsController {
     constructor(private readonly GooglesheetsService:GooglesheetsService) {}
   
-    @Get()
-  async getAll() {
-    return await this.GooglesheetsService.findAll();
+  @Get()
+  async getAll(@Query('sheetId') sheetId: string, @Query('sheetName') sheetName: string) {
+    return await this.GooglesheetsService.findAll(sheetId, sheetName);
   }
 
   // POST /sheets
   @Post()
-  async create(@Body() body: any) {
-    return await this.GooglesheetsService.create(body);
+  async create(@Query('sheetId') sheetId: string, @Query('sheetName') sheetName: string, @Body() body: any) {
+    return await this.GooglesheetsService.create(sheetId, sheetName, body);
   }
 
   // PUT /sheets/:row – update the row (pass the actual sheet row number; for example, 2 for the first data row)

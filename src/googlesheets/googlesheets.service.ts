@@ -22,11 +22,13 @@ import * as path from 'path';
       this.sheets = google.sheets({ version: 'v4', auth });
     }
     // READ: Get all data rows (assuming the first row is a header)
-    async findAll(): Promise<any[]> {
+    async findAll(sheetId:any, sheetName:any): Promise<any[]> {
       const res = await this.sheets.spreadsheets.values.get({
-        spreadsheetId: this.spreadsheetId,
-        range: `${this.sheetName}!A2:G`, // adjust the range based on your sheet
+        spreadsheetId: sheetId,
+        range: `${sheetName}!A:Z`, // adjust the range based on your sheet
       });
+      console.log(res);
+      
       const rows = res.data.values;
       if (!rows) {
         return [];
@@ -44,22 +46,22 @@ import * as path from 'path';
     }
   
     // CREATE: Append a new row to the sheet
-    async create(data: any): Promise<any> {
+    async create(sheetId: any, sheetName: any, data: any): Promise<any> {
       const values = [[
-        data.id || '',         // optionally, generate or supply an id
-        data.name || '',
-        data.email || '',
-        data.phone || '',
-        data.address || '',
-        data.city || '',
-        data.other || '',
+      data.id || '',         // optionally, generate or supply an id
+      data.name || '',
+      data.email || '',
+      data.phone || '',
+      data.address || '',
+      data.city || '',
+      data.other || '',
       ]];
-  
+    
       const res = await this.sheets.spreadsheets.values.append({
-        spreadsheetId: this.spreadsheetId,
-        range: `${this.sheetName}!A:G`,
-        valueInputOption: 'USER_ENTERED',
-        requestBody: { values },
+      spreadsheetId: sheetId,
+      range: `${sheetName}!A:Z`,
+      valueInputOption: 'USER_ENTERED',
+      requestBody: { values },
       });
       return res.data;
     }
