@@ -11,15 +11,15 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, Put } from '@
 
   // POST /sheets
   @Post()
-  async create(@Query('sheetId') sheetId: string, @Query('sheetName') sheetName: string, @Body() body: any) {
-    return await this.GooglesheetsService.create(sheetId, sheetName, body);
+  async create(@Query('sheetId') sheetId: string, @Query('sheetName') sheetName: string, @Query('numfield') numfield: number, @Body() body: any) {
+    return await this.GooglesheetsService.create(sheetId, sheetName, body,numfield);
   }
 
   // PUT /sheets/:row – update the row (pass the actual sheet row number; for example, 2 for the first data row)
   @Put(':row')
-  async update(@Param('row') row: string, @Body() body: any) {
+  async update(@Query('numfield') numfield: number,@Param('row') row: string, @Body() body: any) {
     const rowNumber = parseInt(row, 10);
-    return await this.GooglesheetsService.update(rowNumber, body);
+    return await this.GooglesheetsService.update(rowNumber, body,numfield);
   }
 
   // DELETE /sheets/:row – clear the row contents

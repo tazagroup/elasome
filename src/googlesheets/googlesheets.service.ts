@@ -46,16 +46,8 @@ import * as path from 'path';
     }
   
     // CREATE: Append a new row to the sheet
-    async create(sheetId: any, sheetName: any, data: any): Promise<any> {
-      const values = [[
-      data.id || '',         // optionally, generate or supply an id
-      data.name || '',
-      data.email || '',
-      data.phone || '',
-      data.address || '',
-      data.city || '',
-      data.other || '',
-      ]];
+    async create(sheetId: any, sheetName: any, data: any,numfield:any=1): Promise<any> {
+      const values = [Array.from({ length: numfield }, (_, i) => data[`field${i + 1}`] || '')];
     
       const res = await this.sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
@@ -67,16 +59,8 @@ import * as path from 'path';
     }
   
     // UPDATE: Update an existing row by row number (e.g. row 2 is the first data row)
-    async update(rowNumber: number, data: any): Promise<any> {
-      const values = [[
-        data.id || '',
-        data.name || '',
-        data.email || '',
-        data.phone || '',
-        data.address || '',
-        data.city || '',
-        data.other || '',
-      ]];
+    async update(rowNumber: number, data: any,numfield:any=1): Promise<any> {
+      const values = [Array.from({ length: numfield }, (_, i) => data[`field${i + 1}`] || '')];
       const range = `${this.sheetName}!A${rowNumber}:G${rowNumber}`;
       const res = await this.sheets.spreadsheets.values.update({
         spreadsheetId: this.spreadsheetId,
