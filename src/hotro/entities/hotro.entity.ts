@@ -10,6 +10,10 @@ import {
    export class HotroEntity {
     @PrimaryGeneratedColumn("uuid")
     id: string;
+    @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+    idUsers: string;
+    @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('[]')" })
+    idChat: string;
     @Column({collation: "utf8_general_ci"})
     Title: string;
     @Column({collation: "utf8_general_ci",type:"simple-json",default: () => "('{}')" })

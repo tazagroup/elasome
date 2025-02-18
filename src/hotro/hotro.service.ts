@@ -31,6 +31,8 @@ import { UsersService } from 'src/users/users.service';
       const userIds = [...new Set(hotros.map((h: any) => h.idCreate))];
       // Truy vấn chỉ những user có id trong danh sách userIds
      const users = await this._UsersService.finduserIds(userIds); 
+     console.error(users);
+     
       //Tạo map từ user id sang tên người dùng
      const userMap = new Map(users.map((u: any) => [u.id, u.Hoten]));
      // Gán tên người dùng cho từng hotro
