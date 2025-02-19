@@ -46,9 +46,12 @@ import * as path from 'path';
     }
   
     // CREATE: Append a new row to the sheet
-    async create(sheetId: any, sheetName: any, data: any,numfield:any=1): Promise<any> {
-      const values = [Array.from({ length: numfield }, (_, i) => data[`field${i + 1}`] || '')];
-    
+    async create(sheetId: any, sheetName: any, data: any,numfield:any=1): Promise<any> {   
+        const values = data.map((item:any) => 
+          Array.from({ length: numfield }, (_, i) => item[`field${i + 1}`] || '')
+        );
+
+      // const values = [Array.from({ length: numfield }, (_, i) => data[`field${i + 1}`] || '')];
       const res = await this.sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
       range: `${sheetName}!A:Z`,

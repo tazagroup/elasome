@@ -1936,12 +1936,12 @@ let GooglesheetsController = class GooglesheetsController {
     async getAll(sheetId, sheetName) {
         return await this.GooglesheetsService.findAll(sheetId, sheetName);
     }
-    async create(sheetId, sheetName, body) {
-        return await this.GooglesheetsService.create(sheetId, sheetName, body);
+    async create(sheetId, sheetName, numfield, body) {
+        return await this.GooglesheetsService.create(sheetId, sheetName, body, numfield);
     }
-    async update(row, body) {
+    async update(numfield, row, body) {
         const rowNumber = parseInt(row, 10);
-        return await this.GooglesheetsService.update(rowNumber, body);
+        return await this.GooglesheetsService.update(rowNumber, body, numfield);
     }
     async delete(row) {
         const rowNumber = parseInt(row, 10);
@@ -1961,17 +1961,19 @@ __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Query)('sheetId')),
     __param(1, (0, common_1.Query)('sheetName')),
-    __param(2, (0, common_1.Body)()),
+    __param(2, (0, common_1.Query)('numfield')),
+    __param(3, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, String, Object]),
+    __metadata("design:paramtypes", [String, String, Number, Object]),
     __metadata("design:returntype", Promise)
 ], GooglesheetsController.prototype, "create", null);
 __decorate([
     (0, common_1.Put)(':row'),
-    __param(0, (0, common_1.Param)('row')),
-    __param(1, (0, common_1.Body)()),
+    __param(0, (0, common_1.Query)('numfield')),
+    __param(1, (0, common_1.Param)('row')),
+    __param(2, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, Object]),
+    __metadata("design:paramtypes", [Number, String, Object]),
     __metadata("design:returntype", Promise)
 ], GooglesheetsController.prototype, "update", null);
 __decorate([
@@ -2083,16 +2085,8 @@ let GooglesheetsService = class GooglesheetsService {
             other: row[6],
         }));
     }
-    async create(sheetId, sheetName, data) {
-        const values = [[
-                data.id || '',
-                data.name || '',
-                data.email || '',
-                data.phone || '',
-                data.address || '',
-                data.city || '',
-                data.other || '',
-            ]];
+    async create(sheetId, sheetName, data, numfield = 1) {
+        const values = data.map((item) => Array.from({ length: numfield }, (_, i) => item[`field${i + 1}`] || ''));
         const res = await this.sheets.spreadsheets.values.append({
             spreadsheetId: sheetId,
             range: `${sheetName}!A:Z`,
@@ -2101,16 +2095,8 @@ let GooglesheetsService = class GooglesheetsService {
         });
         return res.data;
     }
-    async update(rowNumber, data) {
-        const values = [[
-                data.id || '',
-                data.name || '',
-                data.email || '',
-                data.phone || '',
-                data.address || '',
-                data.city || '',
-                data.other || '',
-            ]];
+    async update(rowNumber, data, numfield = 1) {
+        const values = [Array.from({ length: numfield }, (_, i) => data[`field${i + 1}`] || '')];
         const range = `${this.sheetName}!A${rowNumber}:G${rowNumber}`;
         const res = await this.sheets.spreadsheets.values.update({
             spreadsheetId: this.spreadsheetId,
