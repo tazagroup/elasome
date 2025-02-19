@@ -2065,25 +2065,22 @@ let GooglesheetsService = class GooglesheetsService {
         });
         this.sheets = googleapis_1.google.sheets({ version: 'v4', auth });
     }
-    async findAll(sheetId, sheetName) {
+    async findAll(sheetId, sheetName, numfield = 1) {
         const res = await this.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             range: `${sheetName}!A:Z`,
         });
-        console.log(res);
         const rows = res.data.values;
         if (!rows) {
             return [];
         }
-        return rows.map((row) => ({
-            id: row[0],
-            name: row[1],
-            email: row[2],
-            phone: row[3],
-            address: row[4],
-            city: row[5],
-            other: row[6],
-        }));
+        return rows.map((row) => {
+            const obj = {};
+            row.forEach((cell, i) => {
+                obj[`field${i + 1}`] = cell;
+            });
+            return obj;
+        });
     }
     async create(sheetId, sheetName, data, numfield = 1) {
         const values = data.map((item) => Array.from({ length: numfield }, (_, i) => item[`field${i + 1}`] || ''));
@@ -7298,6 +7295,16 @@ module.exports = require("bcrypt");
 
 /***/ }),
 
+/***/ "body-parser":
+/*!******************************!*\
+  !*** external "body-parser" ***!
+  \******************************/
+/***/ ((module) => {
+
+module.exports = require("body-parser");
+
+/***/ }),
+
 /***/ "express":
 /*!**************************!*\
   !*** external "express" ***!
@@ -7438,10 +7445,13 @@ const core_1 = __webpack_require__(/*! @nestjs/core */ "@nestjs/core");
 const app_module_1 = __webpack_require__(/*! ./app.module */ "./src/app.module.ts");
 const express = __webpack_require__(/*! express */ "express");
 const path_1 = __webpack_require__(/*! path */ "path");
+const bodyParser = __webpack_require__(/*! body-parser */ "body-parser");
 async function bootstrap() {
     const app = await core_1.NestFactory.create(app_module_1.AppModule);
     app.enableCors();
     app.use('/images', express.static((0, path_1.join)(__dirname, '../sandbox/images')));
+    app.use(bodyParser.json({ limit: '50mb' }));
+    app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
     await app.listen(3335);
     if (false) {}
 }
