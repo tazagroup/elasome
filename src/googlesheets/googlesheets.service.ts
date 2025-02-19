@@ -22,27 +22,22 @@ import * as path from 'path';
       this.sheets = google.sheets({ version: 'v4', auth });
     }
     // READ: Get all data rows (assuming the first row is a header)
-    async findAll(sheetId:any, sheetName:any): Promise<any[]> {
+    async findAll(sheetId:any, sheetName:any,numfield:any=1): Promise<any[]> {
       const res = await this.sheets.spreadsheets.values.get({
         spreadsheetId: sheetId,
         range: `${sheetName}!A:Z`, // adjust the range based on your sheet
       });
-      console.log(res);
-      
       const rows = res.data.values;
       if (!rows) {
         return [];
       }
-      // Map each row to an object (customize the fields as needed)
-      return rows.map((row) => ({
-        id: row[0],
-        name: row[1],
-        email: row[2],
-        phone: row[3],
-        address: row[4],
-        city: row[5],
-        other: row[6],
-      }));
+      return rows.map((row:any) => {
+        const obj = {};
+        row.forEach((cell:any, i:any) => {
+          obj[`field${i + 1}`] = cell;
+        });
+        return obj;
+      });
     }
   
     // CREATE: Append a new row to the sheet
@@ -50,8 +45,6 @@ import * as path from 'path';
         const values = data.map((item:any) => 
           Array.from({ length: numfield }, (_, i) => item[`field${i + 1}`] || '')
         );
-
-      // const values = [Array.from({ length: numfield }, (_, i) => data[`field${i + 1}`] || '')];
       const res = await this.sheets.spreadsheets.values.append({
       spreadsheetId: sheetId,
       range: `${sheetName}!A:Z`,
