@@ -67,7 +67,7 @@ export class HotrosService {
           'Authorization': 'Bearer '+this._StorageService.getItem('token')
         },
       };
-      const response = await fetch(`${environment.APIURL}/hotro`, options);
+      const response = await fetch(`${environment.APIURL}/hotro?page=1&perPage=10`, options);
       if (!response.ok) {
         if (response.status === 401) {
           const result  = JSON.stringify({ code:response.status,title:'Vui lòng đăng nhập lại' })
@@ -85,9 +85,11 @@ export class HotrosService {
           this.router.navigate(['/errorserver'], { queryParams: {data:result}});
         }
       }
-      const data = await response.json();     
-      this.ListHotro.set(data)
-      return data;
+      const data = await response.json();   
+      console.log(data);
+        
+      this.ListHotro.set(data.data)
+      return data.data;
     } catch (error) {
       return console.error(error);
     }
@@ -156,6 +158,7 @@ export class HotrosService {
       }
       const data = await response.json();
       this.Hotro.set(data)
+      return data;
     } catch (error) {
       return console.error(error);
     }

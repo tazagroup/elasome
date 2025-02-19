@@ -4,9 +4,11 @@ import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image';
 import AlertBlock from './alert-block';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 @Component({
   imports: [
-    MatButtonModule
+    MatButtonModule,
+    MatIconModule
   ],
   standalone: true,
   selector: 'app-editorjs',
@@ -34,14 +36,6 @@ export class EditorjsComponent implements OnInit, AfterViewInit, OnDestroy {
       autofocus: true,
       data: this.Detail,
       tools: {
-        header: {
-          class: Header as any,
-          inlineToolbar: true,
-          config: {
-            placeholder: 'Enter a header'
-          },
-          shortcut: 'CMD+SHIFT+H'
-        }, 
         image: {
           class: ImageTool,
           config: {
@@ -68,8 +62,24 @@ export class EditorjsComponent implements OnInit, AfterViewInit, OnDestroy {
         console.log('Editor.js content changed!', api, event);
       }
     });
+    this.listenForKeyPress();
   }
+  listenForKeyPress() {
+    const editorElement = this.editorHolder.nativeElement;
+    editorElement.addEventListener('keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault(); // Ngăn xuống dòng mặc định
+        this.myCustomFunction();
+      }
+    });
+  }
+  myCustomFunction()
+  {
+    this.editor.clear();
+    this.editor.focus();
 
+    console.log('My custom function is called!');
+  }
   // Method to save the content (for example, when a button is clicked).
   async saveContent() {
     try {

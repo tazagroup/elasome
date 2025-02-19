@@ -19,6 +19,8 @@ import { FormsModule } from '@angular/forms';
 import { AdminmainComponent } from '../../adminmain/adminmain.component';
 import { MatSnackBar} from '@angular/material/snack-bar';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { UsersService } from '../../adminmain/listuser/listuser.services';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @Component({
   selector: 'app-listhotro',
   templateUrl: './listhotro.component.html',
@@ -40,7 +42,8 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
     FormsModule,
     RouterLink,
     RouterLinkActive,
-    MatDialogModule
+    MatDialogModule,
+    MatTooltipModule
   ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
@@ -52,8 +55,10 @@ export class ListHotroComponent {
   FilterColumns: any[] = [];
   Columns: any[] = [];
   ListHotro = signal<any[]>([]);
+  InitHotro: any[] = [];
   CountItem: number = 0;
   isFullScreen:boolean = false;
+  profile:any = {};
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -70,11 +75,14 @@ export class ListHotroComponent {
     this._AdminmainComponent.drawer.mode = 'over';
   }
   private _hotrosService: HotrosService = inject(HotrosService);
+  private _UsersService: UsersService = inject(UsersService);
   private _AdminmainComponent: AdminmainComponent = inject(AdminmainComponent);
   private _snackBar: MatSnackBar = inject(MatSnackBar);
   async ngOnInit(): Promise<void> {
+    this.profile = await this._UsersService.getProfile();    
     await this._hotrosService.getAllHotro();
     this.ListHotro = this._hotrosService.ListHotro;
+    this.InitHotro = this.ListHotro();
     this.initializeColumns();
     this.setupDataSource();
     this.setupDrawer();
@@ -124,7 +132,7 @@ export class ListHotroComponent {
     this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       if (result.matches) {
         this.drawer.mode = 'side';
-        this.paginator.hidePageSize = true;
+        // this.paginator.hidePageSize = true;
       } else {
         this.drawer.mode = 'side';
       }
@@ -175,17 +183,19 @@ export class ListHotroComponent {
       });
     }
     else{
-      await this._hotrosService.CreateHotro(this.Detail);
+      this.Detail.idCreate = this.profile.id;
+      const newItem = await this._hotrosService.CreateHotro(this.Detail);
       this.dialogCreateRef.close();
       this.Detail = {Type: 'baoloi'};
+      this._router.navigate(['admin/hotro', newItem.id]);
     }
   }
 
-  goToDetail(item: any): void {
-    this.drawer.open();
-    this.Detail = item;
-    this._router.navigate(['admin/hotros', item.id]);
-  }
+  // goToDetail(item: any): void {
+  //   this.drawer.open();
+  //   this.Detail = item;
+  //   this._router.navigate(['admin/hotros', item.id]);
+  // }
   dialog = inject(MatDialog);
   dialogCreateRef: any;
   openCreateDialog(teamplate:TemplateRef<any>) {
@@ -195,9 +205,33 @@ export class ListHotroComponent {
     });
   }
   FilterListType: any[] = ListType;
+  GetNameType(value: any){
+    const type = ListType.find(v => v.value === value);
+    return type;
+  }
+  FilterType(item: any){
+    this.ListHotro.set(this.InitHotro.filter(v => v.Type === item.value))
+  }
+  CountListType(item: any){
+    return this.InitHotro.filter(v => v.Type === item.value).length;
+  }
   DoFindKhachhang(event:any){
     const query = event.target.value.toLowerCase();
      this.FilterListType = ListType.filter(v => v.Title.toLowerCase().includes(query));      
   }
+  applyFilterType(event: any): void {
+    const filterValue = event.value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+
+  isSearch: boolean = false;
+  writeExcelFile(): void {}
+  readExcelFile(event:any): void {}
+  LoadDrive(): void {}
+
 
 }

@@ -1,4 +1,15 @@
-import { Component, inject, ViewChild, Inject, PLATFORM_ID, signal, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  inject,
+  ViewChild,
+  Inject,
+  PLATFORM_ID,
+  signal,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  ElementRef,
+  Renderer2,
+} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -21,119 +32,146 @@ import html2canvas from 'html2canvas';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { FormsModule } from '@angular/forms';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-  @Component({
-    selector: 'app-detailhotro',
-    templateUrl: './detailhotro.component.html',
-    styleUrl: './detailhotro.component.scss',
-    imports: [
-      MatFormFieldModule,
-      MatInputModule,
-      MatTableModule,
-      MatSortModule,
-      MatPaginatorModule,
-      MatMenuModule,
-      MatSidenavModule,
-      MatIconModule,
-      MatButtonModule,
-      MatSelectModule,
-      CommonModule,
-      FormsModule,
-      MatDatepickerModule,
-      EditorjsComponent,
-    ],
-    providers: [provideNativeDateAdapter()],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-  })
-  export class DetailHotroComponent {
-    Detail: any = {};
-    dataSource!: MatTableDataSource<any>;
-    displayedColumns: string[] = [];
-    ColumnName: any = { 'STT': 'STT' };
-    FilterColumns: any[] = [];
-    Columns: any[] = [];
-    Listhotro: any[] = ListHotro;
-    toolbar:any[] = [
-      'heading',
-      'alignment',
-      '|',
-      'bold',
-      'italic',
-      'link',
-      'bulletedList',
-      'numberedList',
-      'blockQuote',
-      'undo',
-      'redo',
-    ]
-    tickets: any[] = conver.tickets
-    users: any[] = conver.users;
-    channels: any[] = conver.channels;
-    replies: any[] = conver.replies;
-    ListItem: any[] = [{Title:'',Thanhtien:0,Ghichu:''}];
-    @ViewChild(MatPaginator) paginator!: MatPaginator;
-    @ViewChild(MatSort) sort!: MatSort;
-    @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
-    constructor(
-      private _breakpointObserver: BreakpointObserver,
-      @Inject(PLATFORM_ID) private platformId: Object
-    ) {
-      if (isPlatformBrowser(this.platformId)) {
-        this.FilterColumns = JSON.parse(localStorage.getItem('hotro_FilterColumns') || '[]');
-      }
+import { toVietnameseWords } from '../../../../shared/utils/tiente.utils';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { TiptapComponent } from '../../../../shared/common/tiptap/tiptap.component';
+import { UploadService } from '../../../../shared/uploadfile/uploadfile.service';
+import { UploadfileComponent } from '../../../../shared/uploadfile/uploadfile.component';
+@Component({
+  selector: 'app-detailhotro',
+  templateUrl: './detailhotro.component.html',
+  styleUrl: './detailhotro.component.scss',
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatMenuModule,
+    MatSidenavModule,
+    MatIconModule,
+    MatButtonModule,
+    MatSelectModule,
+    CommonModule,
+    FormsModule,
+    MatDatepickerModule,
+  ],
+  providers: [provideNativeDateAdapter()],
+})
+export class DetailHotroComponent {
+  Detail: any = {};
+  dataSource!: MatTableDataSource<any>;
+  displayedColumns: string[] = [];
+  ColumnName: any = { STT: 'STT' };
+  FilterColumns: any[] = [];
+  Columns: any[] = [];
+  Listhotro: any[] = ListHotro;
+  toolbar: any[] = [
+    'heading',
+    'alignment',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    'blockQuote',
+    'undo',
+    'redo',
+  ];
+  tickets: any[] = conver.tickets;
+  users: any[] = conver.users;
+  channels: any[] = conver.channels;
+  replies: any[] = conver.replies;
+  ListItem: any[] = [{ Title: '', Thanhtien: 0, Ghichu: '' }];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  @ViewChild(MatSort) sort!: MatSort;
+  @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
+  constructor(
+    private _breakpointObserver: BreakpointObserver,
+    private renderer: Renderer2,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      this.FilterColumns = JSON.parse(
+        localStorage.getItem('hotro_FilterColumns') || '[]'
+      );
     }
-    private _hotrosService: HotrosService = inject(HotrosService);
-    _router:ActivatedRoute = inject(ActivatedRoute)
-    _route:Router = inject(Router)
-    _ListHotroComponent:ListHotroComponent = inject(ListHotroComponent)
-    // Dexuat = {
-    //   Nguoinhan: "BGĐ",
-    //   Ketoan:"",
-    //   Nguoidexuat: "Phạm Chí Kiệt",
-    //   Truongbophan:"Trần Mỹ Duyên",
-    //   Title: "Gia hạn OA Zalo Timona Academy",
-    //   Bophan: "Marketing",
-    //   Vitri: "Leader IT",
-    //   Ngaytao: new Date(),
-    //   Tongtien: 2730000,
-    //   Tamung: 2730000,
-    //   TongChi: 2730000,
-    //   Chitiet: [
-    //     { id: 1, Title: "Gia Hạn OA Zalo Timona Academy Thủ Đức 12 Tháng", Thanhtien: 1068000, Ghichu: "25/01/2025 - 25/01/2026" },
-    //     { id: 2, Title: "Gia Hạn OA Zalo Timona Academy Nha Trang 12 Tháng", Thanhtien: 1068000, Ghichu: "25/01/2025 - 25/01/2026" },
-    //     { id: 3, Title: "Gia Hạn OA Zalo Timona Academy CMT8 6 Tháng", Thanhtien: 594000, Ghichu: "22/01/2025 - 22/07/2025" }
-    //   ],
-    //   Tienbangchu: "Hai triệu bảy trăm ba mươi ngàn"
-    // };
-    async ngOnInit(): Promise<void> { 
-      this._router.paramMap.subscribe(async (data: any) => {
-        const paramsId = data.get('id');
-        if (paramsId) {
-          await this._hotrosService.getHotroByid(paramsId).then(() => {
+  }
+  private _hotrosService: HotrosService = inject(HotrosService);
+  _router: ActivatedRoute = inject(ActivatedRoute);
+  _route: Router = inject(Router);
+  _ListHotroComponent: ListHotroComponent = inject(ListHotroComponent);
+  _UploadService: UploadService = inject(UploadService);
+  _snackBar: MatSnackBar = inject(MatSnackBar);
+  async ngOnInit(): Promise<void> {
+    console.log(conver);
+    
+    this._router.paramMap.subscribe(async (data: any) => {
+      const paramsId = data.get('id');
+      if (paramsId) {
+        await this._hotrosService.getHotroByid(paramsId).then((data) => {
+          if (data) {
             this.Detail = this._hotrosService.Hotro();
             this.Detail.Dexuat.Chitiet = this.Detail.Dexuat.Chitiet || [];
-            this.Detail.Dexuat.Ngaytao = new Date(this.Detail.Dexuat.Ngaytao);
+            this.Detail.Dexuat.Tienbangchu =
+              toVietnameseWords(this.Detail.Dexuat.TongChi) ||
+              'Kiểm tra lại số tiền';
             this._ListHotroComponent.drawer.open();
-            });
-
-        } else {
+          }
+        });
+      } else {
         this._ListHotroComponent.drawer.close();
-        }
-      });
-      // this.setupDrawer();
-    }
- getUserName(userId: number): string {
+      }
+    });
+    // this.setupDrawer();
+  }
+
+  @ViewChild('editable') editableDiv!: ElementRef;
+  value: string = '';
+
+  ngAfterViewInit(): void {
+    // Set giá trị ban đầu một lần duy nhất
+    this.editableDiv.nativeElement.innerHTML = this.value;
+
+    // Lắng nghe sự kiện keydown để xử lý phím Enter
+    this.renderer.listen(this.editableDiv.nativeElement, 'keydown', (event: KeyboardEvent) => {
+      if (event.key === 'Enter') {
+        event.preventDefault(); // Ngăn hành động mặc định (chèn <div>)
+        // Chèn <br><br> để tạo dòng mới
+        document.execCommand('insertHTML', false, '<br><br>');
+      }
+    });
+
+    // Lắng nghe sự kiện input để cập nhật giá trị
+    this.renderer.listen(this.editableDiv.nativeElement, 'input', () => {
+      let html = this.editableDiv.nativeElement.innerHTML;
+      // Nếu nội dung chỉ chứa <br> hoặc chỉ khoảng trắng, đặt về chuỗi rỗng
+      if (html.trim() === '<br>' || html.trim() === '<br><br>' || !this.editableDiv.nativeElement.innerText.trim()) {
+        html = '';
+        this.editableDiv.nativeElement.innerHTML = html;
+      }
+      this.value = html;
+    });
+  }
+
+  onInput(event: Event): void {
+    const target = event.target as HTMLElement;
+    this.value = target.innerHTML;
+  }
+
+  getUserName(userId: number): string {
     const user = this.users.find((u) => u.id === userId);
     return user ? user.username : 'Unknown';
   }
-  getTypeName(item:any){
-    return ListType.find((type) => type.value === item)?.Title || 'Unknown';
+  GetNameType(item: any) {
+    return ListType.find((type) => type.value === item);
   }
-  printContent()
-  {
+  printContent() {
     const element = document.getElementById('printContent');
     if (!element) return;
 
-    html2canvas(element, { scale: 2 }).then(canvas => {
+    html2canvas(element, { scale: 2 }).then((canvas) => {
       const imageData = canvas.toDataURL('image/png');
 
       // Mở cửa sổ mới và in ảnh
@@ -160,41 +198,99 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
       printWindow.document.close();
     });
   }
+  CopyContent() {
+    this._snackBar.open('Đang Coppy Đề Xuất', '', {
+      duration: 1000,
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['snackbar-warning'],
+    });
+    delete this.Detail.id;
+    this.Detail.Title = `Copy ${this.Detail.Title}`;
+    this._hotrosService.CreateHotro(this.Detail).then((data: any) => {
+      console.log(data);
+
+      setTimeout(() => {
+        // window.location.href = `admin/hotro/${data.id}`;
+      }, 1000);
+    });
+  }
   getChannelName(channelId: number): string {
     const channel = this.channels.find((c) => c.id === channelId);
     return channel ? channel.name : 'Unknown';
   }
   onEditorChange(event: any) {
     console.log(event);
-    
   }
   RemoveItem(index: number) {
     this.Detail.Dexuat.Chitiet.splice(index, 1);
   }
-  saveContent()
-  {     
-      this.Detail.Dexuat.Tongtien = this.Detail.Dexuat.Chitiet.reduce((sum:any, item:any) => sum + item.Thanhtien, 0);
-      this.Detail.Dexuat.TongChi = this.Detail.Dexuat.Tongtien - this.Detail.Dexuat.Tamung;
-      console.log(this.Detail);
-      this.drawer.close();
-      this._hotrosService.updateOneHotro(this.Detail).then(() => {
-        this.ngOnInit();
+  saveContent() {
+    this.Detail.Dexuat.Tongtien = this.Detail.Dexuat.Chitiet.reduce(
+      (sum: any, item: any) => sum + item.Thanhtien,
+      0
+    );
+    this.Detail.Dexuat.TongChi =
+      this.Detail.Dexuat.Tongtien - this.Detail.Dexuat.Tamung;
+    console.log(this.Detail);
+    this.drawer.close();
+    this._hotrosService.updateOneHotro(this.Detail).then(() => {
+      this.ngOnInit();
+    });
+  }
+  SendMess() {
+    this.Detail.content = this.value;
+  }
+  DeleteItem() {
+    this._hotrosService.DeleteHotro(this.Detail).then(() => {
+      this._snackBar.open('Đã Xóa', '', {
+        duration: 1000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top',
+        panelClass: ['snackbar-success'],
       });
+      this._ListHotroComponent.drawer.close();
+      this._route.navigate(['admin/hotro']);
+    });
   }
   getReplies(ticketId: number): any[] {
     return this.replies.filter((reply) => reply.ticket_id === ticketId);
   }
-    private setupDrawer(): void {
-      this._breakpointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+  private setupDrawer(): void {
+    this._breakpointObserver
+      .observe([Breakpoints.Handset])
+      .subscribe((result) => {
         if (result.matches) {
           this.drawer.mode = 'side';
         } else {
           this.drawer.mode = 'side';
         }
       });
-    }
-    onContentChange(event: any) {
-      this.Detail = event;
-    }
-  
   }
+  onContentChange(event: any) {
+    this.Detail = event;
+  }
+  FilterListType: any[] = ListType;
+  DoFindKhachhang(event: any) {
+    const query = event.target.value.toLowerCase();
+    this.FilterListType = ListType.filter((v) =>
+      v.Title.toLowerCase().includes(query)
+    );
+  }
+  uploadfile(event:any) {
+      const file = event.target.files[0];
+        this._UploadService.uploadlocal(file).then((data) => {
+          console.log(data);
+        });
+   }
+  uploadDriver(event:any) {
+      const file = event.target.files[0];
+        this._UploadService.uploadDriver(file).then((data) => {
+          console.log(data);
+        });
+   }
+   goBack() {
+    this._route.navigate(['admin/hotro']);
+    this._ListHotroComponent.drawer.close();
+   }
+}

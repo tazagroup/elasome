@@ -566,10 +566,10 @@ export const Forms = [
 
 
 export const ListType:any[]=[
-    {id:1,Title:'Báo lỗi',value:'baoloi'},
-    {id:2,Title:'Hỗ trợ',value:'hotro'},
-    {id:2,Title:'Đề Xuất',value:'dexuat'},
-    {id:3,Title:'Công việc',value:'congviec'},
+    {id:1,Title:'Báo lỗi',value:'baoloi',bg:'bg-[#f44336]'},
+    {id:2,Title:'Hỗ trợ',value:'hotro',bg:'bg-[#4caf50]'},
+    {id:2,Title:'Đề Xuất',value:'dexuat',bg:'bg-[#2196f3]'},
+    {id:3,Title:'Công việc',value:'congviec',bg:'bg-[#ff9800]'},
     {id:4,Title:'Khác',value:'khac'}
   ]
 

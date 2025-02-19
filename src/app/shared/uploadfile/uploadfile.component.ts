@@ -23,6 +23,7 @@ export class UploadfileComponent {
   public files: NgxFileDropEntry[] = [];
   @Input() listFiles: any = [];
   @Output() fileUploaded = new EventEmitter<any[]>();
+  @Input() Type: any = 'googledrive';
   SelectImage: any;
   isLoading:boolean = false;
   constructor(
