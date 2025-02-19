@@ -85,9 +85,7 @@ export class HotrosService {
           this.router.navigate(['/errorserver'], { queryParams: {data:result}});
         }
       }
-      const data = await response.json();   
-      console.log(data);
-        
+      const data = await response.json();           
       this.ListHotro.set(data.data)
       return data.data;
     } catch (error) {

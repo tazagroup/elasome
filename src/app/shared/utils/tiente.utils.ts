@@ -6,11 +6,11 @@ export function toVietnameseWords(number: number): string {
     const scales = ["", "nghìn", "triệu", "tỷ", "nghìn tỷ", "triệu tỷ"];
 
     let result = "";
-    let numberStr = number.toString();
+    let numberStr = number?.toString();
     let groups = [];
 
     // Chia số thành từng nhóm ba chữ số
-    while (numberStr.length > 0) {
+    while (numberStr?.length > 0) {
         groups.unshift(numberStr.slice(-3));
         numberStr = numberStr.slice(0, -3);
     }

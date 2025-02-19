@@ -104,9 +104,7 @@ export class DetailHotroComponent {
   _ListHotroComponent: ListHotroComponent = inject(ListHotroComponent);
   _UploadService: UploadService = inject(UploadService);
   _snackBar: MatSnackBar = inject(MatSnackBar);
-  async ngOnInit(): Promise<void> {
-    console.log(conver);
-    
+  async ngOnInit(): Promise<void> {    
     this._router.paramMap.subscribe(async (data: any) => {
       const paramsId = data.get('id');
       if (paramsId) {
@@ -117,6 +115,8 @@ export class DetailHotroComponent {
             this.Detail.Dexuat.Tienbangchu =
               toVietnameseWords(this.Detail.Dexuat.TongChi) ||
               'Kiểm tra lại số tiền';
+              this.Detail.Chat = this.Detail.Chat || [];
+            console.log(this.Detail)   
             this._ListHotroComponent.drawer.open();
           }
         });
@@ -136,13 +136,16 @@ export class DetailHotroComponent {
 
     // Lắng nghe sự kiện keydown để xử lý phím Enter
     this.renderer.listen(this.editableDiv.nativeElement, 'keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Enter') {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        if (this.value.trim() === '') return;
         event.preventDefault(); // Ngăn hành động mặc định (chèn <div>)
+        this.SendMess();
         // Chèn <br><br> để tạo dòng mới
         document.execCommand('insertHTML', false, '<br><br>');
       }
     });
 
+    
     // Lắng nghe sự kiện input để cập nhật giá trị
     this.renderer.listen(this.editableDiv.nativeElement, 'input', () => {
       let html = this.editableDiv.nativeElement.innerHTML;
@@ -231,15 +234,18 @@ export class DetailHotroComponent {
       0
     );
     this.Detail.Dexuat.TongChi =
-      this.Detail.Dexuat.Tongtien - this.Detail.Dexuat.Tamung;
-    console.log(this.Detail);
+    this.Detail.Dexuat.Tongtien - this.Detail.Dexuat.Tamung;
     this.drawer.close();
     this._hotrosService.updateOneHotro(this.Detail).then(() => {
       this.ngOnInit();
     });
   }
   SendMess() {
-    this.Detail.content = this.value;
+    const item = {idUser:1,Content:this.value};
+    this.Detail.Chat.push(item);
+    this.editableDiv.nativeElement.innerHTML = '';
+    console.log(this.value);
+    
   }
   DeleteItem() {
     this._hotrosService.DeleteHotro(this.Detail).then(() => {

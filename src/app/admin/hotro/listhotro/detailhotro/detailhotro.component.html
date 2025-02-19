@@ -1,5 +1,5 @@
 <mat-drawer-container class="w-full h-screen-16" autosize>
-  <mat-drawer #drawer class="flex flex-col !w-screen h-full p-4 z-10" mode="over" [position]="'end'">
+  <mat-drawer #drawer class="flex flex-col !w-full h-full p-4 z-10" mode="over" [position]="'end'">
    <div *ngIf="Detail.Type=='dexuat'" class="relative w-full h-full flex flex-col space-y-2">
     <div class="relative text-xl text-center font-bold">Thông Tin Đề Xuất</div>
     @defer () {
@@ -116,10 +116,10 @@
       <button mat-flat-button color="primary" (click)="saveContent()">Lưu</button>
      </div>
    </div>
+
   </mat-drawer>
-  <div class="flex flex-col space-y-2 h-screen-16 w-full justify-between p-4">
-    <div class=" w-full relative flex lg:flex-row flex-col space-x-2 items-center justify-between p-2">
-     
+  <div class="flex flex-col space-y-2 h-screen-16 w-full p-4">
+    <div class="w-full relative flex lg:flex-row flex-col space-x-2 items-center justify-between p-2">
       <div class="flex flex-row space-x-2 items-center">
         <button mat-icon-button color="primary" (click)="goBack()"><mat-icon>arrow_back</mat-icon></button>
         <span class="whitespace-nowrap rounded-lg p-1 text-white {{GetNameType(Detail.Type)?.bg||'bg-slate-600'}}">{{GetNameType(Detail.Type)?.Title}}</span>
@@ -133,7 +133,7 @@
         <button mat-icon-button color="primary" (click)="printContent()">
           <mat-icon>print</mat-icon>
         </button>
-        <button mat-icon-button color="primary" (click)="drawer.open();_ListHotroComponent.isFullScreen = true">
+        <button mat-icon-button color="primary" (click)="drawer.open()">
           <mat-icon>edit</mat-icon>
         </button>
         <button mat-icon-button color="primary"
@@ -146,7 +146,7 @@
       </div>
 
     </div>
-    <div class="relative w-full overflow-auto cursor-pointer">
+    <div class="relative flex flex-col space-y-2 h-full w-full overflow-auto cursor-pointer">
       <div *ngIf="Detail.Type=='dexuat'" id="printContent" class="flex flex-row space-x-2 justify-between w-full">
         <div class="w-full p-2 border">
           <div class="text-end">BM-04-QT-KT-02</div>
@@ -260,8 +260,11 @@
 
         </div>
       </div>
-      <div class="container">
-        <div *ngFor="let ticket of tickets" class="ticket-card">
+      <div class="h-full flex flex-col space-y-2 items-start border rounded-lg p-2">
+        <div *ngFor="let item of Detail.Chat">
+           <span [innerHTML]="item.Content"></span>
+        </div>
+        <!-- <div *ngFor="let ticket of tickets" class="ticket-card">
           <h3>#{{ ticket.id }} - {{ getChannelName(ticket.channel_id) }}</h3>
           <p><strong>Người tạo:</strong> {{ getUserName(ticket.user_id) }}</p>
           <p><strong>Nội dung:</strong> {{ ticket.message }}</p>
@@ -276,7 +279,7 @@
               📎 <a [href]="reply.attachment.file_url" target="_blank">{{ reply.attachment.file_name }}</a>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
 
@@ -284,7 +287,7 @@
     <div class="relative w-full flex flex-col">
     <div class="flex flex-row space-x-2 items-center">   
       <div #editable contenteditable="true" (input)="onInput($event)" class="w-full border p-2 editable rounded-lg" data-placeholder="Nhập nội dung ở đây..."></div>
-      <button mat-icon-button color="primary" (click)="saveContent()"><mat-icon>send</mat-icon></button>  
+      <button mat-icon-button color="primary" (click)="SendMess()"><mat-icon>send</mat-icon></button>
     </div>
     <!-- <app-uploadfile ></app-uploadfile> -->
     <div class="flex flex-row space-x-2 items-center">
