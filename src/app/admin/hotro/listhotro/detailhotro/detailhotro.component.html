@@ -260,41 +260,43 @@
 
         </div>
       </div>
-      <div class="h-full flex flex-col space-y-2 items-start border rounded-lg p-2">
+      <div class="h-full flex flex-col space-y-2 items-start p-2">
         <div *ngFor="let item of Detail.Chat">
-           <span [innerHTML]="item.Content"></span>
-        </div>
-        <!-- <div *ngFor="let ticket of tickets" class="ticket-card">
-          <h3>#{{ ticket.id }} - {{ getChannelName(ticket.channel_id) }}</h3>
-          <p><strong>Người tạo:</strong> {{ getUserName(ticket.user_id) }}</p>
-          <p><strong>Nội dung:</strong> {{ ticket.message }}</p>
-          <p><small>Thời gian: {{ ticket.created_at | date: 'short' }}</small></p>
-  
-          <h4>Phản hồi:</h4>
-          <div *ngFor="let reply of getReplies(ticket.id)" class="reply-card">
-            <p><strong>{{ getUserName(reply.user_id) }}:</strong> {{ reply.message }}</p>
-            <p><small>{{ reply.created_at | date: 'short' }}</small></p>
-  
-            <div *ngIf="reply.attachment">
-              📎 <a [href]="reply.attachment.file_url" target="_blank">{{ reply.attachment.file_name }}</a>
+          @if(item.Type==='text'){
+            <div class="flex flex-row space-x-2 items-center">
+              <span class="font-bold">{{item.User}}</span>
+              <span [innerHTML]="item.Content"></span>
             </div>
-          </div>
-        </div> -->
+          }
+          @else if(item.Type==='image'){
+            <div class="flex flex-row space-x-2 items-center">
+              <span class="font-bold">{{item.User}}</span>
+              <img [src]="item.Content" class="max-h-24 max-w-24 rounded-lg border p-2" />
+            </div>
+          }
+          @else if(item.Type==='file'){
+            <div class="flex flex-row space-x-2 items-center">
+              <span class="font-bold">{{item.User}}</span>
+              <a [href]="item.Content" target="_blank">{{item.FileName}}</a>
+            </div>
+          }
+        </div>   
       </div>
     </div>
 
 
     <div class="relative w-full flex flex-col">
     <div class="flex flex-row space-x-2 items-center">   
-      <div #editable contenteditable="true" (input)="onInput($event)" class="w-full border p-2 editable rounded-lg" data-placeholder="Nhập nội dung ở đây..."></div>
+      <div (paste)="handlePaste($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" #editable contenteditable="true" (input)="onInput($event)" 
+      class="w-full border p-4 editable rounded-lg {{isDragging?'h-40 border-2 border-dashed border-blue-500 bg-slate-100':''}}" data-placeholder="Nhập nội dung ở đây..."></div>
       <button mat-icon-button color="primary" (click)="SendMess()"><mat-icon>send</mat-icon></button>
     </div>
-    <!-- <app-uploadfile ></app-uploadfile> -->
     <div class="flex flex-row space-x-2 items-center">
       <button (click)="fileInput.click()" mat-icon-button color="primary"><mat-icon>image</mat-icon></button>
       <button (click)="fileDrive.click()" mat-icon-button color="primary"><mat-icon>cloud_upload</mat-icon></button>
-      <input class="hidden" (change)="uploadfile($event)" type="file" #fileInput>
+      <input class="hidden" (change)="onFileSelected($event)" type="file" #fileInput>
       <input class="hidden" (change)="uploadDriver($event)" type="file" #fileDrive>
+
     </div>
     </div>
   </div>

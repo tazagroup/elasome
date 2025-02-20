@@ -249,7 +249,11 @@ button.active {
   color: #aaa;
   pointer-events: none;
 }
-
+.editable img {
+  max-height : 150px !important;
+  max-width : 150px !important;
+  border-radius: 10px;
+}
 @media print {
   #nonPrintable {
     display: none;

@@ -37,6 +37,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TiptapComponent } from '../../../../shared/common/tiptap/tiptap.component';
 import { UploadService } from '../../../../shared/uploadfile/uploadfile.service';
 import { UploadfileComponent } from '../../../../shared/uploadfile/uploadfile.component';
+import { NgxFileDropEntry, NgxFileDropModule } from 'ngx-file-drop';
+import { UsersService } from '../../../adminmain/listuser/listuser.services';
 @Component({
   selector: 'app-detailhotro',
   templateUrl: './detailhotro.component.html',
@@ -55,6 +57,7 @@ import { UploadfileComponent } from '../../../../shared/uploadfile/uploadfile.co
     CommonModule,
     FormsModule,
     MatDatepickerModule,
+    NgxFileDropModule,
   ],
   providers: [provideNativeDateAdapter()],
 })
@@ -84,6 +87,7 @@ export class DetailHotroComponent {
   channels: any[] = conver.channels;
   replies: any[] = conver.replies;
   ListItem: any[] = [{ Title: '', Thanhtien: 0, Ghichu: '' }];
+  profile: any = {};
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   @ViewChild('drawer', { static: true }) drawer!: MatDrawer;
@@ -103,8 +107,9 @@ export class DetailHotroComponent {
   _route: Router = inject(Router);
   _ListHotroComponent: ListHotroComponent = inject(ListHotroComponent);
   _UploadService: UploadService = inject(UploadService);
+  _UsersService: UsersService = inject(UsersService);
   _snackBar: MatSnackBar = inject(MatSnackBar);
-  async ngOnInit(): Promise<void> {    
+  async ngOnInit(): Promise<void> {
     this._router.paramMap.subscribe(async (data: any) => {
       const paramsId = data.get('id');
       if (paramsId) {
@@ -115,8 +120,11 @@ export class DetailHotroComponent {
             this.Detail.Dexuat.Tienbangchu =
               toVietnameseWords(this.Detail.Dexuat.TongChi) ||
               'Kiểm tra lại số tiền';
-              this.Detail.Chat = this.Detail.Chat || [];
-            console.log(this.Detail)   
+            this.Detail.Chat = this.Detail.Chat || [];
+            console.log(this.Detail);
+            this._UsersService.getProfile().then((data) => {
+              this.profile = data;
+            });
             this._ListHotroComponent.drawer.open();
           }
         });
@@ -128,39 +136,41 @@ export class DetailHotroComponent {
   }
 
   @ViewChild('editable') editableDiv!: ElementRef;
-  value: string = '';
+  editiorValue: string = '';
 
   ngAfterViewInit(): void {
     // Set giá trị ban đầu một lần duy nhất
-    this.editableDiv.nativeElement.innerHTML = this.value;
+    this.editableDiv.nativeElement.innerHTML = this.editiorValue;
 
     // Lắng nghe sự kiện keydown để xử lý phím Enter
-    this.renderer.listen(this.editableDiv.nativeElement, 'keydown', (event: KeyboardEvent) => {
-      if (event.key === 'Enter' && !event.shiftKey) {
-        if (this.value.trim() === '') return;
-        event.preventDefault(); // Ngăn hành động mặc định (chèn <div>)
-        this.SendMess();
-        // Chèn <br><br> để tạo dòng mới
-        document.execCommand('insertHTML', false, '<br><br>');
+    this.renderer.listen(
+      this.editableDiv.nativeElement,
+      'keydown',
+      (event: KeyboardEvent) => {
+        if (event.key === 'Enter' && !event.shiftKey) {
+          if (this.editiorValue.trim() === '') return;
+          event.preventDefault(); // Ngăn hành động mặc định (chèn <div>)
+          this.SendMess();
+          // Chèn <br><br> để tạo dòng mới
+          document.execCommand('insertHTML', false, '<br><br>');
+        }
       }
-    });
+    );
 
-    
     // Lắng nghe sự kiện input để cập nhật giá trị
     this.renderer.listen(this.editableDiv.nativeElement, 'input', () => {
       let html = this.editableDiv.nativeElement.innerHTML;
       // Nếu nội dung chỉ chứa <br> hoặc chỉ khoảng trắng, đặt về chuỗi rỗng
-      if (html.trim() === '<br>' || html.trim() === '<br><br>' || !this.editableDiv.nativeElement.innerText.trim()) {
+      if (
+        html.trim() === '<br>' ||
+        html.trim() === '<br><br>' ||
+        !this.editableDiv.nativeElement.innerText.trim()
+      ) {
         html = '';
         this.editableDiv.nativeElement.innerHTML = html;
       }
-      this.value = html;
+      this.editiorValue = html;
     });
-  }
-
-  onInput(event: Event): void {
-    const target = event.target as HTMLElement;
-    this.value = target.innerHTML;
   }
 
   getUserName(userId: number): string {
@@ -234,18 +244,11 @@ export class DetailHotroComponent {
       0
     );
     this.Detail.Dexuat.TongChi =
-    this.Detail.Dexuat.Tongtien - this.Detail.Dexuat.Tamung;
+      this.Detail.Dexuat.Tongtien - this.Detail.Dexuat.Tamung;
     this.drawer.close();
     this._hotrosService.updateOneHotro(this.Detail).then(() => {
       this.ngOnInit();
     });
-  }
-  SendMess() {
-    const item = {idUser:1,Content:this.value};
-    this.Detail.Chat.push(item);
-    this.editableDiv.nativeElement.innerHTML = '';
-    console.log(this.value);
-    
   }
   DeleteItem() {
     this._hotrosService.DeleteHotro(this.Detail).then(() => {
@@ -283,20 +286,190 @@ export class DetailHotroComponent {
       v.Title.toLowerCase().includes(query)
     );
   }
-  uploadfile(event:any) {
-      const file = event.target.files[0];
-        this._UploadService.uploadlocal(file).then((data) => {
-          console.log(data);
+  uploadfile(event: any) {
+    const file = event.target.files[0];
+
+    // this._UploadService.uploadlocal(file).then((data) => {
+    //   console.log(data);
+    // });
+  }
+  filePreview: string | null = null;
+  isImage = false;
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.filePreview = e.target.result; // Base64 URL
+      this.isImage = file.type.startsWith('image');
+      this.TempMess('image', e.target.result);
+    };
+    reader.readAsDataURL(file);
+  }
+  uploadDriver(event: any) {
+    const file = event.target.files[0];
+    this._UploadService.uploadDriver(file).then((data) => {
+      console.log(data);
+    });
+  }
+
+  isDragging = false;
+
+  onDragOver(event: DragEvent) {
+    this.isDragging = true;
+    event.preventDefault(); // Prevent default behavior (Prevent file from being opened)
+  }
+
+  onDragLeave(event: DragEvent) {
+    this.isDragging = false;
+  }
+
+  ListtempsMess: any[] = [];
+
+  TempMess(type: string, content: any) {
+    const item = {
+      idUser: this.profile?.id,
+      Type: type || 'text',
+      Content: content,
+    };
+    this.ListtempsMess.push(item);
+  }
+
+  SendMess() {
+    if (this.editiorValue.trim() !== '') {
+      this.ListtempsMess.push({
+        idUser: this.profile?.id,
+        Type: 'text',
+        Content: this.editiorValue,
+      });
+    }
+    if (this.ListtempsMess.length > 0) {
+      this.Detail.Chat = [...this.Detail.Chat, ...this.ListtempsMess];
+      this.ListtempsMess = [];
+    }
+    this.editableDiv.nativeElement.innerHTML = '';
+  }
+
+  onInput(event: Event): void {
+    const target = event.target as HTMLElement;
+    this.editiorValue = target.innerHTML;
+  }
+
+  onDrop(event: DragEvent) {
+    event.preventDefault(); // Prevent default behavior
+    const items = event.dataTransfer?.items;
+    const target = event.target as HTMLDivElement;
+    if (!items) return;
+
+    for (const item of items) {
+      if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file) {
+          if (file.type.startsWith('image/')) {
+            this.handleImageDrop(file, target);
+          } else {
+            this.handleFileUpload(file, target);
+          }
+        }
+      } else if (item.kind === 'string') {
+        item.getAsString((text) => {
+          this.editableDiv.nativeElement.innerHTML += text;
+          this.moveCursorToEnd(target);
         });
-   }
-  uploadDriver(event:any) {
-      const file = event.target.files[0];
-        this._UploadService.uploadDriver(file).then((data) => {
-          console.log(data);
-        });
-   }
-   goBack() {
+      }
+    }
+    this.isDragging = false;
+  }
+
+  handleImageDrop(file: File, target: HTMLDivElement) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = document.createElement('img');
+      img.src = e.target?.result as string;
+      img.style.maxWidth = '100%';
+      img.style.margin = '5px 0';
+      target.appendChild(img);
+      const space = document.createTextNode(' ');
+      target.appendChild(space);
+      this.ListtempsMess.push({
+        idUser: this.profile?.id,
+        Type: 'image',
+        Content: img.src,
+      });
+      this.moveCursorToEnd(target);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  handlePaste(event: ClipboardEvent) {
+    event.preventDefault();
+    const clipboardData = event.clipboardData || (window as any).clipboardData;
+    const items = clipboardData.items;
+    const target = event.target as HTMLDivElement;
+    for (const item of items) {
+      if (item.type.startsWith('image/')) {
+        const blob = item.getAsFile();
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = document.createElement('img');
+          img.src = e.target?.result as string;
+          img.style.maxWidth = '100%';
+          img.style.margin = '5px 0';
+          target.appendChild(img);
+          const space = document.createTextNode(' ');
+          target.appendChild(space);
+          this.ListtempsMess.push({
+            idUser: this.profile?.id,
+            Type: 'image',
+            Content: img.src,
+          });
+          this.moveCursorToEnd(target);
+        };
+        reader.readAsDataURL(blob!);
+      } else if (item.type === 'text/plain') {
+        const plainText = clipboardData.getData('text/plain');
+        this.editableDiv.nativeElement.innerHTML += plainText;
+        this.moveCursorToEnd(target);
+      } else if (item.kind === 'file') {
+        const file = item.getAsFile();
+        if (file) {
+          this.handleFileUpload(file, target);
+        }
+      }
+    }
+  }
+
+  handleFileUpload(file: File, target: HTMLDivElement) {
+    const fileLink = document.createElement('a');
+    fileLink.href = URL.createObjectURL(file);
+    fileLink.textContent = `📎 ${file.name}`;
+    fileLink.download = file.name;
+    fileLink.style.display = 'block';
+    fileLink.style.margin = '5px 0';
+    target.appendChild(fileLink);
+    const space = document.createTextNode(' ');
+    target.appendChild(space);
+    this.ListtempsMess.push({
+      idUser: this.profile?.id,
+      Type: 'file',
+      Content: fileLink.download,
+    });
+    this.moveCursorToEnd(target);
+  }
+
+  moveCursorToEnd(element: HTMLDivElement) {
+    const range = document.createRange();
+    const selection = window.getSelection();
+    range.selectNodeContents(element);
+    range.collapse(false);
+    selection?.removeAllRanges();
+    selection?.addRange(range);
+  }
+
+  goBack() {
     this._route.navigate(['admin/hotro']);
     this._ListHotroComponent.drawer.close();
-   }
+  }
 }
