@@ -1,0 +1,35 @@
+<div class="bg-gray-100 flex flex-col lg:flex-row gap-4 h-screen p-8">
+   <div class="lg:order-1 order-2 flex flex-col space-y-2 p-2 bg-white shadow-md rounded-lg overflow-auto">
+      <div *ngFor="let item of ListQrcode(); let i=index">
+         <div class="grid lg:grid-cols-4 grid-cols-2 gap-2 items-center p-4 rounded-lg {{item.checkedAt ? 'bg-blue-100' : 'bg-red-100'}}">
+            <div class="text-sm truncate flex items-center space-x-2">
+               {{i+1}}.
+               <span class="material-symbols-outlined">person</span>{{item.name}}
+            </div>
+            <div class="text-sm truncate flex items-center space-x-2"><span class="material-symbols-outlined">smartphone</span>{{item.phone}}</div>
+            <div class="text-sm truncate flex items-center space-x-2"><span class="material-symbols-outlined">alternate_email</span>{{item.email}}</div>
+            <div class="text-sm truncate flex items-center space-x-2"><span class="material-symbols-outlined">event_available</span>{{item.checkedAt|date:'dd/MM/yyyy'}}</div>
+         </div>
+      </div>
+   </div>
+   <div class="lg:order-2 order-1 flex flex-col space-y-2 items-center">
+      <div class="text-xl font-bold">Check In Elasome</div>
+      <div class="text-sm" *ngIf="!isScan&&!isCode">
+         <button class="bg-blue-500 text-white px-4 py-2 rounded-md" (click)="scan()">Scan</button>
+         the QR code to check in
+      </div>
+      <div class="flex flex-col space-y-2 items-center rounded-lg p-4 bg-white" *ngIf="isCode">
+      <div class="font-bold text-red-500">Khách Mời : {{Khachmoi?.name}}</div>
+      <div class="flex flex-row space-x-2 items-center">
+         <mat-form-field  appearance="outline" class="w-full" subscriptSizing="dynamic">
+            <mat-label>Mã Xác Nhận</mat-label>
+            <input matInput [(ngModel)]="Code"  [ngModelOptions]="{ standalone: true }" placeholder="Vui lòng Nhập Mã Xác Nhận" />
+         </mat-form-field> 
+         <button mat-flat-button color="primary" (click)="XacThuc()">Gửi</button>
+      </div>
+      </div>
+      <div class="lg:w-96 lg:h-96 w-60 h-60 {{isScan ? 'block' : 'hidden'}} rounded-lg">
+         <video #video width="100%" height="auto" class="rounded-lg"></video>
+      </div>
+   </div>
+</div>

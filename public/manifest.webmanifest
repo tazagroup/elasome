@@ -1,6 +1,6 @@
 {
-  "name": "elasome",
-  "short_name": "elasome",
+  "name": "QR Code Elasome",
+  "short_name": "QR Code Elasome",
   "theme_color": "#1976d2",
   "background_color": "#fafafa",
   "display": "standalone",

@@ -9,6 +9,9 @@ import {
   ChangeDetectorRef,
   ElementRef,
   Renderer2,
+  HostListener,
+  QueryList,
+  ViewChildren,
 } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -109,6 +112,29 @@ export class DetailHotroComponent {
   _UploadService: UploadService = inject(UploadService);
   _UsersService: UsersService = inject(UsersService);
   _snackBar: MatSnackBar = inject(MatSnackBar);
+  @ViewChild('editable') editable!: ElementRef;
+  @ViewChildren('viewChat') viewChat!: QueryList<ElementRef>;
+  @HostListener('window:keydown', ['$event'])
+  handleShortcut(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key.toLowerCase() === 'i') {
+      event.preventDefault(); // Prevent default browser behavior
+
+      if (this.editable) {
+        this.editable.nativeElement.focus();
+        this.moveCursorToEnd(this.editable.nativeElement);
+      }
+    }
+  }
+  scrollToBottom() {
+    console.log(this.viewChat);
+    
+    setTimeout(() => {
+      if (this.viewChat && this.viewChat.length > 0) {
+        const lastChat = this.viewChat.last.nativeElement;
+        lastChat.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 100);
+  }
   async ngOnInit(): Promise<void> {
     this._router.paramMap.subscribe(async (data: any) => {
       const paramsId = data.get('id');
@@ -120,7 +146,7 @@ export class DetailHotroComponent {
             this.Detail.Dexuat.Tienbangchu =
               toVietnameseWords(this.Detail.Dexuat.TongChi) ||
               'Kiểm tra lại số tiền';
-            this.Detail.Chat = this.Detail.Chat || [];
+            this.Detail.Chat = this.Detail.idChat || [];
             console.log(this.Detail);
             this._UsersService.getProfile().then((data) => {
               this.profile = data;
@@ -139,6 +165,7 @@ export class DetailHotroComponent {
   editiorValue: string = '';
 
   ngAfterViewInit(): void {
+    this.scrollToBottom();
     // Set giá trị ban đầu một lần duy nhất
     this.editableDiv.nativeElement.innerHTML = this.editiorValue;
 
@@ -347,9 +374,14 @@ export class DetailHotroComponent {
     }
     if (this.ListtempsMess.length > 0) {
       this.Detail.Chat = [...this.Detail.Chat, ...this.ListtempsMess];
+      this.Detail.idChat = [...this.Detail.idChat, ...this.ListtempsMess];
       this.ListtempsMess = [];
     }
     this.editableDiv.nativeElement.innerHTML = '';
+    this.scrollToBottom();
+    this._hotrosService.updateOneHotro(this.Detail).then(() => {
+      this.ngOnInit();
+    })
   }
 
   onInput(event: Event): void {
@@ -391,8 +423,7 @@ export class DetailHotroComponent {
       img.style.maxWidth = '100%';
       img.style.margin = '5px 0';
       target.appendChild(img);
-      const space = document.createTextNode(' ');
-      target.appendChild(space);
+      this.editableDiv.nativeElement.innerHTML += img;
       this.ListtempsMess.push({
         idUser: this.profile?.id,
         Type: 'image',

@@ -260,23 +260,23 @@
 
         </div>
       </div>
-      <div class="h-full flex flex-col space-y-2 items-start p-2">
-        <div *ngFor="let item of Detail.Chat">
+      <div class="w-full h-full flex flex-col space-y-2 items-start p-2">
+        <div #viewChat *ngFor="let item of Detail.Chat">
           @if(item.Type==='text'){
-            <div class="flex flex-row space-x-2 items-center">
-              <span class="font-bold">{{item.User}}</span>
+            <div class="flex flex-row space-x-2 items-center p-2 rounded-lg border w-2/3">
+              <span class="font-bold">{{item.idUser}}</span>
               <span [innerHTML]="item.Content"></span>
             </div>
           }
           @else if(item.Type==='image'){
-            <div class="flex flex-row space-x-2 items-center">
-              <span class="font-bold">{{item.User}}</span>
-              <img [src]="item.Content" class="max-h-24 max-w-24 rounded-lg border p-2" />
+            <div class="flex flex-row space-x-2 items-center p-2 rounded-lg border w-2/3">
+              <span class="font-bold">{{item.idUser}}</span>
+              <img [src]="item.Content" class="max-h-24 max-w-24 rounded-lg border p-2"/>
             </div>
           }
           @else if(item.Type==='file'){
-            <div class="flex flex-row space-x-2 items-center">
-              <span class="font-bold">{{item.User}}</span>
+            <div class="flex flex-row space-x-2 items-center p-2 rounded-lg border w-2/3">
+              <span class="font-bold">{{item.idUser}}</span>
               <a [href]="item.Content" target="_blank">{{item.FileName}}</a>
             </div>
           }
@@ -288,7 +288,7 @@
     <div class="relative w-full flex flex-col">
     <div class="flex flex-row space-x-2 items-center">   
       <div (paste)="handlePaste($event)" (dragover)="onDragOver($event)" (dragleave)="onDragLeave($event)" (drop)="onDrop($event)" #editable contenteditable="true" (input)="onInput($event)" 
-      class="w-full border p-4 editable rounded-lg {{isDragging?'h-40 border-2 border-dashed border-blue-500 bg-slate-100':''}}" data-placeholder="Nhập nội dung ở đây..."></div>
+      class="w-full border p-4 editable rounded-lg {{isDragging?'h-40 border-2 border-dashed border-blue-500 bg-slate-100':''}}" data-placeholder="Nhập nội dung ở đây..." autofocus></div>
       <button mat-icon-button color="primary" (click)="SendMess()"><mat-icon>send</mat-icon></button>
     </div>
     <div class="flex flex-row space-x-2 items-center">

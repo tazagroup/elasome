@@ -4,6 +4,7 @@ export const environment = {
   APITINYMCE: 't9hvocq9xlyr70tvuoonphblkih76rbxyvnvffr6c3z93slx',
   //APIURL:'http://localhost:3335',
   APIURL: 'https://sandboxapi.elasome.com',
+  APIURL1: 'https://v3api.tazagroup.vn',
   ImageURL: 'https://sandbox.elasome.com/',
   app_id: '1416835846626859002',
   secret_key: 'HLBWj23hToA9fuiQvQY4',

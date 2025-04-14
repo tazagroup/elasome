@@ -19,7 +19,9 @@
           "options": {
             "allowedCommonJsDependencies": [
               "lodash",
-              "moment"
+              "moment",
+              "xmlhttprequest-ssl",
+              "debug"
              ],
             "outputPath": "dist/elasome",
             "index": "src/index.html",
@@ -39,16 +41,10 @@
               "@angular/material/prebuilt-themes/indigo-pink.css",
               "src/styles.scss"
             ],
-            "scripts": [],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            "scripts": []
           },
           "configurations": {
             "production": {
-              "outputMode": "server",
               "budgets": [
                 {
                   "type": "initial",
